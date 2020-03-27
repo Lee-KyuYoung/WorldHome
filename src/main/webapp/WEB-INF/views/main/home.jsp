@@ -7,8 +7,7 @@
 <head>
 	<title>Home</title>
 	<link href="<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+	
 </head>
 <body>
 <header>
@@ -21,6 +20,34 @@
 <pre>
 a
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </pre>
 
 
@@ -28,6 +55,30 @@ a
 <footer>
 <%@ include file="footer.jsp" %>
 </footer>
+
+<script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
+<script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+		$(document).ready(function(){
+			$("#submit").on('click',function(){
+				$.ajax({
+					url : "<%=contextPath%>/login",
+					type : "post",
+					data : $(".form-signin").serialize(), 
+					success : function(resCode){
+						if(resCode == "C001"){
+							alert(resCode);
+							location.href="<%=contextPath%>/main";
+						}
+					},
+					error : function(a , c){
+						alert(a+"    "+c);
+					}
+				});
+			});
+		});
+</script>
+
 </body>
 </html>
 

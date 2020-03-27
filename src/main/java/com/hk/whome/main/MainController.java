@@ -32,7 +32,6 @@ public class MainController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale) {
-	
 		return "main/home";
 	}
 	
