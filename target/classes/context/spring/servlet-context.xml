@@ -42,6 +42,29 @@
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 	
+	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <beans:property name="basenames">
+	    	<beans:list>
+	    		<beans:value>classpath:/properties/message</beans:value>
+	    	</beans:list>
+	    </beans:property>
+	    <beans:property name="defaultEncoding" value="UTF-8" />
+	
+	    <!-- properties 파일이 변경되었는지 확인하는 주기를 지정. 60초 간격 -->
+	    <beans:property name="cacheSeconds" value="60" />
+	</beans:bean>
+
+    <!-- MessageSource를 사용하기 위한 Accessor 설정 -->
+    <beans:bean id="messageSourceAccessor" class="org.springframework.context.support.MessageSourceAccessor">
+        <beans:constructor-arg ref="messageSource"/>
+    </beans:bean>
+
+	<!-- 언어 정보를 세션에 저장하여 사용. -->
+	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<beans:property name="defaultLocale" value="ko"></beans:property>
+	</beans:bean>
+	
+	
 	<interceptors>
 		<!-- Logger Interceptor Config -->
 		<interceptor>
@@ -55,6 +78,8 @@
 			<beans:property name="paramName" value="lang" /> 
 		</beans:bean> 
 	</interceptors>
+
+
 
 	
 	
