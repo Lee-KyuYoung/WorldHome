@@ -32,7 +32,7 @@ public class MainController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale) {
-		logger.info("locale : : : :  "+message.getMessage("test", null,"default text",locale));
+	
 		return "main/home";
 	}
 	
