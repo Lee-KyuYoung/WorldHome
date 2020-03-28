@@ -1,0 +1,58 @@
+<beans xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+     
+      <context:component-scan base-package="com.hk.whome.security"/>
+   
+      <security:http pattern="/resources/**" security="none"></security:http>
+      
+      <security:http use-expressions="true" auto-config='true'>
+      		<security:intercept-url pattern="/board/**" access="hasAnyRole('ROLE_ADMIN','ADMIN')"/>
+            <security:intercept-url pattern="/login" access="permitAll"/>
+            <security:intercept-url pattern="/loginProcess" access="denyAll"/>
+            <security:intercept-url pattern="/**" access="permitAll"/>
+            <security:access-denied-handler error-page="/accessDeniedPage"/>
+            <security:form-login login-page="/login"
+                 				 username-parameter="user_id"
+                  				 password-parameter="user_password"       
+                 				 login-processing-url="/loginProcess"
+                 				 default-target-url="/"
+                 				 authentication-failure-handler-ref="loginFailureHandler" 
+                 				 authentication-success-handler-ref="loginSuccessHandler"
+            />
+           
+            <security:logout logout-success-url="/" 
+					         invalidate-session="true"
+					         logout-url="/logout"/>
+					         
+            <security:session-management>
+                  <security:concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
+            </security:session-management>
+
+    	</security:http>
+   
+    <bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+   
+    <security:authentication-manager>
+		<security:authentication-provider ref = "userAuthProvider"></security:authentication-provider>
+        <security:authentication-provider user-service-ref = "userService"></security:authentication-provider>
+    </security:authentication-manager>
+     
+    <bean id="userService" class="com.hk.whome.security.CustomUserDetailsService"/>
+    <bean id="userAuthProvider" class="com.hk.whome.security.CustomAuthenticationProvider"/>  
+    <bean id="loginFailureHandler" class="com.hk.whome.security.handler.LoginFailureHandler">
+    	<property name="loginidname" value="loginId"/>
+    	<property name="loginpwdname" value="loginPwd"/>
+		<property name="errormsgname" value="ERRORMSG"/>
+   		<property name="defaultFailureUrl" value="/login?error=1"/>
+    </bean>
+    <bean id="loginSuccessHandler" class="com.hk.whome.security.handler.LoginSuccessHandler">
+	    <property name="loginIdName" value="loginId"/>
+	    <property name="defaultUrl" value="/"/>
+	</bean>
+</beans>
+

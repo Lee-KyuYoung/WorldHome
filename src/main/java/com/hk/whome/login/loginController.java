@@ -1,5 +1,11 @@
 package com.hk.whome.login;
 
+import java.util.Enumeration;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @Controller
 public class loginController {
@@ -17,20 +23,35 @@ public class loginController {
 	
 	private Logger logger = LoggerFactory.getLogger(loginController.class);
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Model model) {
+	@RequestMapping(value = "/login")
+	public String login(Model model, HttpServletRequest req) {
+
+		HttpSession session = req.getSession();
+		Enumeration<String> e =  session.getAttributeNames();
+		Iterator<String> i = e.asIterator();
+		while(i.hasNext()) {
+			System.out.println("SESSION : : : "+i.next());
+		}
+		
+		if(session.getAttribute("user_info") != null) {
+			return "redirect:./";
+		}
 		
 		return "login/login";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginProcess(Model model) {
-		
-		String resCode = "C001";
-		
-		return resCode;
+//	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
+//	public String loginProcess(Model model) {
+//		return "main/home";
+//	}
+	
+	//권한 없을 때 띄어주는 페이지
+	@RequestMapping(value = "/accessDeniedPage", method = RequestMethod.GET)
+	public String loginInvalidCheck(Model model) {
+		return "login/accessDeniedPage";
 	}
 		
+	
+	
 	
 }
