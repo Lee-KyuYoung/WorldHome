@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 
@@ -20,38 +21,37 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder; 
+	
 	private Logger logger = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		
-		logger.info("=====================  authenticate  ====================");
 				
-		String user_id = (String) authentication.getPrincipal();
-		String user_pw = (String) authentication.getCredentials();
-		
-		logger.info("user_id  ::::  "+user_id);
-		logger.info("user_pw  ::::  "+user_pw);
+		String userID = (String) authentication.getPrincipal();
+		String userPw = (String) authentication.getCredentials();
 		
 		//DB로직 처리
-		CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(user_id);
+		CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(userID);
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) user.getAuthorities();
 		
-        if(!matchPassword(user_pw, user.getUser_pw())) {
+		logger.info("입력한 비번     ::::    "+passwordEncoder.encode(userPw));
+		logger.info("저장된 비번     ::::    "+user.getUser_pw());
+		
+        if(!passwordEncoder.matches(userPw, user.getUser_pw())) {
         	logger.info("비밀번호가 틀립니다.");
-            throw new BadCredentialsException(user_id);
+            throw new BadCredentialsException(userID);
         }
  
-        if(!user.isEnabled() ||  !user.isCredentialsNonExpired()) {
-        	logger.info("불가능한 사용자입니다.");
-            throw new BadCredentialsException(user_id);
-        }
+//        if(!user.isEnabled() ||  !user.isCredentialsNonExpired()) {
+//        	logger.info("불가능한 사용자입니다.");
+//            throw new BadCredentialsException(userID);
+//        }
 
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user_id, user_pw, authorities);
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userID, userPw, authorities);
         result.setDetails(user);
-        
-        System.out.println("ID : "+user.getUser_id()+"    PW : "+user.getUser_pw()+"    Authorit : "+user.getAuthority());
             
         return result;
 
@@ -61,11 +61,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
-	
-    private boolean matchPassword(String loginPwd, String password) {
-        return loginPwd.equals(password);
-    }
-
 
 }
 

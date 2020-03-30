@@ -10,8 +10,10 @@
    
       <security:http pattern="/resources/**" security="none"></security:http>
       
+      <!--관리자   : Admin 
+                 일반회원 : Member -->
       <security:http use-expressions="true" auto-config='true'>
-      		<security:intercept-url pattern="/board/**" access="hasAnyRole('ROLE_ADMIN','ADMIN')"/>
+      		<security:intercept-url pattern="/board/**" access="permitAll"/>
             <security:intercept-url pattern="/login" access="permitAll"/>
             <security:intercept-url pattern="/loginProcess" access="denyAll"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
@@ -25,9 +27,10 @@
                  				 authentication-success-handler-ref="loginSuccessHandler"
             />
            
-            <security:logout logout-success-url="/" 
-					         invalidate-session="true"
-					         logout-url="/logout"/>
+            <security:logout logout-url="/logout" 
+					         invalidate-session="false"
+					         success-handler-ref="logoutSuccessHandler"
+					         />
 					         
             <security:session-management>
                   <security:concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
@@ -41,7 +44,8 @@
 		<security:authentication-provider ref = "userAuthProvider"></security:authentication-provider>
         <security:authentication-provider user-service-ref = "userService"></security:authentication-provider>
     </security:authentication-manager>
-     
+    
+    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" /> 
     <bean id="userService" class="com.hk.whome.security.CustomUserDetailsService"/>
     <bean id="userAuthProvider" class="com.hk.whome.security.CustomAuthenticationProvider"/>  
     <bean id="loginFailureHandler" class="com.hk.whome.security.handler.LoginFailureHandler">
@@ -54,5 +58,6 @@
 	    <property name="loginIdName" value="loginId"/>
 	    <property name="defaultUrl" value="/"/>
 	</bean>
+	<bean id="logoutSuccessHandler" class="com.hk.whome.security.handler.LogoutHandler"></bean>
 </beans>
 

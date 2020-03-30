@@ -8,17 +8,10 @@ import org.springframework.stereotype.Repository;
 public class UserAuthDAO {
 
 	@Autowired
-	private SqlSession sqlsession;
+	private SqlSession sqlSession;
 	
-	public CustomUserDetails getUserInfo(String userName) {
-		CustomUserDetails detail = new CustomUserDetails();
-		detail.setUser_id("kr4530");
-		detail.setName("이규영");
-		detail.setUser_pw("12345");
-		detail.setAuthority("ROLE_USER");
-		detail.setEnabled(true);
-		
-		return detail;
+	public CustomUserDetails getUserInfo(String userId) {
+		return sqlSession.selectOne("com.hk.whome.user.sql.getLoginInfo",userId);
 	}
 	
 }

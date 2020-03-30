@@ -70,6 +70,10 @@
 		<location>/404page</location>
 	</error-page>
 	<error-page>
+		<error-code>405</error-code>
+		<location>/405page</location>
+	</error-page>
+	<error-page>
 		<error-code>500</error-code>
 		<location>/500page</location>
 	</error-page>

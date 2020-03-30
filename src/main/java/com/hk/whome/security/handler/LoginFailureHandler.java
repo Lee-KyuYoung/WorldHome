@@ -43,11 +43,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         if(exception instanceof BadCredentialsException) {
             errormsg = messageSource.getMessage("login.info.L201",null,"default text",new Locale("ko"));
         } else if(exception instanceof InternalAuthenticationServiceException) {
-        	errormsg = messageSource.getMessage("login.few",null,"default text",new Locale("ko"));
+        	errormsg = messageSource.getMessage("login.info.L201",null,"default text",new Locale("ko"));
         } else if(exception instanceof DisabledException) {
-        	errormsg = messageSource.getMessage("login.few",null,"default text",new Locale("ko"));
+        	errormsg = messageSource.getMessage("login.info.L201",null,"default text",new Locale("ko"));
         } else if(exception instanceof CredentialsExpiredException) {
-        	errormsg = messageSource.getMessage("login.few",null,"default text",new Locale("ko"));
+        	errormsg = messageSource.getMessage("login.info.L201",null,"default text",new Locale("ko"));
         }
     	
     	request.setAttribute(loginidname, username);

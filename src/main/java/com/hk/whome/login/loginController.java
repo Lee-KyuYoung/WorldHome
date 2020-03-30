@@ -40,18 +40,16 @@ public class loginController {
 		return "login/login";
 	}
 	
-//	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-//	public String loginProcess(Model model) {
-//		return "main/home";
-//	}
+	@RequestMapping(value = "/logout")
+	public String logout(HttpServletRequest req) {
+		req.getSession().invalidate();
+		return "redirect:/";
+	}
 	
 	//권한 없을 때 띄어주는 페이지
 	@RequestMapping(value = "/accessDeniedPage", method = RequestMethod.GET)
 	public String loginInvalidCheck(Model model) {
 		return "login/accessDeniedPage";
 	}
-		
-	
-	
-	
+
 }

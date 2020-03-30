@@ -11,10 +11,10 @@ public class CustomUserDetailsService implements UserDetailsService{
 	private UserAuthDAO userAuthDAO;
 	
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException{
-		CustomUserDetails user = userAuthDAO.getUserInfo(userName);
+	public UserDetails loadUserByUsername(String userID) throws UsernameNotFoundException{
+		CustomUserDetails user = userAuthDAO.getUserInfo(userID);
 		if(user==null) {
-			throw new UsernameNotFoundException(userName);
+			throw new UsernameNotFoundException(userID);
 		}
 		return user;
 	}

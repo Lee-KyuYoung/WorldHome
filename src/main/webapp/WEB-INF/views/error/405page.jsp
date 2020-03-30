@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>404page</title>
+<title>405page</title>
 </head>
 <body>
-<h1><spring:message code="common.error.E404"/></h1>
+<h1><spring:message code="common.error.E405"/></h1>
 </body>
 </html>
