@@ -1,22 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="utf-8">
 <title>Insert title here</title>
 <style type="text/css">
 	footer{ 
-	      position: fixed; 
-		  bottom: 0px; 
-		  padding: 1rem;
-		  color: white;
-		  background: teal;
-		  font-weight: bold; 
-		  height: 75px;
-		  width: 100%;
-		  display: flex;
-		  align-items: center;  
+	      	   
+			  left:0px; 
+			  bottom:0px; 
+			  height:30px; 
+			  width:100%; 
+			  background:grey; 
+			  color: white;
 		  }
 
 </style>
