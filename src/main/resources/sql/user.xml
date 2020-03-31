@@ -11,7 +11,7 @@
 		FROM
 				TBL_USR_INF
 		WHERE
-				 USR_ID = #{userId} AND USR_D_NY = 'N'
+				 USR_ID = #{userId} AND USR_D_YN = 'N'
 	</select>
 
 	<!-- 아이디 중복 검사 -->
@@ -21,7 +21,7 @@
 		FROM
 				tbl_usr_inf
 		WHERE
-				usr_id = #{user_id} AND USR_D_NY = 'N'
+				usr_id = #{user_id} AND USR_D_YN = 'N'
 	</select> 	
 	
 	<!-- 유저 회원가입 -->
@@ -59,7 +59,7 @@
 						FROM
 								TBL_USR_INF
 						WHERE
-								USR_ID = #{userId} AND USR_D_NY = 'N'
+								USR_ID = #{userId} AND USR_D_YN = 'N'
 					)
 					
 		
@@ -73,11 +73,15 @@
 				TBL_USR_INF
 		WHERE
 			<if test = "userId != null and userId != ''">
-				USR_ID = #{userId}
+				USR_ID = #{userId} AND 
 			</if>
 			<if test = "userEmail != null and userEmail != ''">
-				USR_EMAIL = #{userEmail}
+				USR_EMAIL = #{userEmail} AND 
 			</if>
+			<if test = "userName != null and userName != ''">
+				USR_NM = #{userName} AND 
+			</if>
+			USR_D_YN = 'N'
 	</select>
 	
 	<!-- 회원정보 수정 -->
@@ -103,8 +107,8 @@
 			<if test = "userAuth != null and userAuth != ''">
 				USR_AUTH = #{userAuth},
 			</if>
-			<if test = "userD_NY != null and userD_NY !=''">
-				USR_D_NY = #{userD_NY},
+			<if test = "userD_YN != null and userD_YN !=''">
+				USR_D_YN = #{userD_YN},
 			</if>
 				USR_MOD_DT = CURRENT_TIMESTAMP
    		WHERE

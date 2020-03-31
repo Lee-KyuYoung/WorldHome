@@ -11,19 +11,20 @@
 	<link href="<%=contextPath%>/resources/css/dev/user_info.css" rel="stylesheet">
 	<style>
 		.form-signin{position:absolute;right:50%;transform:translate(50%);width:750px;border:1px solid #6c757d; padding:60px; border-radius:20px; box-sizing: border-box;}
-		.form-signin caption{caption-side: top;font-size:0.8em;}
-		.form-signin th{background-color:#f0f0f5; font-size:0.9em; color:#6c757d;}
-		.data_role{font-size:0.8em;color:#6c757d;}
+		.form-signin caption{caption-side: top;font-size:0.8em;border-bottom:1px solid black;}
+		.form-signin th{background-color:#f4f4f7; font-size:0.9em; color:#6c757d;border-bottom:1px solid #dee2e6}
+		.form-signin td{border-bottom:1px solid #dee2e6;}
+		.data_role{font-size:0.75em;color:#6c757d;}
 		.join_custom_group > div > input , select{width:121px !important;}
 		.form-signin > input[type="text"]{font-size:0.8em !important;}
 		input::placeholder{font-size:0.8em;color:#6c757d;}
-		.invalid_data{color:red;margin-top:5px;margin-bottom:0px;font-size:0.8em;}
+		.invalid_data{color:red;margin-top:5px;margin-bottom:0px;font-size:0.75em;}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<form class ="form-signin" id = "join_form">
-			<table class ="table table-bordered">
+			<table class ="table">
 				<caption><spring:message code="join.info.J102"/></caption><!-- 회원 이용정보 -->
 				<colgroup>
 					<col style="width:100px;">
@@ -55,7 +56,7 @@
 				</tbody>
 			</table>
 			
-			<table class="table table-bordered">
+			<table class="table">
 				<caption><spring:message code="join.info.J103"/></caption> <!-- 회원 개인정보 -->
 				<colgroup>
 					<col style="width:100px;">

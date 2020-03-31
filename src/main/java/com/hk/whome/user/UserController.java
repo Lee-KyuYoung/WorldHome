@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +35,8 @@ public class UserController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	/**
 	 * 회원가입 페이지
@@ -135,22 +139,22 @@ public class UserController {
 	public Map<String,String> userIDCheck(Model model, @RequestParam Map<String,String> paramMap, Locale locale) {
 		
 		String userId = paramMap.get("user_id");
-		String resMessage = "";
+		String messageCode = "";
 		String resCode = "";
 		
 		int idCheck = userService.userIDCheck(userId);
 		
 		if(idCheck >= 1) {
-			resMessage = messageSource.getMessage("join.info.J301",null,"default text",locale);
+			messageCode = "join.info.J301";
 			resCode = "E001";
 		}else {
-			resMessage = messageSource.getMessage("join.info.J302",null,"default text",locale);
+			messageCode = "join.info.J302";
 			resCode = "E002";
 		}
 				
 		Map<String,String> resultMap = new HashMap<>();
 		resultMap.put("resCode", resCode);
-		resultMap.put("resMessage", resMessage);
+		resultMap.put("resMessage", messageSource.getMessage(messageCode,null,"default text",locale));
 		
 		return resultMap;
 	}
@@ -239,6 +243,7 @@ public class UserController {
 	public Map<String,String> findUserID(@RequestParam Map<String,String> paramMap, Locale locale){
 		
 		String userEmail = paramMap.get("user_email");
+		String userName = paramMap.get("user_name");
 		String messageCode = "";
 		String resCode = ""; 
 		
@@ -246,6 +251,7 @@ public class UserController {
 		Model userInfoModel = new ExtendedModelMap();
 		
 		userInfoModel.addAttribute("userEmail",userEmail);
+		userInfoModel.addAttribute("userName",userName);
 
 		UserInfoDomain userInfo = userService.getUserInfo(userInfoModel);
 
@@ -263,14 +269,69 @@ public class UserController {
 		return resultMap;
 	}
 	
+
 	/**
 	 * 회원 비번 찾기
+	 * @param paramMap
+	 * @param locale
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/findUserPw", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Map<String,String> findUserPw(){
-		Map<String,String> resultMap = new HashMap<>();
+	public Map<String,Object> findUserPw(@RequestParam Map<String,String> paramMap, Locale locale){
+		
+		String userName = paramMap.get("user_name");
+		String userId = paramMap.get("user_id");
+		String messageCode = "";
+		String resCode = "";
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		Model userInfoModel = new ExtendedModelMap();
+		
+		userInfoModel.addAttribute("userName",userName);
+		userInfoModel.addAttribute("userId",userId);
+		
+		UserInfoDomain userInfoDomain = userService.getUserInfo(userInfoModel);
+		
+		//회원정보 유효성 체크
+		if(userInfoDomain == null) {
+			resCode = "E003";
+			messageCode = "join.info.J307";
+		}
+
+		if(resCode == "") {
+			
+			try {
+				
+				//임시비번 발급
+				int randomPw = ((int)(Math.random()*999999)+1);
+				
+				UserInfoDomain userInfo = new UserInfoDomain();
+				userInfo.setUserId(userId);
+				userInfo.setUserPw(passwordEncoder.encode(String.valueOf(randomPw)));
+				
+				logger.info("발급한 비번    :::::::::::::  "+randomPw);
+				logger.info("암호화된 비번  :::::::::::::  "+passwordEncoder.encode(String.valueOf(randomPw)));
+				
+				//비번 업데이트
+				userService.updateUserInfo(userInfo);
+				
+				messageCode = "join.info.J308";
+				resCode = "E001";
+				
+				resultMap.put("user_pw", randomPw);
+				
+			}catch(Exception e) {
+				resCode = "E002";
+				messageCode = "common.error.E001";
+				e.printStackTrace();
+			}
+			
+		}
+		
+		resultMap.put("resCode", resCode);
+		resultMap.put("resMessage", messageSource.getMessage(messageCode, null , "", locale));
+		
 		return resultMap;
 	}
 }

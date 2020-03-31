@@ -13,7 +13,7 @@ public class UserInfoDomain {
 	private String userEmail;
 	private String userPhone;
 	private String userAuth;
-	private String userD_NY;
+	private String userD_YN;
 	private Timestamp userModDate;
 	private Timestamp userRegData;
 	
@@ -83,11 +83,11 @@ public class UserInfoDomain {
 	public void setUserRegData(Timestamp userRegData) {
 		this.userRegData = userRegData;
 	}
-	public String getUserD_NY() {
-		return userD_NY;
+	public String getUserD_YN() {
+		return userD_YN;
 	}
-	public void setUserD_NY(String userD_NY) {
-		this.userD_NY = userD_NY;
+	public void setUserD_YN(String userD_YN) {
+		this.userD_YN = userD_YN;
 	}
 	
 }
