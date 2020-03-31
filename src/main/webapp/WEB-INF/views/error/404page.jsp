@@ -8,6 +8,6 @@
 <title>404page</title>
 </head>
 <body>
-<h1></h1>
+<h1><spring:message code="common.error.E404"/></h1>
 </body>
 </html>

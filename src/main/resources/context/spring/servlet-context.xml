@@ -23,16 +23,6 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-
-	<!-- tiles -->	
-	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
-		<beans:property name="order" value="1"/>
-	</beans:bean>
-	
-	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-		<beans:property name="definitions" value="classpath:/context/tiles/tiles-context.xml"/>
-	</beans:bean>
 	
 	<context:component-scan base-package="com.hk.whome" />
 	
@@ -40,19 +30,6 @@
 	
 	<!-- multipartResolver (file) -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-	
-	
-	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-	    <beans:property name="basenames">
-	    	<beans:list>
-	    		<beans:value>classpath:/properties/message</beans:value>
-	    	</beans:list>
-	    </beans:property>
-	    <beans:property name="defaultEncoding" value="UTF-8" />
-	
-	    <!-- properties 파일이 변경되었는지 확인하는 주기를 지정. 60초 간격 -->
-	    <beans:property name="cacheSeconds" value="60" />
-	</beans:bean>
 
     <!-- MessageSource를 사용하기 위한 Accessor 설정 -->
     <beans:bean id="messageSourceAccessor" class="org.springframework.context.support.MessageSourceAccessor">
@@ -63,12 +40,12 @@
 	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<beans:property name="defaultLocale" value="ko"></beans:property>
 	</beans:bean>
-	
-	
+
+	<!-- Logger Interceptor Config -->	
 	<interceptors>
-		<!-- Logger Interceptor Config -->
 		<interceptor>
 		    <mapping path="/**" />
+		    <exclude-mapping path="/resources/**/*"/>
             <beans:bean class="com.hk.whome.interceptor.LoggerInterceptor"></beans:bean>   
 		</interceptor>
 	</interceptors>

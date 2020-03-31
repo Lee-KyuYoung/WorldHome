@@ -8,6 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/context/message/message-context.xml</config>
+		<config>src/main/resources/context/security/security-context.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/context/mybatis/mybatis-context.xml</config>

@@ -32,7 +32,7 @@ public class MainController {
 	
 	private Logger logger = LoggerFactory.getLogger(MainController.class);
 	
-	@RequestMapping(value="/{errorPage}", method=RequestMethod.GET)
+	@RequestMapping(value="/{errorPage}")
 	public String errorPage(@PathVariable("errorPage") String page) {
 		return "error/"+page;
 	}

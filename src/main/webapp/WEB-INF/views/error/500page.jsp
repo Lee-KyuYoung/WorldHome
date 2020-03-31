@@ -7,6 +7,6 @@
 <title>500page</title>
 </head>
 <body>
-<h1></h1>
+<h1><spring:message code="common.error.E500"/></h1>
 </body>
 </html>

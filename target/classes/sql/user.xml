@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.whome.user.sql">
+
+	<!-- 로그인 정보 가져오기 -->
+	<select id = "getLoginInfo" parameterType = "String" resultType = "com.hk.whome.security.CustomUserDetails">
+		SELECT
+				USR_ID as user_id , USR_PWS_ENC as user_pw , USR_NM as name , USR_AUTH as authority
+		FROM
+				TBL_USR_INF
+		WHERE
+				 USR_ID = #{userId} AND USR_D_YN = 'N'
+	</select>
+
+	<!-- 아이디 중복 검사 -->
+	<select id = "userIDCheck" parameterType = "String" resultType = "Integer">
+		SELECT
+				COUNT(*)
+		FROM
+				tbl_usr_inf
+		WHERE
+				usr_id = #{user_id} AND USR_D_YN = 'N'
+	</select> 	
+	
+	<!-- 유저 회원가입 -->
+	<insert id = "insertUserInfo" parameterType = "com.hk.whome.domain.UserInfoDomain">
+		INSERT INTO TBL_USR_INF (
+			USR_ID,
+			USR_PWS_ENC,
+			USR_NM,
+			USR_ADD_1,
+			USR_ADD_2,
+			USR_PH_NO,
+			USR_RRN_NO,
+			USR_EMAIL,
+			USR_AUTH,
+			USR_INT_DT
+		) 
+		SELECT
+			#{userId},
+			#{userPw},
+			#{userName},
+			#{userAddress1},
+			#{userAddress2},
+			#{userPhone},
+			#{userBirth},
+			#{userEmail},
+			#{userAuth},
+			CURRENT_TIMESTAMP
+		FROM
+			DUAL
+		WHERE
+			NOT EXISTS
+					(
+						SELECT
+								USR_ID
+						FROM
+								TBL_USR_INF
+						WHERE
+								USR_ID = #{userId} AND USR_D_YN = 'N'
+					)
+					
+		
+	</insert>
+	
+	<!-- 회원정보 가져오기 -->
+	<select id = "getUserInfo" parameterType = "java.util.Map" resultType ="com.hk.whome.domain.UserInfoDomain">
+		SELECT
+				USR_ID as userId , USR_ADD_1 as userAddress1 , USR_ADD_2 as userAddress2 , USR_EMAIL as userEmail , USR_PH_NO as userPhone
+		FROM		
+				TBL_USR_INF
+		WHERE
+			<if test = "userId != null and userId != ''">
+				USR_ID = #{userId} AND 
+			</if>
+			<if test = "userEmail != null and userEmail != ''">
+				USR_EMAIL = #{userEmail} AND 
+			</if>
+			<if test = "userName != null and userName != ''">
+				USR_NM = #{userName} AND 
+			</if>
+			USR_D_YN = 'N'
+	</select>
+	
+	<!-- 회원정보 수정 -->
+   	<update id = "updateUserInfo" parameterType = "com.hk.whome.domain.UserInfoDomain">
+   		UPDATE
+   				TBL_USR_INF
+   		SET
+			<if test = "userPw != null and userPw != ''">
+				USR_PWS_ENC = #{userPw}, 		
+			</if>
+			<if test = "userAddress1 != null and userAddress1 != ''">
+				USR_ADD_1 = #{userAddress1},
+			</if>	
+			<if test = "userAddress2 != null and userAddress2 != ''">
+				USR_ADD_2 = #{userAddress2},
+			</if>
+			<if test = "userEmail != null and userEmail != ''">
+				USR_EMAIL = #{userEmail},
+			</if>
+			<if test = "userPhone != null and userPhone != ''">
+				USR_PH_NO = #{userPhone},
+			</if>
+			<if test = "userAuth != null and userAuth != ''">
+				USR_AUTH = #{userAuth},
+			</if>
+			<if test = "userD_YN != null and userD_YN !=''">
+				USR_D_YN = #{userD_YN},
+			</if>
+				USR_MOD_DT = CURRENT_TIMESTAMP
+   		WHERE
+   				USR_ID = #{userId}
+   	</update>
+   
+</mapper>
