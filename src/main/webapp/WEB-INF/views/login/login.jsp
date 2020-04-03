@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div class="container">
-		<form class ="form-signin" id = "login_form" action="./loginProcess" method = "POST">
+		<form class ="form-signin" id = "login_form" action="<%=contextPath%>/loginProcess" method = "POST">
 			<h3>Login.</h3>
 			<div class="row">
 				<label for="user_id" class="sr-only"><spring:message code="login.info.L103"/></label><!-- 유저 아이디 -->
@@ -209,7 +209,7 @@
 							$('#find_pw_btn').prev().text(result.resMessage);
 						}
 					},
-					error : function(xhr , status , error){ //597320
+					error : function(xhr , status , error){
 						alert(xhr);
 					}
 				});	

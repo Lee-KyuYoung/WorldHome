@@ -4,9 +4,42 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.whome.main.sql">
 
+<select id="selectImgList" parameterType="hashmap" resultType="hashmap"> 
+  <![CDATA[ 
+            SELECT A.HOME_ID        /*집 ID*/
+			      ,A.USR_ID         /*사용자 ID*/
+			      ,A.HOME_ADD       /*집 주소*/
+			      ,A.HOME_COMM      /*집 설명*/
+			      ,A.HIGH_AMT       /*성수기 가격*/
+			      ,A.ROW_AMT        /*비성수기 가격*/
+			      ,A.HOME_RSV_CNT   /*예약수*/
+			      ,A.HOME_VI_CNT    /*조회수*/
+			      ,A.HOME_MOD_DT    /*집 수정일*/
+			      ,A.HOME_INT_DT    /*집 저장일*/
+			      ,B.HOME_IMG_PATH  /*집 이미지 경로*/
+			      ,B.IMG_KEY        /*이미지 KEY*/
+			  FROM TBL_HOME_INF A   /*집 정보 테이블*/
+			      ,TBL_HOME_IMG B   /*집 이미지 테이블*/
+			 WHERE A.HOME_ID = B.HOME_ID
+			   AND B.MA_IMG_YN = 'Y'
+    ]]> 
+</select>
+
 
 	
-
+	<select id="selectDetailHome" parameterType="hashmap" resultType="hashmap"> 
+  <![CDATA[ 
+	 SELECT A.IMG_KEY
+          ,A.HOME_ID
+          ,A.HOME_IMG_PATH
+          ,A.MA_IMG_YN
+          ,HOME_IMG_INX
+      FROM TBL_HOME_IMG A
+     WHERE HOME_ID = '20200329000000100001'
+       AND DEL_YN = 'N'
+  ORDER BY HOME_IMG_INX ASC
+   ]]> 
+</select>
  	
    
 </mapper>

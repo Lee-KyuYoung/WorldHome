@@ -1,4 +1,4 @@
-package com.hk.whom.domain;
+package com.hk.whome.domain;
 
 public class homeListDomain {
 

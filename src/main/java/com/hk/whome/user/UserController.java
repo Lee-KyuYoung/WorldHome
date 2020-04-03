@@ -108,7 +108,7 @@ public class UserController {
 			userInfo.setUserAddress2(userAddress2);
 			userInfo.setUserEmail(userEmail);
 			userInfo.setUserPhone(userPhone);
-			userInfo.setUserAuth("MEMBER");
+			userInfo.setUserAuth("ROLE_MEMBER"); //권한을 넣을 시 ROLE_권한이름 이런식으로 앞에 ROLE_을 붙여줘야한다.
 			try {
 				userService.insertUserInfo(userInfo);
 			} catch (Exception e) {
@@ -334,4 +334,6 @@ public class UserController {
 		
 		return resultMap;
 	}
+	
+	
 }

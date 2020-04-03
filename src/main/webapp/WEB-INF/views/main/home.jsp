@@ -98,7 +98,7 @@
 
 	<div class="container-fluid" id="imgList"></div>
 
-
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
 	<div class="content">Hello world!!</div>
 	<footer>
 		<%@ include file="footer.jsp"%>
@@ -107,10 +107,11 @@
 	<script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
 		 $(document).ready(function(){
+			 	const csrf_token = $('#csrf_token').val();
 				$.ajax({
 					url : "<%=contextPath%>/homeList",
 					type : "post",
-					data: $(".form-signin").serialize(), 
+					data: { '_csrf' : csrf_token },
 					success : function(data){
 						var str = '';
 						var pastHomeId = '';

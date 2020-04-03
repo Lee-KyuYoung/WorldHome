@@ -88,8 +88,6 @@
 													<option value="${num}">${num}</option>
 												</c:otherwise>
 											</c:choose>
-											
-											
 										</c:forEach>
 									</select>
 								</div>
