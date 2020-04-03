@@ -18,18 +18,18 @@ public class MainServiceImpl implements MainService{
 	
 	@Override
 	public List selectImgList(HashMap map) {
-		System.out.println("::::::::::::::::::::::::오나요");
 		List aa = mainDAO.selectImgList(map);
-		System.out.println(aa+"후처리");
 		return aa;
 	}
 
 
 	@Override
-	public Map selectDetailHome(HashMap homeMap) {
+	public HashMap selectDetailHome(String homeId) {
 		// TODO Auto-generated method stub
-		mainDAO.selectDetailHome(homeMap);
-		return null;
+		HashMap homeIdMap = new HashMap();
+		homeIdMap.put("homeId", homeId);
+		
+		return mainDAO.selectDetailHome(homeIdMap);
 	}
 	
 

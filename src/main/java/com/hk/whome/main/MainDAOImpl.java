@@ -18,16 +18,14 @@ public class MainDAOImpl implements MainDAO{
 	@Override
 	public List selectImgList(HashMap map) {
 		// TODO Auto-generated method stub
-		
-		System.out.println("여기오는지 확인");
 		return sqlsession.selectList("selectImgList", map);
 	}
 
 
 	@Override
-	public Map selectDetailHome(HashMap map) {
+	public HashMap selectDetailHome(HashMap homeIdMap) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlsession.selectOne("selectDetailHome", homeIdMap);
 	}
 
 	

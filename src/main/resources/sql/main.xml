@@ -8,7 +8,8 @@
   <![CDATA[ 
             SELECT A.HOME_ID        /*집 ID*/
 			      ,A.USR_ID         /*사용자 ID*/
-			      ,A.HOME_ADD       /*집 주소*/
+			      ,A.HOME_ADD_1       /*집 주소*/
+			      ,A.HOME_ADD_2       /*집 나머지 주소*/
 			      ,A.HOME_COMM      /*집 설명*/
 			      ,A.HIGH_AMT       /*성수기 가격*/
 			      ,A.ROW_AMT        /*비성수기 가격*/
@@ -29,15 +30,32 @@
 	
 	<select id="selectDetailHome" parameterType="hashmap" resultType="hashmap"> 
   <![CDATA[ 
-	 SELECT A.IMG_KEY
-          ,A.HOME_ID
-          ,A.HOME_IMG_PATH
-          ,A.MA_IMG_YN
-          ,HOME_IMG_INX
-      FROM TBL_HOME_IMG A
-     WHERE HOME_ID = '20200329000000100001'
-       AND DEL_YN = 'N'
-  ORDER BY HOME_IMG_INX ASC
+	 SELECT D.HOME_ID,E.USR_ID
+FROM TBL_HOME_INF E
+     ,(SELECT MAX(C.IMG_KEY1)AS IMG_KEY1 
+             , MAX(C.IMG_KEY2)AS IMG_KEY2
+             , MAX(C.IMG_KEY3)AS IMG_KEY2
+             , MAX(C.IMG_KEY4)AS IMG_KEY2
+             , MAX(C.IMG_KEY5)AS IMG_KEY2
+             , C.HOME_ID
+         FROM(
+            SELECT CASE B.RNUM WHEN 1 THEN B.IMG_KEY END AS IMG_KEY1
+                  ,CASE B.RNUM WHEN 2 THEN B.IMG_KEY END AS IMG_KEY2 
+                  ,CASE B.RNUM WHEN 3 THEN B.IMG_KEY END AS IMG_KEY3 
+                  ,CASE B.RNUM WHEN 4 THEN B.IMG_KEY END AS IMG_KEY4
+                  ,CASE B.RNUM WHEN 5 THEN B.IMG_KEY END AS IMG_KEY5
+                  ,B.HOME_ID
+            FROM(
+                SELECT ROW_NUMBER()OVER (PARTITION BY A.HOME_ID ORDER BY A.IMG_KEY) RNUM
+                    ,A.IMG_KEY
+                    ,A.HOME_ID
+                  FROM TBL_HOME_IMG A
+                 WHERE A.HOME_ID = '20200329000000100001'
+                   AND A.DEL_YN = 'N'
+              ORDER BY A.HOME_IMG_IDX ASC) B )C
+        GROUP BY C.HOME_ID) D
+    WHERE D.HOME_ID =E.HOME_ID
+  
    ]]> 
 </select>
  	

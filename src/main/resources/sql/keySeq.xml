@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.whome.keySeq.sql">
+
+<update id="createKeySeq" parameterType="String"> 
+  <![CDATA[ 
+            MERGE INTO TBL_SEQ_KEY A
+                 USING DUAL
+                    ON (A.SEQ_DT = TO_CHAR(SYSDATE,'YYYYMMDD') AND A.KEY_SEP =#{keySep})
+                      WHEN MATCHED THEN
+                           UPDATE SET  
+                             A.KEY_SEQ = A.KEY_SEQ+1
+                      WHEN NOT MATCHED THEN      
+                             INSERT (A.SEQ_DT,A.KEY_SEQ,A.KEY_SEP) 
+                             VALUES (TO_CHAR(SYSDATE,'YYYYMMDD'),'1',#{keySep})
+    ]]> 
+</update>
+
+<select id="selectKeySeq" parameterType="String" resultType="String"> 
+  <![CDATA[ 
+           SELECT A.SEQ_DT||A.KEY_SEQ AS DATE_KEY_SEQ
+                     FROM TBL_SEQ_KEY A
+                    WHERE A.SEQ_DT = TO_CHAR(SYSDATE,'YYYYMMDD')
+                      AND A.KEY_SEP = #{keySep}
+    ]]> 
+</select>
+
+
+
+</mapper>
