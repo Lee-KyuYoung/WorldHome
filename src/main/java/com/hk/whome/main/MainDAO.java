@@ -7,5 +7,5 @@ import java.util.Map;
 public interface MainDAO {
 
 	List selectImgList(HashMap map);
-	Map selectDetailHome(HashMap map);
+	HashMap selectDetailHome(HashMap map);
 }

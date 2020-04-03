@@ -7,5 +7,5 @@ import java.util.Map;
 public interface MainService {
 
 	List selectImgList(HashMap homeMap);
-	Map selectDetailHome(HashMap homeMap);
+	HashMap selectDetailHome(String homeMap);
 }

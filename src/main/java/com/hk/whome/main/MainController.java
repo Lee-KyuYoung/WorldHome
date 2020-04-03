@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hk.whom.domain.homeListDomain;
+import com.hk.whome.domain.HomeListDomain;
 
 
 
@@ -38,47 +39,40 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(Model model, Locale locale) {
+	public String main(Model model, Locale locale, HomeListDomain homeData) {
+		String a = homeData.getHomeAdd(); // 
+        System.out.println("::::::::::::::"+a);
+		System.out.println("설마여기오냐");
 		return "main/home";
 	}
 	
 	@RequestMapping(value = "/detailHome", method = RequestMethod.GET)
-	public String detailReg(Model model, Locale locale) {
+	public String detailReg(Model model,HttpServletRequest req) {
 		model.getAttribute("");
 		
-		//mainService.selectDetailHome(homeMap);
-		model.addAttribute("test_comm", "들어갔는지 확인해보자");
+		String homeId = req.getParameter("homeId");
 		
+		HashMap detailMap = mainService.selectDetailHome(homeId);
+		model.addAttribute("detailMap", detailMap);
 		return "main/detailHome";
 	}
 	
 	
-	
-	
+	/**
+	 * 숙소 조회
+	 * @param model
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/homeList", method = RequestMethod.POST)
-	public List homeList(Model model) {
+	public List homeList(HomeListDomain homeData) {
+		System.out.println("good");
 		
 		List<HashMap> homeList = new ArrayList<HashMap>();
-        homeListDomain homeData = new homeListDomain();
-        
-        homeData.setHomeComm("홍길동전");
-        homeData.setHomeComm("꽃향기나는 펜션");
-        
         HashMap homeMap= new HashMap();
         
-        homeMap.put("homeImgPath", homeData.getHomeComm());
-        homeMap.put("homeComm", homeData.getHomeComm());
-        
-        homeData = new homeListDomain();
-        homeData.setHomeComm("레미제라블");
-        homeData.setHomeComm("하늘을보며 잠드는 곳");
-        homeMap = new HashMap<String, Object>(); 
-        homeMap.put("homeImgPath", homeData.getHomeComm());
-        homeMap.put("homeComm", homeData.getHomeComm());
-        homeList.add(homeMap);
-        
-        System.out.println("___________________________________여기다");
+        String a = homeData.getHomeAdd(); // 
+        System.out.println("::::::::::::::"+a);
         homeList = mainService.selectImgList(homeMap);
         
         
