@@ -13,6 +13,7 @@
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 
 	</style>
@@ -38,71 +39,124 @@
 			<div class="col-sm-7 content">
 				<form id="admin_code_management" class = "margin-top20">
 					<h4>코드 대분류</h4>
-					<div class="row">
+					<div class="row margin-bottom20">
 						<div class = "col-sm-6">
-							<p>코드 명</p>
-							<input type = "text" class = "form-control" name = "code_main_category">
+							<p>대분류 이름</p>
+							<input type = "text" class = "form-control" id="code_main_cate_name" name="code_main_cate_name">
 						</div>
 						<div class = "col-sm-12">
-							<p>코드 대분류 설명</p>
-							<input type = "text" class = "form-control" name = "code_main_category_ment" placeholder = "코드에대한 설명을 적어주세요">
+							<p>대분류 설명</p>
+							<div class="input-group">
+								<input type = "text" class = "form-control" id ="code_main_cate_ment" name = "code_main_cate_ment" placeholder = "코드에대한 설명을 적어주세요.">
+								<div class="input-group-append">
+									<button class="btn btn-secondary" type="button" id="main_cate_reg_btn">등록</button>
+								</div>
+							</div>	
 						</div>
 					</div>
-					<p>종류2</p>
-					<div class="row">
-						<div class = "col-sm-6">
-							<select class="form-control">
-								<option>종류1을 선택해주세요</option>
+					<h4>코드 소분류 1</h4>
+					<div class="row margin-bottom20">
+						<div class = "col-sm-3">
+							<p>대분류 선택</p>
+							<select class="form-control" id = "main_cate_list">
+								<option value ="">선택하세요.</option>
+								<c:forEach var = "list" items = "${codeList}">
+									<c:if test = "${empty list.codeSubGroupKey }">
+										<option value = "${list.codeNum}/${list.codeGroupKey}">${list.codeComment}</option>
+									</c:if>
+								</c:forEach>
 							</select>
 						</div>
-					</div>
-					<div class="row margin-top20">
-						<div class = "col-sm-10">
-							<p>게스트가 묵게 될 숙소의 유형을 골라주세요</p>
-							<div class="custom-control custom-radio">
-								<input type="radio" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">
-								    <strong>집 전체</strong><br>
-								       게스트가 숙소 전체를 다른 사람과 공유하지 않고 단독으로 이용합니다.<br>일반적으로 침실, 욕실, 부엌이 포함됩니다
-							    </label>
-							</div>
-							<div class="custom-control custom-radio margin-top20">
-								<input type="radio" class="custom-control-input" id="home_range2" name="home_range" value="2">
-							    <label class="custom-control-label" for="home_range2">
-								     <strong>개인실</strong><br>
-									 게스트에게 개인 침실이 제공됩니다.<br>침실 이외의 공간은 공용일 수 있습니다.
-							    </label>
-							</div>
-							<div class="custom-control custom-radio margin-top20">
-								<input type="radio" class="custom-control-input" id="home_range3" name="home_range" value="3">
-							    <label class="custom-control-label" for="home_range3">
-									<strong>다인실</strong><br>
-									게스트는 개인 공간 없이, 다른 사람과 함께 쓰는 침실이나 공용 공간에서 숙박합니다.
-								</label>
-							</div>
+						<div class = "col-sm-3">
+							<p>소분류1 이름</p>
+							<input type = "text" class = "form-control" id="code_depth1_cate_name" name="code_depth1_cate_name">
+						</div>
+						<div class = "col-sm-12">
+							<p>소분류1 설명</p>
+							<div class="input-group">
+								<input type = "text" class = "form-control" id ="code_depth1_cate_ment" name = "code_depth1_cate_ment" placeholder = "소분류1에 대한 설명을 적어주세요.">
+								<div class="input-group-append">
+									<button class="btn btn-secondary" type="button" id="depth1_cate_reg_btn">등록</button>
+								</div>
+							</div>	
 						</div>
 					</div>
-					<div class="row margin-top20">
-						<div class = "col-sm-10">
-							<p>게스트만 사용하도록 만들어진 숙소인가요?</p>
-							<div class="custom-control custom-radio">
-								<input type="radio" class="custom-control-input" id="is_only_guest1" name="is_only_guest" value="1">
-							    <label class="custom-control-label" for="is_only_guest1">
-								    <strong>예. 게스트전용으로 마련된 숙소입니다.</strong>
-							    </label>
-							</div>
-							<div class="custom-control custom-radio margin-top20">
-								<input type="radio" class="custom-control-input" id="is_only_guest2" name="is_only_guest" value="2">
-							    <label class="custom-control-label" for="is_only_guest2">
-									<strong>아니요. 제 개인 물건이 숙소에 있습니다.</strong>
-							    </label>
-							</div>
+					<h4>코드 소분류 2</h4>
+					<div class="row margin-bottom20">
+						<div class = "col-sm-3">
+							<p>대분류 선택</p>
+							<select class="form-control" id = "main_cate_2" onchange = "getCodeDefine(this,'main')">
+								<option value ="">선택하세요.</option>
+								<c:forEach var = "list" items = "${codeList}">
+									<c:if test = "${empty list.codeSubGroupKey }">
+										<option value = "${list.codeNum}/${list.codeGroupKey}">${list.codeComment}</option>
+									</c:if>
+								</c:forEach>
+							</select>
+						</div>
+						<div class = "col-sm-3">
+							<p>소분류1 선택</p>
+							<select class="form-control" id = "depth2_cate_1">
+								<option value ="">선택하세요.</option>
+							</select>
+						</div>
+						<div class = "col-sm-3">
+							<p>소분류2 이름</p>
+							<input type = "text" class = "form-control" id="code_depth2_cate_name" name="code_depth2_cate_name">
+						</div>
+						<div class = "col-sm-12">
+							<p>소분류2 설명</p>
+							<div class="input-group">
+								<input type = "text" class = "form-control" id ="code_depth2_cate_ment" name = "code_depth2_cate_ment" placeholder = "코드에대한 설명을 적어주세요">
+								<div class="input-group-append">
+									<button class="btn btn-secondary" type="button" id="depth2_cate_reg_btn">등록</button>
+								</div>
+							</div>	
+						</div>
+					</div>
+					<h4>코드 소분류 3</h4>
+					<div class="row margin-bottom20">
+						<div class = "col-sm-3">
+							<p>대분류 선택</p>
+							<select class="form-control" id = "main_cate_3" onchange = "getCodeDefine(this,'main')">
+								<option value ="">선택하세요.</option>
+								<c:forEach var = "list" items = "${codeList}">
+									<c:if test = "${empty list.codeSubGroupKey }">
+										<option value = "${list.codeNum}/${list.codeGroupKey}">${list.codeComment}</option>
+									</c:if>
+								</c:forEach>
+							</select>
+						</div>
+						<div class = "col-sm-3">
+							<p>소분류1 선택</p>
+							<select class="form-control" id = "depth2_cate_2" onchange = "getCodeDefine(this,'sub')">
+								<option value ="">선택하세요.</option>
+							</select>
+						</div>
+						<div class = "col-sm-3">
+							<p>소분류2 선택</p>
+							<select class="form-control" id = "depth3_cate_1">
+								<option value ="">선택하세요.</option>
+							</select>
+						</div>
+						<div class = "col-sm-3">
+							<p>소분류3 이름</p>
+							<input type = "text" class = "form-control" id="code_depth3_cate_name" name="code_depth3_cate_name">
+						</div>
+						<div class = "col-sm-12">
+							<p>소분류3 설명</p>
+							<div class="input-group">
+								<input type = "text" class = "form-control" id ="code_depth3_cate_ment" name = "code_depth3_cate_ment" placeholder = "코드에대한 설명을 적어주세요">
+								<div class="input-group-append">
+									<button class="btn btn-secondary" type="button" id="depth3_cate_reg_btn">등록</button>
+								</div>
+							</div>	
 						</div>
 					</div>
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-right">
-								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step1_btn">
+<!-- 								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step1_btn"> -->
 							</div>
 						</div>
 					</div>
@@ -116,24 +170,87 @@
 	<script>
 		$(document).ready(function(){
 			
-			$('#home_reg_step1_btn').on('click',function(){
-				
-				var reg_step1 = $('#registration_step1_form').serialize();
-				$.ajax({
-					url : '../homeRegProcStep1',
-					type : 'POST',
-					data : reg_step1,
-					success : function(result){
-						alert(result.resCode);
-						location.href = './step2';
-					},
-					error : function(xhr , status , error){
-						alert(error);
-					}
-				});
+			$('#main_cate_reg_btn').on('click',function(){
+				var code_name = $('#code_main_cate_name').val();
+				var code_ment = $('#code_main_cate_ment').val();
+				insertCode(code_name , code_ment , null ,'main');
 			});
 			
+			$('#depth1_cate_reg_btn').on('click', function(){
+				var code_name = $('#code_depth1_cate_name').val();
+				var code_ment = $('#code_depth1_cate_ment').val();
+				var cate_info = $('#main_cate_list').val();
+				insertCode(code_name , code_ment , cate_info ,'sub');
+			});
+			
+			$('#depth2_cate_reg_btn').on('click', function(){
+				var code_name = $('#code_depth2_cate_name').val();
+				var code_ment = $('#code_depth2_cate_ment').val();
+				var cate_info = $('#depth2_cate_1').val();
+				insertCode(code_name , code_ment , cate_info ,'sub_main');
+			});
+			
+			$('#depth3_cate_reg_btn').on('click', function(){
+				var code_name = $('#code_depth3_cate_name').val();
+				var code_ment = $('#code_depth3_cate_ment').val();
+				var cate_info = $('#depth3_cate_1').val();
+				insertCode(code_name , code_ment , cate_info ,'sub_main');
+			});
+		
 		});
+		
+		//코드 정보 가져오기
+		function getCodeDefine(obj , code_type){
+
+			var group_key = $(obj).val(); 
+			
+			$.ajax({
+				url : './getCodeDefine',
+				type : 'POST',
+				data : { 'group_key' : group_key , 'code_type' : code_type , '_csrf' : '${_csrf.token}'},
+				success : function(result){
+					
+					var targetSelectBox = $(obj).parent().next().find('select');
+					$(targetSelectBox).empty();
+					
+					$.each(result, function(index,object){
+						
+						var selectValue = "";
+						if(code_type == 'sub_main'){
+							selectValue = object.codeSubGroupKey;
+						}else{
+							selectValue = object.codeNum+'/'+object.codeSubGroupKey;
+						}
+						
+						$(targetSelectBox).append($('<option>').text(object.codeComment).attr('value',object.codeNum+'/'+object.codeSubGroupKey));
+					});
+				},
+				error : function(xhr, status ,error){
+					alert(xhr+" "+status+" "+error);
+				}
+			});
+		}
+
+		
+		//코드 등록
+		function insertCode(code_name , code_ment, cate_info , path){
+			
+			$.ajax({
+				url : './insertCode/'+path,
+				type : 'POST',
+				data : {'code_name' : code_name , 'code_ment' : code_ment , 'cate_info' : cate_info ,'_csrf' : '${_csrf.token}'},
+				success : function(result){
+					if(result.resCode == 'E001'){
+// 						location.reload(true);
+					}else{
+						alert("에러가 발생하였습니다.");
+					}
+				},
+				error : function(xhr , status , error){
+					alert(xhr+" "+status+" "+error);
+				}
+			});
+		}
 	</script>
 </body>
 </html>

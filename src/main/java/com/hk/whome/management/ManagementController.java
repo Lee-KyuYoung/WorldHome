@@ -1,6 +1,7 @@
 package com.hk.whome.management;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hk.whome.admin.AdminService;
+import com.hk.whome.domain.CodeDomain;
 import com.hk.whome.util.EmptyUtils;
 
 @Controller
@@ -22,6 +25,9 @@ public class ManagementController {
 
 	@Autowired
 	private ManagementService managementSerive;
+	
+	@Autowired
+	private AdminService adminService;
 	
 	private Logger logger = LoggerFactory.getLogger(ManagementController.class);
 	
@@ -40,12 +46,19 @@ public class ManagementController {
 		String tempRegHomeId = paramMap.get("temp_reg_home_id");
 		
 		if(!EmptyUtils.isEmpty(tempRegHomeId)) {
-						
+			
 			
 		}else {
 			//step1일때 임시저장된 숙소 정보가 있는지 확인한다.
-			if(path == "step1") {
+			if(path.equals("step1")) {
 				
+				Map<String,String> getCodeDefineParam = new HashMap<String,String>(); 
+				getCodeDefineParam.put("codeType", "main");
+				getCodeDefineParam.put("codeType", "1001"); // 집 종류
+				
+				List<CodeDomain> homeCodeList = adminService.getCodeDefine(getCodeDefineParam);
+				
+				model.addAttribute("homeType",homeCodeList);
 			}
 		}
 		

@@ -32,10 +32,10 @@
 					<div class="row">
 						<div class = "col-sm-6">
 							<select class="form-control">
-								<option>아파트</option>
-								<option>주택</option>
-								<option>별채</option>
-								<option>독특한 숙소</option>
+								<option value = "">선택하세요</option>
+								<c:forEach var = "list" items = "${homeCodeList}">
+									<option value = "${list.codeSubGroupKey}">${list.codeComment}</option>
+								</c:forEach>
 							</select>
 						</div>
 					</div>

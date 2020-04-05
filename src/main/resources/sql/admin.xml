@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.whome.admin.sql">
+
+	<!-- 코드 등록 -->
+	<insert id = "insertCodeDefine" parameterType = "com.hk.whome.domain.CodeDomain">
+		
+		INSERT INTO TBL_CODE(
+			CD_UN_KEY,
+			CD_GRP_KEY,
+			CD_COL_NM,
+			CD_NO,
+			CD_NM,
+			CD_COMM,
+			SUB_CD_GRP_KEY
+		) VALUES ( 
+			#{codeKey},
+			<choose>
+				<when test="codeGroupKey != null and codeGroupKey !=''">
+					#{codeGroupKey},
+				</when>
+				<otherwise>
+					( SELECT 
+							LPAD( LPAD( NVL( MAX( SUBSTR( CD_GRP_KEY , 2 , 3) ) , 0) + 1 , 3 , 0 ) , 4 , 1 )
+					  FROM
+					  		TBL_CODE
+					) ,
+				</otherwise>
+			</choose>
+			#{codeColName},
+			#{codeNum},
+			#{codeName},
+			#{codeComment},
+			<choose>
+				<when test = "codeSubGroupKey != null and codeSubGroupKey !='no'">
+					( SELECT 
+							LPAD( LPAD( NVL( MAX( SUBSTR( SUB_CD_GRP_KEY , 2 , 3) ) , 0) + 1 , 3 , 0) , 4 , 2 ) 
+					  FROM
+					  		TBL_CODE
+					)
+				</when>
+				<otherwise>
+					null		
+				</otherwise>
+			</choose>
+		)
+	</insert>
+	
+	<!-- 코드 정보 가져오기 -->
+	<select id = "getCodeDefine" parameterType = "String" resultType = "com.hk.whome.domain.CodeDomain">
+		SELECT
+				CD_UN_KEY as codeKey , CD_GRP_KEY as codeGroupKey , CD_COL_NM as codeColName , CD_NO as codeNum , CD_COMM as codeComment , SUB_CD_GRP_KEY as codeSubGroupKey , CD_NM as codeName
+		FROM
+				TBL_CODE
+		<choose>
+			<when test = "codeType != null and codeType == 'main'">
+		WHERE
+				CD_GRP_KEY = #{groupKey} and SUB_CD_GRP_KEY IS NOT NULL	
+			</when>
+			<when test = "codeType != null and codeType == 'sub'">
+		WHERE
+				CD_GRP_KEY = #{groupKey} 
+			</when>
+		</choose>
+	</select>
+
+   
+</mapper>

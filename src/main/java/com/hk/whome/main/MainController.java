@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-<<<<<<< HEAD
-import com.hk.whome.domain.homeListDomain;
-=======
 import com.hk.whome.domain.HomeListDomain;
->>>>>>> f9a671b81976cbc41d52e0dfd4cf4f8e6d52226e
+
 
 
 
