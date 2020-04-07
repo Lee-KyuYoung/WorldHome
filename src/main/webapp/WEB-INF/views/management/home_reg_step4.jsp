@@ -14,6 +14,7 @@
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
 		.margin-top10{margin-top:10px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 	</style>
 <body>
@@ -30,64 +31,54 @@
 					<div class="row margin-top20">
 						<div class = "col-sm-10">
 							<p>일반 제공</p>
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">필수 품목</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">무선 인터넷</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">TV</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">에어컨</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">다리미</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">샴푸</label>
-							</div>
+							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
+								<c:if test = "${list.codeGroupKey eq '1015' }">
+									<div class="custom-control custom-checkbox margin-bottom20">
+										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
+									    <label class="custom-control-label" for="home_range${status.index}">
+									    	${list.codeComment}
+									    <c:forEach var = "sub_list" items = "${codeList}">
+									    	<c:if test = "${list.codeSubGroupKey eq sub_list.codeGroupKey}">
+									    		<br>${sub_list.codeComment}
+									    	</c:if>
+									    </c:forEach>	
+									    </label>
+								    </div>
+								</c:if>
+							</c:forEach>
+							
 							<p>안전시설</p>
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">연기 감지기</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">일산화 탄소 감지기</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">구급상자</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">소화기</label>
-							</div>
+							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
+								<c:if test = "${list.codeGroupKey eq '1016' }">
+									<div class="custom-control custom-checkbox margin-bottom20">
+										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
+									    <label class="custom-control-label" for="home_range${status.index}">
+									    	${list.codeComment}
+									    <c:forEach var = "sub_list" items = "${codeList}">
+									    	<c:if test = "${list.codeSubGroupKey eq sub_list.codeGroupKey}">
+									    		<br>${sub_list.codeComment}
+									    	</c:if>
+									    </c:forEach>	
+									    </label>
+								    </div>
+								</c:if>
+							</c:forEach>
 							<p>기타 게스트가 사용할 수 있는 공간</p>
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="주방" value="1">
-							    <label class="custom-control-label" for="home_range1">연기 감지기</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="빨래-세탁기" value="1">
-							    <label class="custom-control-label" for="home_range1">일산화 탄소 감지기</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="빨래-건조기" value="1">
-							    <label class="custom-control-label" for="home_range1">구급상자</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="주차" value="1">
-							    <label class="custom-control-label" for="home_range1">소화기</label>
-							</div>
+							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
+								<c:if test = "${list.codeGroupKey eq '1017' }">
+									<div class="custom-control custom-checkbox margin-bottom20">
+										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
+									    <label class="custom-control-label" for="home_range${status.index}">
+									    	${list.codeComment}
+									    <c:forEach var = "sub_list" items = "${codeList}">
+									    	<c:if test = "${list.codeSubGroupKey eq sub_list.codeGroupKey}">
+									    		<br>${sub_list.codeComment}
+									    	</c:if>
+									    </c:forEach>	
+									    </label>
+								    </div>
+								</c:if>
+							</c:forEach>
 						</div>
 					</div>
 					<div class = "row margin-top20">
@@ -100,7 +91,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -113,17 +104,22 @@
 			
 			$('#home_reg_step4_btn').on('click',function(){
 				
-				var reg_step1 = $('#registration_step4_form').serialize();
+				var reg_step4 = $('#registration_step4_form').serialize();
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
 					url : '../homeRegProcStep4',
 					type : 'POST',
-					data : reg_step1,
+					data : reg_step4,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step5';
+						location.href = './step5?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
@@ -132,4 +128,5 @@
 	</script>
 </body>
 </html>
+
 

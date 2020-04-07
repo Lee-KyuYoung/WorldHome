@@ -214,14 +214,6 @@
 					$(targetSelectBox).empty();
 					
 					$.each(result, function(index,object){
-						
-						var selectValue = "";
-						if(code_type == 'sub_main'){
-							selectValue = object.codeSubGroupKey;
-						}else{
-							selectValue = object.codeNum+'/'+object.codeSubGroupKey;
-						}
-						
 						$(targetSelectBox).append($('<option>').text(object.codeComment).attr('value',object.codeNum+'/'+object.codeSubGroupKey));
 					});
 				},

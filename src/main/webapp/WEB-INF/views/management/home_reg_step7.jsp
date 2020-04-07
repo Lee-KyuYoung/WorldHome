@@ -32,81 +32,41 @@
 				<form id="registration_step7_form">
 					<h4>게스트가 지켜야 할 숙소 이용규칙을 선택하세요</h4>
 					<div class="row margin-top20">
-						<div class="form-inline form-group col-sm-12" >
-							<div class="col-sm-4 no_padding">
-								<p>반려동물 동반 가능</p>
-							</div>
-						    <div class="col-sm-8">
-						    	<div class="inline_block_float_right">
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_Y" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_Y">Y</label>
+						<c:forEach var = "list" items = "${codeList}" varStatus = "status">
+							<c:if test = "${list.codeNum eq '21' }">
+								<div class="form-inline form-group col-sm-12" >
+									<div class="col-sm-5 no_padding">
+										<p>${list.codeComment}</p>
 									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_N" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_N">N</label>
+								    <div class="col-sm-7">
+								    	<div class="inline_block_float_right">
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" class="custom-control-input" id = "geuet_rule_Y_${status.index}" name="guest_rule_${status.index}" value = "${list.codeKey }" checked>
+												<label class="custom-control-label" for = "geuet_rule_Y_${status.index}">Y</label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" class="custom-control-input" id = "geuet_rule_N_${status.index}" name="guest_rule_${status.index}" value = "N">
+												<label class="custom-control-label" for = "geuet_rule_N_${status.index}">N</label>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-					    </div>
-						<div class="form-inline form-group col-sm-12" >
-							<div class="col-sm-4 no_padding">
-								<p>흡연 가능</p>
-							</div>
-						    <div class="col-sm-8">
-						    	<div class="inline_block_float_right">
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_Y" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_Y">Y</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_N" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_N">N</label>
-									</div>
-								</div>
-							</div>
-					    </div>
-						<div class="form-inline form-group col-sm-12" >
-							<div class="col-sm-4 no_padding">
-								<p>행사나 파티 허용</p>
-							</div>
-						    <div class="col-sm-8">
-						    	<div class="inline_block_float_right">
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_Y" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_Y">Y</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" class="custom-control-input" id = "animal_permission_N" name="optradio">
-										<label class="custom-control-label" for = "animal_permission_N">N</label>
-									</div>
-								</div>
-							</div>
-					    </div>
+							    </div>
+						    </c:if>
+						</c:forEach>
 					</div>
 					<h4>게스트가 숙소에 대해 알아두어야 할 세부 사항</h4>
 					<div class="row margin-top20">
 						<div class = "col-sm-10">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">필수 품목</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">무선 인터넷</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">TV</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">에어컨</label>
-							</div>
-							<div class="custom-control custom-checkbox margin-top20">
-								<input type="checkbox" class="custom-control-input" id="home_range1" name="home_range" value="1">
-							    <label class="custom-control-label" for="home_range1">다리미</label>
-							</div>
+							<c:forEach var = "list" items = "${codeList}" varStatus = "status">
+								<c:if test = "${list.codeNum eq '22' }">
+									<div class="custom-control custom-checkbox margin-bottom20">
+										<input type="checkbox" class="custom-control-input" id="home_precaution_${status.index }" name="home_precaution" value = "${list.codeKey }">
+									    <label class="custom-control-label" for="home_precaution_${status.index }">
+									    	${list.codeComment}
+									    </label>
+									</div>
+								</c:if>
+							</c:forEach>
 						</div>
 					</div>
 					<div class = "row margin-top20">
@@ -119,7 +79,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -133,68 +93,26 @@
 			$('#home_reg_step7_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step7_form').serialize();
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
-					url : '../homeRegProcStep6',
+					url : '../homeRegProcStep7',
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step8';
+						location.href = './step8?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
 		});
-		
-		//글자 수 제한 체크
-		function wordLimitCheck(obj , limit_num){
-			var word_count = $(obj).val().length;
-			if(word_count > limit_num){
-				$(obj).next().text('( '+word_count+' / '+limit_num+' ) 글자가 '+limit_num+'자 이상 초과 되었습니다!').css('color','red');	
-			}else{
-				$(obj).next().text('( '+word_count+' / '+limit_num+' )').css('color','#767676');	
-			}
-		}
-		
-		var home_img_count = 1;
-		function imgView(f){
-			
-			var file = f.files; 
-			var reader = new FileReader(); 
-			var img_count = $('input[type="file"]').length;
-			var current_index = $('input[type="file"]').index($(f));
-			
-			//이미지는 5개로 제한을 둔다.
-			//current_index + 1 == img_count는 새롭게 추가되는 이미지 요소
-			if(img_count >= 6 && current_index + 1 == img_count){
-				alert('이미지는 최대 5개 등록 가능합니다.');
-				return false;
-			}				
-			
-			reader.onload = function(rst){
-				
-				$(f).parent().css('background-image','url('+rst.target.result+')').css('background-size','100% 100%').css('border','0px');
-				$(f).parent().find('input[type="button"]').remove(); // 이미지를 다시 선택할 경우 버튼 지우고 만들기
-				$(f).after('<input type = "button" class = "btn btn-danger" value = "삭제" onclick="deleteHomeDetailImg(this)">');
-				
-				//새로운 이미지 추가 시 만들어주기 
-				if(current_index + 1 == img_count){ 
-					$(f).parent().parent().after('<div class = "col-md-6 margin-top20">' +
-	                        '<label class="img_view" for="img_file_'+home_img_count+'" id="test">'+
-	                            '<input type="file" id="img_file_'+home_img_count+'" name="home_detail_img" accept="image/*" onchange="imgView(this)">' +
-	                        '</label>' +
-	                    '</div>');	
-				}
-			}
-			home_img_count += 1;
-			reader.readAsDataURL(file[0]); 
-		}
-		
-		function deleteHomeDetailImg(btn){
-			$(btn).parent().parent().remove();
-		}
+	
 	</script>
 </body>
 </html>

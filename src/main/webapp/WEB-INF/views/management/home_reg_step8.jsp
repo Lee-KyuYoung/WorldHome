@@ -29,7 +29,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-7 content">
-				<form id="registration_step5_form">
+				<form id="registration_step8_form">
 					<h4>예약가능한 날짜를 업데이트해주세요.</h4>
 					<div class="row margin-bottom30">
 						<div class = "col-md-6">
@@ -61,14 +61,14 @@
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
-								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_5_btn">
+								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_8_btn">
 							</div>
 							<div class = "btn-toolbar float-right">
-								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step5_btn">
+								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step8_btn">
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -92,7 +92,7 @@
 				
 			    "locale": {
 			        "format": "YYYY/MM/DD",
-			        "separator": " - ",
+			        "separator": "~",
 			        "applyLabel": "적용",
 			        "cancelLabel": "취소",
 			        "daysOfWeek": [
@@ -121,26 +121,28 @@
 			        "firstDay": 1
 			    },
 			    "minDate" : year+"/"+month+"/"+day
-				
 			});
 
 			$('#peak_season_pay , #offpeak_season_pay').on('keyup',function(){
 				$(this).val(numberFormat($(this).val().replace(/[^0-9]/g,"")));
 			});
 			
-			$('#home_reg_step5_btn').on('click',function(){
+			$('#home_reg_step8_btn').on('click',function(){
 				
-				var reg_step1 = $('#registration_step5_form').serialize();
+				var reg_step1 = $('#registration_step8_form').serialize();
 				$.ajax({
-					url : '../homeRegProcStep5',
+					url : '../homeRegProcStep8',
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step6';
+						location.href = '../../';
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
@@ -172,13 +174,7 @@
 //   	        calendar.render();
 //    		}
 		  	  
-			
-			
-		
-		
 
-
-		
 	</script>
 </body>
 </html>

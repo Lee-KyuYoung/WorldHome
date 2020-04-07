@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +100,7 @@ public class AdminController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/insertCode/{path}", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Map<String,String> insertCode(@PathVariable("path") String path , @RequestParam Map<String,String> paramMap) {
+	public Map<String,String> insertCode(@PathVariable("path") String path , @RequestParam Map<String,String> paramMap, HttpServletRequest req) {
 		
 		String resCode = "E001";
 		String codeName = paramMap.get("code_name");
@@ -142,8 +144,13 @@ public class AdminController {
 				resCode = "E002";
 				e.printStackTrace();
 			}
+			
+			//등록한 HomeKey Session 저장
+			req.getSession().setAttribute("homeID", generatedKey);
 		}
-
+		
+		
+		
 		Map<String,String> resMap = new HashMap<>();
 		resMap.put("resCode", resCode);
 		
@@ -162,7 +169,7 @@ public class AdminController {
 		String groupKey = paramMap.get("group_key");
 		String codeType = paramMap.get("code_type");
 		
-		Map<String,String> param = new HashMap<>();
+		Map<String,Object> param = new HashMap<>();
 		
 		try {
 			param.put("groupKey", groupKey.split("/")[1]);

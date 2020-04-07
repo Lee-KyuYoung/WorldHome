@@ -49,21 +49,35 @@
 	</insert>
 	
 	<!-- 코드 정보 가져오기 -->
-	<select id = "getCodeDefine" parameterType = "String" resultType = "com.hk.whome.domain.CodeDomain">
+	<select id = "getCodeDefine" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.CodeDomain">
 		SELECT
 				CD_UN_KEY as codeKey , CD_GRP_KEY as codeGroupKey , CD_COL_NM as codeColName , CD_NO as codeNum , CD_COMM as codeComment , SUB_CD_GRP_KEY as codeSubGroupKey , CD_NM as codeName
 		FROM
 				TBL_CODE
 		<choose>
 			<when test = "codeType != null and codeType == 'main'">
-		WHERE
-				CD_GRP_KEY = #{groupKey} and SUB_CD_GRP_KEY IS NOT NULL	
+		WHERE	
+				<if test = "groupKey != null and groupKey != ''">
+					CD_GRP_KEY = #{groupKey} and SUB_CD_GRP_KEY IS NOT NULL		
+				</if>
 			</when>
 			<when test = "codeType != null and codeType == 'sub'">
 		WHERE
-				CD_GRP_KEY = #{groupKey} 
+				<if test = "groupKey != null and groupKey != ''">
+					CD_GRP_KEY IN ( #{groupKey} ) 	
+				</if>
 			</when>
 		</choose>
+		<if test = "codeNo != null and codeNo !=''">
+			CD_NO IN
+			<foreach collection="codeNo" item="no" separator="," open="("  close=")">
+				  ${no} 
+			</foreach>
+			and SUB_CD_GRP_KEY IS NOT NULL
+		</if>
+		ORDER BY
+				CODEGROUPKEY
+
 	</select>
 
    

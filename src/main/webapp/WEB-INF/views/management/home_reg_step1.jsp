@@ -31,10 +31,10 @@
 					<p>종류1</p>
 					<div class="row">
 						<div class = "col-sm-6">
-							<select class="form-control">
+							<select class="form-control" onchange = "createHomeTypeSelectBox(this.value)">
 								<option value = "">선택하세요</option>
-								<c:forEach var = "list" items = "${homeCodeList}">
-									<option value = "${list.codeSubGroupKey}">${list.codeComment}</option>
+								<c:forEach var = "list" items = "${codeList}">
+									<option value = "${list.codeNum}/${list.codeSubGroupKey}">${list.codeComment}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -42,7 +42,7 @@
 					<p>종류2</p>
 					<div class="row">
 						<div class = "col-sm-6">
-							<select class="form-control">
+							<select class="form-control" id = "home_type" name = "home_type">
 								<option>종류1을 선택해주세요</option>
 							</select>
 						</div>
@@ -97,7 +97,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					
 				</form>
 			</div>
 		</div>
@@ -105,6 +105,8 @@
 	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
 	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
+	
+		//스탭 1 등록
 		$(document).ready(function(){
 			
 			$('#home_reg_step1_btn').on('click',function(){
@@ -116,15 +118,45 @@
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step2';
+						location.href = './step2?homeid='+result.homeID;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
-			
 		});
+		
+		//집 유형 1 선택 시 집 유형2 뿌려주기
+		function createHomeTypeSelectBox(value){
+			
+			if(value == ''){
+				$('#home_type').empty();
+				$('#home_type').append($('<option>').text("종류1을 선택해주세요").attr("value",""));
+				return false;
+			}
+			
+			$.ajax({
+				url : '../../admin/getCodeDefine',
+				type : 'POST',
+				data : { 'group_key' : value , 'code_type' : 'sub' , '_csrf' : '${_csrf.token}'},
+				success : function(result){
+
+					$('#home_type').empty();
+					$.each(result, function(index,object){
+						$('#home_type').append($('<option>').text(object.codeComment).attr("value",object.codeKey));
+					});
+				},
+				error : function(xhr, status ,error){
+					alert(xhr+" "+status+" "+error);
+				}
+			});
+			
+		}
+		
 	</script>
 </body>
 </html>

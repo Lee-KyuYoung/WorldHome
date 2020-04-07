@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public List<CodeDomain> getCodeDefine(Map<String,String> param) {
+	public List<CodeDomain> getCodeDefine(Map<String,Object> param) {
 		return adminDAO.getCodeDefine(param);
 	}
 

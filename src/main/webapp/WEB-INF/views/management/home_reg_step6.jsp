@@ -70,7 +70,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -84,16 +84,21 @@
 			$('#home_reg_step_6_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step6_form').serialize();
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
 					url : '../homeRegProcStep6',
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step7';
+						location.href = './step7?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});

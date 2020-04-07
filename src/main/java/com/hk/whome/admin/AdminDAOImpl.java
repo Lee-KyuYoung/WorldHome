@@ -21,7 +21,7 @@ public class AdminDAOImpl implements AdminDAO{
 	}
 	
 	@Override
-	public List<CodeDomain> getCodeDefine(Map<String,String> param) {
+	public List<CodeDomain> getCodeDefine(Map<String,Object> param) {
 		return sqlSession.selectList("com.hk.whome.admin.sql.getCodeDefine",param);
 	}
 	

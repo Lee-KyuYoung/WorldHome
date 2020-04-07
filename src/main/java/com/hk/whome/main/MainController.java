@@ -23,6 +23,8 @@ import com.hk.whome.domain.HomeListDomain;
 
 
 
+
+
 @Controller
 public class MainController {
 
@@ -40,9 +42,9 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(Model model, Locale locale, HomeListDomain homeData) {
-		String a = homeData.getHomeAdd(); // 
-        System.out.println("::::::::::::::"+a);
+	public String main(Model model, Locale locale) {
+//		String a = homeData.getHomeAdd(); // 
+//        System.out.println("::::::::::::::"+a);
 		System.out.println("설마여기오냐");
 		return "main/home";
 	}
@@ -66,14 +68,14 @@ public class MainController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/homeList", method = RequestMethod.POST)
-	public List homeList(HomeListDomain homeData) {
+	public List homeList() {
 		System.out.println("good");
 		
 		List<HashMap> homeList = new ArrayList<HashMap>();
         HashMap homeMap= new HashMap();
         
-        String a = homeData.getHomeAdd(); // 
-        System.out.println("::::::::::::::"+a);
+//        String a = homeData.getHomeAdd(); // 
+//        System.out.println("::::::::::::::"+a);
         homeList = mainService.selectImgList(homeMap);
         
         

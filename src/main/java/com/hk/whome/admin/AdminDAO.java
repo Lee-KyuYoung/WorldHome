@@ -9,6 +9,6 @@ public interface AdminDAO {
 
 	public void insertCodeDefine(CodeDomain codeDomain) throws Exception;
 	
-	public List<CodeDomain> getCodeDefine(Map<String,String> param);
+	public List<CodeDomain> getCodeDefine(Map<String,Object> param);
 	
 }

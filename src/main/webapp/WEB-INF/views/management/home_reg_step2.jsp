@@ -33,7 +33,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">최대 인원 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" id="max_people" name="max_people">
+						    	<input type="number" class="form-control" name="max_guest" min=1>
 						    </div>
 					    </div>
 					</div>
@@ -42,7 +42,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">침대 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" id="max_people" name="max_people">
+						    	<input type="number" class="form-control" name="bed_count" min=0 >
 						    </div>
 					    </div>
 					</div>
@@ -51,7 +51,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">욕실 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" id="max_people" name="max_people">
+						    	<input type="number" class="form-control" name="bathroom_count" min=0>
 						    </div>
 					    </div>
 					</div>
@@ -65,7 +65,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -79,16 +79,21 @@
 			$('#home_reg_step2_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step2_form').serialize();
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
 					url : '../homeRegProcStep2',
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step3';
+						location.href = './step3?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});

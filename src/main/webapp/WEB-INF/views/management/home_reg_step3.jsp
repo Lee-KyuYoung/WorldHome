@@ -70,7 +70,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -85,20 +85,26 @@
 			$('#home_reg_step3_btn').on('click',function(){
 				
 				var reg_step3 = $('#registration_step3_form').serialize();
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
 					url : '../homeRegProcStep3',
 					type : 'POST',
 					data : reg_step3,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step4';
+						location.href = './step4?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
 			
+			//주소검색
 			$('#address_search').on('click' , function(){
 				getAddress('user_address_1','user_address_2','user_postcode');
 			});

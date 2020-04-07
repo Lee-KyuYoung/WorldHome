@@ -30,7 +30,7 @@
 			<div class="col-sm-7 content">
 				<form id="registration_step5_form">
 					<h4>숙소 사진 올리기</h4>
-					<p>멋지게 찍은 사진으로 숙소를 어필해보세요.<br>이미지는 최대 5개 등록 가능합니다.</p>
+					<p>멋지게 찍은 사진으로 숙소를 어필해보세요.<br>숙소 이미지를 5개 이상 올려주세요.</p>
 					<div class="row">
 						<div class = "col-md-6 margin-top20">
 							  <label class="img_view" for="img_file_0" id="test">
@@ -48,7 +48,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -61,21 +61,33 @@
 			
 			$('#home_reg_step5_btn').on('click',function(){
 				
-				var reg_step1 = $('#registration_step5_form').serialize();
+				var	imgCount = $('input[type="file"]').length;
+				if(imgCount < 6){
+					alert("숙소이미지를 최소 5개 이상 올려주세요.");
+					return false;
+				}
+
+				var reg_step5 = new FormData($('#registration_step5_form')[0]);
+				var homeid = $('#homeid').val();
+				
 				$.ajax({
 					url : '../homeRegProcStep5',
 					type : 'POST',
-					data : reg_step1,
+					data : reg_step5,
+					processData : false,
+					contentType : false,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step6';
+						location.href = './step6?homeid='+homeid;
 					},
 					error : function(xhr , status , error){
 						alert(error);
+					},
+					beforeSend : function(xhr){
+						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
 			});
-			
 		});
 		
 		var home_img_count = 1;
@@ -85,14 +97,7 @@
 			var reader = new FileReader(); 
 			var img_count = $('input[type="file"]').length;
 			var current_index = $('input[type="file"]').index($(f));
-			
-			//이미지는 5개로 제한을 둔다.
-			//current_index + 1 == img_count는 새롭게 추가되는 이미지 요소
-			if(img_count >= 6 && current_index + 1 == img_count){
-				alert('이미지는 최대 5개 등록 가능합니다.');
-				return false;
-			}				
-			
+
 			reader.onload = function(rst){
 				
 				$(f).parent().css('background-image','url('+rst.target.result+')').css('background-size','100% 100%').css('border','0px');
