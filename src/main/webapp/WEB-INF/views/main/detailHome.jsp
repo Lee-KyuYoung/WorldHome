@@ -27,7 +27,7 @@
 			</div>
 			<div class="detail_add_1">${detailMap.HOME_ADD_1}</div>
 			<div style ="margin-top: 10px; margin-bottom: 10px;border-bottom: 3px solid #F2F2F2; ">
-				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">인원 ${detailMap.MAX_GUEST}명  </div>
+				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">최대인원 ${detailMap.MAX_GUEST}명  </div>
 				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">&nbsp&nbsp&nbsp&nbsp침대 ${detailMap.BED_CNT}개  </div>
 				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">&nbsp&nbsp&nbsp&nbsp욕실 ${detailMap.BATHROOM_CNT}개</div>
 			</div>
@@ -39,14 +39,7 @@
 				<div class ="postscript" style="border-top:3px solid #F2F2F2; width:100%; margin-top: 10px; margin-bottom: 10px;">
 					<div style = "font-size: 20px;padding-top: 20px; padding-bottom:20px">★후기</div>
 					<div class = "postscriptComm">
-						<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">
-							<div>준하</div>
-							<div>너무 아릅다워요</div>
-						</div>
-						<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">
-							<div>효진</div>
-							<div>아름답지 않아요</div>
-						</div>
+
 					</div>
 				</div>	
 			</div>
@@ -75,12 +68,16 @@
 					<td>게스트
 						<table style="border: 1px solid #444444; width: 100%; height: 50%;">
 							<tr>
-
+								<select class="form-control" id="sel1">
+								 <c:forEach var="i" begin="1" end="${detailMap.MAX_GUEST}" >
+								 	<option>${i}</option>
+								 </c:forEach>
+								 </select>
 							</tr>
 						</table>
 				</tr>
 				<tr>
-					<td><button type="button" class="btn btn-info" style="width: 100%; height: 80%">날짜입력</button></td>
+					<td><button type="button" class="btn btn-info" style="width: 100%; height: 80%">예약하기</button></td>
 				</tr>
 			</table>
 		</div>
@@ -93,12 +90,10 @@
 
 
 <script>		
-		var page =1;
- 		
-		
-		getList(page);
-	    page++;
+		var startPage =1;
+		getList(startPage);
 		$(document).ready(function() {
+			startPage++;
 			var spaceHeight = $(".main_space").outerHeight(true)
 			var scrollOffset = $('.date_inf').offset();
 			//alert(spaceHeight)
@@ -112,63 +107,52 @@
 					"border": "1px solid red",
 					"border-radius": "10px",
 			});
-			
-
-			
-	
-			$(window).scroll(function() {
-				var spaceScrollHeight =$(".main_space").outerHeight(true);
-				if ($(document).scrollTop() > spaceScrollHeight) {
-					$('.date_inf').css({
-						   "position" : "fixed",
-						   "top" : "30px",
-						   "left" : "70%"
-						})
-				} else {
-					$('.date_inf').css({
-							   "position" : "fixed",
-							   "top" : spaceScrollHeight+100-$(document).scrollTop(),
-							   "left" : "70%"
-							})
-				}
-				
-				if($(window).scrollTop() >= $(document).height() - $(window).height()){//스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
-			          getList(page);
-			          page++;   
-			     } 
-			});	
-			
-			
-		
-		
 		
 		});
 
 		
+		$(window).scroll(function() {
+			var spaceScrollHeight =$(".main_space").outerHeight(true);
+			if ($(document).scrollTop() > spaceScrollHeight) {
+				$('.date_inf').css({
+					   "position" : "fixed",
+					   "top" : "30px",
+					   "left" : "70%"
+					})
+			} else {
+				$('.date_inf').css({
+						   "position" : "fixed",
+						   "top" : spaceScrollHeight+100-$(document).scrollTop(),
+						   "left" : "70%"
+						})
+			}
+			
+			if($(document).height() <= $(window).scrollTop()+window.innerHeight+0.5){//스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.  
+				getList(startPage);
+				startPage++;   
+		     } 
+		});	
  		 
- 		function getList(page){
- 			
+ 		function getList(startPage){
  			const csrf_token = $('#csrf_token').val();
  			var homeId = $('#hiddenHomeId').val();
- 			alert(homeId);
  		    $.ajax({
- 				type : "get",
+ 				type : 'post',
  				data: {'_csrf' : csrf_token 
- 					  ,'page' : page
+ 					  ,'page' : startPage
  					  ,'homeId':homeId},
- 		        url : "<%=contextPath%>/selectPostscriptList",
+ 		        url : '<%=contextPath%>/selectPostscriptList',
  		        success : function(returnData) {
- 		        	$.each(data,function(i){
- 		        		var dataLength = data.length;
- 		        		var html = "";
- 		        		var usrId =data[i].USR_ID;
- 					    var rviComm =data[i].RVI_COMM;
- 					    
- 		        		if (page==1){ //페이지가 1일경우에만 id가 list인 html을 비운다.
+ 		        	var html = "";
+ 		        	$.each(returnData,function(i){
+ 		        		var dataLength = returnData.length;
+ 		        		var usrId =returnData[i].USR_ID;
+ 					    var rviComm =returnData[i].RVI_COMM;
+ 		        		if (startPage==1){ //페이지가 1일경우에만 id가 list인 html을 비운다.
  	 		                  $(".postscriptComm").html(""); 
  	 		            }
  		                if(dataLength>0){
-	 		                html+='<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">'
+	 		                html +='<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">'
 								 +'<div>'+usrId+'</div>'
 								 +'<div>'+rviComm+'</div>'
 								 +'</div>';
@@ -178,34 +162,16 @@
  	 		            
  		        		
  		        	});
- 		            //html = html.replace(/%20/gi, " ");
- 		            if (page==1){  //페이지가 1이 아닐경우 데이터를 붙힌다.
- 		                $("#postscriptComm").html(html); 
+ 		            html = html.replace(/%20/gi, " ");
+ 		            if (startPage==1){  //페이지가 1이 아닐경우 데이터를 붙힌다.
+ 		                $(".postscriptComm").html(html); 
  		            }else{
- 		                $("#postscriptComm").append(html);
+ 		                $(".postscriptComm").append(html); 
  		            }
  		       },error : function(a, c) {
- 					alert("에러다");
+ 					alert("에러다1");
  				}
  		    }); 
  		}
  		 
 </script> 		 
-		<%-- $(document).ready(function(){
-			$.ajax({
-				url : "<%=contextPath%>/homeDetailHome",
-				type : 'post',
-				data : {'user_email' : user_email , '_csrf' : csrf_token},
-				success : function(result){
-					$('#user_email').next().remove();
-					if(result.resCode == 'E001'){
-						$('#user_email').after('<p style ="font-size:0.8em;color:red;margin:8 0 0 0">아이디 : '+result.userID+'</p>');	
-					}else{
-						$('#user_email').after('<p style ="font-size:0.8em;color:red;margin:8 0 0 0">'+result.resMessage+'</p>');	
-					}
-				},
-				error : function(xhr, status, error){
-					alert(error);
-				}
-			})
-		}); --%>

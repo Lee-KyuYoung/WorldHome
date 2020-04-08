@@ -59,7 +59,8 @@ public class MainController {
 		return "main/detailHome";
 	}
 	
-	@RequestMapping(value = "/selectPostscriptList", method = RequestMethod.GET)
+	@ResponseBody
+	@RequestMapping(value = "/selectPostscriptList", method = RequestMethod.POST)
 	public List selectPostscriptList(@RequestParam Map<String,String> paramMap, Locale locale) {
 		System.out.println("여기오냥:::::::::");
 		List<HashMap> postscriptList = new ArrayList<HashMap>();
@@ -68,7 +69,7 @@ public class MainController {
 		postscriptListParam.put("page", paramMap.get("page"));
 		System.out.println("여기는!!!:::::::::"+postscriptListParam);
 		postscriptList = mainService.selectPostscriptList(postscriptListParam);
-		
+		System.out.println("마지막!!!:::::::::"+postscriptList);
 		return postscriptList;
 	}
 	

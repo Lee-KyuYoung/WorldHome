@@ -9,7 +9,7 @@
 <head>
 <title>Insert title here</title>
 <link href="<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="<%=contextPath%>/resources/bootstrap/css/jquery-ui.css" rel="stylesheet">
+<link href="<%=contextPath%>/resources/bootstrap/css/jquery-ui.css" rel="stylesheet">  
 <style type="text/css">
 .navbar-nav {
 	/* display: table; */

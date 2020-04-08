@@ -37,18 +37,14 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public List selectPostscriptList(HashMap postscriptListParam) {
 		// TODO Auto-generated method stub
-		System.out.println("여기오냥service:::::::::"+postscriptListParam);
-		int page = (int) postscriptListParam.get("page");
+		int page = Integer.parseInt(postscriptListParam.get("page")+"");
 		if (page==1){
-			System.out.println("문제1service:::::::::");
 			postscriptListParam.put("startPag", page);
-			postscriptListParam.put("endPag", 20);  //데이터를 20개씩 가져오겠다.
-			System.out.println("문제2service:::::::::");
+			postscriptListParam.put("endPag", 10);  //데이터를 20개씩 가져오겠다.
         }else{
-        	postscriptListParam.put("startPag",page+(19*(page-1)));
-        	postscriptListParam.put("endPag", page*20);  //데이터를 20개씩 가져오겠다.
+        	postscriptListParam.put("startPag",page+(9*(page-1)));
+        	postscriptListParam.put("endPag", page*10);  //데이터를 20개씩 가져오겠다.
         }
-		System.out.println("d어디서service:::::::::");
 		
 		
 		return mainDAO.selectPostscriptList(postscriptListParam);
