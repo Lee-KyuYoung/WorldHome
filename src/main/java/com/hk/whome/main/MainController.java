@@ -24,6 +24,7 @@ import com.hk.whome.domain.HomeListDomain;
 import com.hk.whome.util.EmptyUtils;
 
 
+
 @Controller
 public class MainController {
 
@@ -40,7 +41,6 @@ public class MainController {
 		return "error/"+page;
 	}
 	
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale, HomeListDomain homeData) {
 		return "main/home";
@@ -108,6 +108,8 @@ public class MainController {
 			homeListDomain.setHomeGuest(homeGuest);
 		}
 		homeList = mainService.selectImgList(homeListDomain);
+        
+        
         
         return homeList;
 	}
