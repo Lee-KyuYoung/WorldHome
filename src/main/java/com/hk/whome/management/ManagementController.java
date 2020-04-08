@@ -114,6 +114,7 @@ public class ManagementController {
 	public Map<String,String> RegistrationStep1(@RequestParam Map<String,String> paramMap , HttpServletRequest req) {
 		
 		String resCode = "E001";
+		String homeID = paramMap.get("homeid");
 		String homeType = paramMap.get("home_type");
 		String homeRange = paramMap.get("home_range");
 		String isOnlyGuest = paramMap.get("is_only_guest");
@@ -134,24 +135,38 @@ public class ManagementController {
 			resCode = "E005";
 		}
 		if(resCode.equals("E001")) {
-
-			String generatedKey = selectKeySeq.selectSeqKey("10"); 
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
-			homeInfo.setHomeID(generatedKey);
 			homeInfo.setHomeType(homeType);
 			homeInfo.setHomeRange(homeRange);
-			homeInfo.setHomeIsOnlyGuest(isOnlyGuest);
-			homeInfo.setHomeRegStep("01");
-			homeInfo.setUserID(userDetail.getUser_id());
-			
-			try {
-				managementSerive.insertHomeInfoTemp(homeInfo);
-			}catch (Exception e) {
-				e.printStackTrace();
-				resCode = "E006";
+			homeInfo.setHomeIsOnlyGuest(isOnlyGuest);			
+
+			if(!EmptyUtils.isEmpty(homeID)){ //homeID가 있을경우 업데이트 없으면 신규 INSERT
+
+				homeInfo.setHomeID(homeID);
+				
+				try {
+					managementSerive.updateHomeInfoTemp(homeInfo);
+					resultMap.put("homeID", homeID);
+					
+				}catch(Exception e) {
+					resCode = "E006";
+					e.printStackTrace();
+				}
+			}else {
+				String generatedKey = selectKeySeq.selectSeqKey("10");
+				homeInfo.setHomeID(generatedKey);
+				homeInfo.setHomeRegStep("01");
+				homeInfo.setUserID(userDetail.getUser_id());
+				
+				try {
+					managementSerive.insertHomeInfoTemp(homeInfo);
+				}catch (Exception e) {
+					e.printStackTrace();
+					resCode = "E006";
+				}
+				resultMap.put("homeID", generatedKey);
 			}
-			resultMap.put("homeID", generatedKey);
 		}
 		resultMap.put("resCode",resCode);
 		return resultMap;

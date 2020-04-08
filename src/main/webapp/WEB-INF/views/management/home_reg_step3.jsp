@@ -15,7 +15,7 @@
 		.margin-top20{margin-top:20px;}
 		.content{margin:0 auto;}
 		#load_map_wrapper{display:none;}
-		#load_map{width:630px;height:300px;}
+		#load_map{width:100%;height:300px;}
 
 	</style>
 <body>
@@ -33,7 +33,7 @@
 					<div class = "row">
 						<div class="col-sm-10">
 							<div class="input-group">
-								<input type="text" class="form-control" id="user_address_1" name="user_address_1" readonly>
+								<input type="text" class="form-control" id="user_address_1" name="user_address_1" value = "${homeInfo.homeAddr1}" readonly>
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary btn-sm" type="button" id="address_search"><spring:message code="join.info.J112"/></button><!-- 주소검색 -->
 								</div>
@@ -43,17 +43,17 @@
 					<p>나머지 주소 ( 선택사항 )</p>
 					<div class="row">
 						<div class = "col-sm-10">
-							<input type="text" class="form-control" id="user_address_2" name="user_address_2" placeholder = "예 ) 105동 606호">
+							<input type="text" class="form-control" id="user_address_2" name="user_address_2" value = "${homeInfo.homeAddr2}" placeholder = "예 ) 105동 606호">
 						</div>
 					</div>
 					<p>우편번호</p>
 					<div class="row">
 						<div class = "col-sm-4">
-							<input type="text" class="form-control" id="user_postcode" name="user_postcode" readonly>
+							<input type="text" class="form-control" id="user_postcode" name="user_postcode" value = "${homeInfo.homePostCode}" readonly>
 						</div>
 					</div>
 					<div class="row">
-						<div class = "col-sm-10" id = "load_map_wrapper">
+						<div class = "col-sm-12" id = "load_map_wrapper">
 							<p>해당 위치가 정확한가요?</p>
 							<div id = "load_map">
 							
@@ -82,6 +82,8 @@
 	<script>
 		$(document).ready(function(){
 			
+			initStep3Form();
+			
 			$('#home_reg_step3_btn').on('click',function(){
 				
 				var reg_step3 = $('#registration_step3_form').serialize();
@@ -109,6 +111,14 @@
 				getAddress('user_address_1','user_address_2','user_postcode');
 			});
 		});
+		
+		
+		function initStep3Form(){
+			var homeAddr = "${homeInfo.homeAddr1}";
+			if(homeAddr != ''){
+				searchAddressLatLng(homeAddr);
+			}
+		}
 		
 		//주소검색
 		function getAddress(addr_field_1, addr_field_2, postcode_field){
