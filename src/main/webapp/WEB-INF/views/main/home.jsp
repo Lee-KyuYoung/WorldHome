@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-	<%@ include file="header.jsp"%>
+<%@ include file="header.jsp"%>
 	
 
 
@@ -7,19 +7,14 @@
 
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
 	
-<<<<<<< HEAD
-=======
+
 	<script>
 		 $(document).ready(function(){
 			 	const csrf_token = $('#csrf_token').val();
 				$.ajax({
 					url : "<%=contextPath%>/homeList",
 					type : "post",
-<<<<<<< HEAD
 					data: { '_csrf' : csrf_token },
-=======
-					data: {'_csrf' : csrf_token },
->>>>>>> f9a671b81976cbc41d52e0dfd4cf4f8e6d52226e
 					success : function(data){
 							bodyAppend(data);
 						},
@@ -175,7 +170,6 @@
 		    return ''+yy+mm+dd;
 		}
 
->>>>>>> f24a1bcb90babf6375b60115317cabbced1f2694
 	
 	<%@ include file="footer.jsp"%>
 	
@@ -190,6 +184,7 @@ $(document).ready(function(){
 		success : function(data){
 				//숙소 조회 후 화면 구성
 				bodyAppend(data);
+				
 			},
 		error : function(a, c) {
 			alert("에러다");

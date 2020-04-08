@@ -1,8 +1,4 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%
-	String contextPath = request.getContextPath();
-%>
-
 <script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
 <script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="<%=contextPath%>/resources/bootstrap/js/jquery-ui.min.js"></script>    
