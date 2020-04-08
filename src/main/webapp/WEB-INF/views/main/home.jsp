@@ -184,6 +184,7 @@ $(document).ready(function(){
 		success : function(data){
 				//숙소 조회 후 화면 구성
 				bodyAppend(data);
+				
 			},
 		error : function(a, c) {
 			alert("에러다");
