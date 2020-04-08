@@ -1,27 +1,4 @@
-<%@ page contentType="text/html; charset=utf-8"%>
-
-<%
-	String c = request.getContextPath();
-%>
-
-<script src="<%=c%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-<script src="<%=c%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<%=c%>/resources/bootstrap/js/jquery-ui.min.js"></script>    
-
-
-
-<script>
-	 
-	 	$(function() {
-			// (Home)
-	 		$("#datepicker1").datepicker({
-				dateFormat : 'yy-mm-dd'
-			});
-			//  (Home)
-			$("#datepicker2").datepicker({
-				dateFormat : 'yy-mm-dd'
-			});
-			
+	$(function() {
 
 			//체크인 일자
 			$("#chk_in_date").datepicker({
@@ -211,7 +188,7 @@
 				 	var homeDateOut = $("#homeDateOut").val();
 				 	var homeGuest = $("#homeGuest").val();
 					$.ajax({ 
-						url : '<c:url value="/homeList"/>', 
+						url : './homeList', 
 						type : "post",
 						data: {'_csrf' : csrf_token, 
 							   'homeAdd' : homeAdd,
@@ -227,72 +204,6 @@
 						});
 			});
 
-			
-		//조회 화면 구성 (Home)
-		function bodyAppend(data) {
-			$("#imgList").empty();
-			var str = '';
-			var pastHomeId = '';
-			var HomeGubun = 0;
-			var pastHomeComm = '';
-			 $.each(data,function(i){
-				var homeImgPath =data[i].HOME_IMG_PATH;
-			    var homeComm =data[i].HOME_COMM;
-			    var homeId =data[i].HOME_ID;
-			    
-				if(pastHomeId == ''){
-					str +='<div class ="celBody"  style="cursor:pointer;">'
-						    +'<div id="IMG'+homeId+'" class="carousel slide" data-ride="carousel">'
-							+'<ul class="carousel-indicators">'
-						    +'<li data-target="#IMG'+homeId+'" data-slide-to="0" class="active"></li>'
-						    +'<li data-target="#IMG'+homeId+'" data-slide-to="1"></li>'
-						    +'<li data-target="#IMG'+homeId+'" data-slide-to="2"></li>'
-						  	+'</ul>';
-					pastHomeId = homeId;
-					pastHomeComm = homeComm;
-					HomeGubun = 0;
-				}
-				if(homeId != pastHomeId && data.length > i){
-					
-					str +=  '</div>'
-						    +'<a class="carousel-control-prev" href="#IMG'+pastHomeId+'" data-slide="prev">'
-						    +'<span class="carousel-control-prev-icon"></span>'
-						    +'</a>'
-						    +'<a class="carousel-control-next" href="#IMG'+pastHomeId+'" data-slide="next">'
-						    +'<span class="carousel-control-next-icon"></span>'
-						    +'</a>'
-							+'</div>'
-							+'<div class="imgComm" name="'+pastHomeId+'">'
-							+ pastHomeComm
-							+'</div>'
-							+'</div>'
-					str += '<div class ="celBody" style="cursor:pointer;">'
-						+'<div id="IMG'+homeId+'" class="carousel slide" data-ride="carousel">'
-						+'<ul class="carousel-indicators">'
-					    +'<li data-target="#IMG'+homeId+'" data-slide-to="0" class="active"></li>'
-					    +'<li data-target="#IMG'+homeId+'" data-slide-to="1"></li>'
-					    +'<li data-target="#IMG'+homeId+'" data-slide-to="2"></li>'
-					  	+'</ul>';
-					pastHomeId = homeId; 
-					pastHomeComm = homeComm;
-					HomeGubun = 0;
-				}
-				
-				if(HomeGubun == 0){  
-					str +='<div class="carousel-inner">'
-				    +'<div class="carousel-item active">'
-				    +'<img class ="imgFile" name="'+homeId+'" src=./'+homeImgPath+'" >'
-				    +'</div>'
-				    
-			        HomeGubun++;
-				}else{
-					str +='<div class="carousel-item">'
-						+'<img class ="imgFile" name="'+homeId+'" src=./"
-																+ homeImgPath
-																+ '" >'
-																+ '</div>'
-																
-					}
 
 
 		//조회 버튼 클릭
@@ -303,7 +214,7 @@
 			 	var homeDateOut = $("#homeDateOut").val();
 			 	var homeGuest = $("#homeGuest").val();
 				$.ajax({
-					url : '<c:url value="/homeList"/>', 
+					url : './homeList', 
 					type : "post",
 					data: {'_csrf' : csrf_token, 
 						   'homeAdd' : homeAdd,
@@ -321,30 +232,29 @@
 				
 				
 			});
-		
-		
+
 		
 		//새로고침
 		 $(document).on("click", ".homeLogo", function(){
 			 const csrf_token = $('#csrf_token').val();
 			 window.location.reload();
-			 location.replace('<c:url value="/"/>');
+			 location.replace('./');
 			 
-			<%--  $.ajax({
-					url : "<%=contextPath%>/homeList",
-					type : "post",
-					data: {'_csrf' : csrf_token },
-					success : function(data){
-							//숙소 조회 후 화면 구성
-							bodyAppend(data);
-						},
-					error : function(a, c) {
-						alert("에러다");
-					}
-				}); --%>
+//			  $.ajax({
+//					url : "<%=contextPath%>/homeList",
+//					type : "post",
+//					data: {'_csrf' : csrf_token },
+//					success : function(data){
+//							//숙소 조회 후 화면 구성
+//						bodyAppend(data);
+//		
+//				},
+//					error : function(a, c) {
+//						alert("에러다");
+//					}
+//				});
 		 });
-
-		
-	</script>
-</body>
-</html>
+	
+	});
+		 
+		 

@@ -6,4 +6,5 @@
 <link href="<c:url value='/resources/css/dev/tiles-nav.css'/>" rel="stylesheet">
 <script src="<c:url value = '/resources/jquery/js/jquery-3.4.1.min.js'/>"></script>
 <script src="<c:url value='/resources/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
+<script src="<c:url value='/resources/jquery/dev/nav.js'/>"></script>
 

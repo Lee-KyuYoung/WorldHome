@@ -1,18 +1,17 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ include file="header.jsp"%>
-<%String aa = request.getContextPath(); %>
 
+<%String contextPath = request.getContextPath(); %>
 
 	<div class="container-fluid" id="imgList"></div>
 
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
 
-<<<<<<< HEAD
 	<script>
+	
 		 $(document).ready(function(){
 			 	const csrf_token = $('#csrf_token').val();
 				$.ajax({
-					url : "<%=aa%>/homeList",
+					url : '<c:url value="/homeList"/>',
 					type : "post",
 					data: { '_csrf' : csrf_token },
 					success : function(data){
@@ -170,18 +169,11 @@
 		    return ''+yy+mm+dd;
 		}
 
-	
-	<%@ include file="footer.jsp"%>
-=======
-<%@ include file="footer.jsp"%>
->>>>>>> 85ca112e0e43ce7a7b23c4b979b34c36f2302fb1
-	
-	
-<script>
+
 $(document).ready(function(){
  	const csrf_token = $('#csrf_token').val();
 	$.ajax({
-		url : "<%=aa%>/homeList",
+		url : "<%=contextPath%>/homeList",
 		type : "post",
 		data: {'_csrf' : csrf_token },
 		success : function(data){
@@ -291,9 +283,6 @@ $(document).ready(function(){
 				});
 				$("#imgList").append(str);
 		}
-	
-	
-		
 	
 });
 </script>

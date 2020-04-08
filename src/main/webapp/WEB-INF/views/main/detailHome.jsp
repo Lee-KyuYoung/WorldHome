@@ -141,11 +141,7 @@
  				data: {'_csrf' : csrf_token 
  					  ,'page' : startPage
  					  ,'homeId':homeId},
-<<<<<<< HEAD
- 		        url : "<%=cc%>/selectPostscriptList",
-=======
- 		        url : '<%=contextPath%>/selectPostscriptList',
->>>>>>> 85ca112e0e43ce7a7b23c4b979b34c36f2302fb1
+ 		        url :  '<c:url value="/selectPostscriptList"/>', 
  		        success : function(returnData) {
  		        	var html = "";
  		        	$.each(returnData,function(i){
