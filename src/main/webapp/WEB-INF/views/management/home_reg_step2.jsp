@@ -33,7 +33,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">최대 인원 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="max_guest" min=1>
+						    	<input type="number" class="form-control" name="max_guest" min=1 value="${homeInfo.homemaxGuest}">
 						    </div>
 					    </div>
 					</div>
@@ -42,7 +42,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">침대 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="bed_count" min=0 >
+						    	<input type="number" class="form-control" name="bed_count" min=0 value="${homeInfo.homeBedCnt}">
 						    </div>
 					    </div>
 					</div>
@@ -51,7 +51,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">욕실 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="bathroom_count" min=0>
+						    	<input type="number" class="form-control" name="bathroom_count" min=0 value="${homeInfo.homeBathroomCnt}">
 						    </div>
 					    </div>
 					</div>

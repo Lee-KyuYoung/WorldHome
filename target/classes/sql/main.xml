@@ -4,9 +4,9 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.whome.main.sql">
 
-<select id="selectImgList" parameterType="hashmap" resultType="hashmap"> 
-  <![CDATA[ 
-            SELECT A.HOME_ID        /*집 ID*/
+<select id="selectImgList" parameterType = "com.hk.whome.domain.HomeListDomain" resultType="hashmap"> 
+ 
+             SELECT A.HOME_ID        /*집 ID*/
 			      ,A.USR_ID         /*사용자 ID*/
 			      ,A.HOME_ADD_1       /*집 주소*/
 			      ,A.HOME_ADD_2       /*집 나머지 주소*/
@@ -22,42 +22,90 @@
 			  FROM TBL_HOME_INF A   /*집 정보 테이블*/
 			      ,TBL_HOME_IMG B   /*집 이미지 테이블*/
 			 WHERE A.HOME_ID = B.HOME_ID
+               <if test = "homeAdd != null and homeAdd != ''">
+				AND HOME_ADD_1 like '%'||#{homeAdd}||'%'
+               </if>
+               <if test = "homeDateIn != null and homeDateIn != ''  and homeDateOut != null  and homeDateOut != ''"> 
+               AND A.HOME_ID NOT IN(   SELECT C.HOME_ID
+                                         FROM TBL_RSV_INF C
+                                        WHERE C.END_DT   <![CDATA[>=   ]]>  #{homeDateIn}
+                                          AND C.STR_DT <![CDATA[ <= ]]> #{homeDateOut}
+                                    )
+               </if>
+               <if test = "homeGuest != null and homeGuest != ''">
+               AND A.HOME_GUEST >= #{homeGuest}
+               </if>
+               
 			   AND B.MA_IMG_YN = 'Y'
-    ]]> 
+ 
 </select>
 
 
 	
 	<select id="selectDetailHome" parameterType="hashmap" resultType="hashmap"> 
   <![CDATA[ 
-	 SELECT D.HOME_ID,E.USR_ID
+	SELECT D.HOME_ID --집 ID
+       ,D.HOME_IMG_PATH1 -- 집 이미지 경로1
+       ,D.HOME_IMG_PATH2 -- 집 이미지 경로2
+       ,D.HOME_IMG_PATH3 -- 집 이미지 경로3
+       ,D.HOME_IMG_PATH4 -- 집 이미지 경로4
+       ,D.HOME_IMG_PATH5 -- 집 이미지 경로5
+       ,E.USR_ID -- 사용자 ID
+       ,E.HOME_TITLE -- 집 제목
+       ,E.HOME_ADD_1 -- 주소1
+       ,E.MAX_GUEST -- 최대인원수
+       ,E.BED_CNT -- 침대 수
+       ,E.BATHROOM_CNT -- 욕실 수
+       ,E.HOME_COMM --집 내용
+       ,DECODE(E.HOME_RANGE,'1','집 전체','2','개인실','3','다인실','')AS HOME_RANGE --집 유형 1:집 전체  2:개인실  3:다인실 
+       ,E.IS_ONLY_GUEST -- 단독인지 주인도 함께인지
 FROM TBL_HOME_INF E
-     ,(SELECT MAX(C.IMG_KEY1)AS IMG_KEY1 
-             , MAX(C.IMG_KEY2)AS IMG_KEY2
-             , MAX(C.IMG_KEY3)AS IMG_KEY2
-             , MAX(C.IMG_KEY4)AS IMG_KEY2
-             , MAX(C.IMG_KEY5)AS IMG_KEY2
+     ,(SELECT MAX(C.HOME_IMG_PATH1)AS HOME_IMG_PATH1 
+             , MAX(C.HOME_IMG_PATH2)AS HOME_IMG_PATH2
+             , MAX(C.HOME_IMG_PATH3)AS HOME_IMG_PATH3
+             , MAX(C.HOME_IMG_PATH4)AS HOME_IMG_PATH4
+             , MAX(C.HOME_IMG_PATH5)AS HOME_IMG_PATH5
              , C.HOME_ID
          FROM(
-            SELECT CASE B.RNUM WHEN 1 THEN B.IMG_KEY END AS IMG_KEY1
-                  ,CASE B.RNUM WHEN 2 THEN B.IMG_KEY END AS IMG_KEY2 
-                  ,CASE B.RNUM WHEN 3 THEN B.IMG_KEY END AS IMG_KEY3 
-                  ,CASE B.RNUM WHEN 4 THEN B.IMG_KEY END AS IMG_KEY4
-                  ,CASE B.RNUM WHEN 5 THEN B.IMG_KEY END AS IMG_KEY5
+            SELECT CASE B.RNUM WHEN 1 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH1
+                  ,CASE B.RNUM WHEN 2 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH2 
+                  ,CASE B.RNUM WHEN 3 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH3 
+                  ,CASE B.RNUM WHEN 4 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH4
+                  ,CASE B.RNUM WHEN 5 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH5
                   ,B.HOME_ID
             FROM(
-                SELECT ROW_NUMBER()OVER (PARTITION BY A.HOME_ID ORDER BY A.IMG_KEY) RNUM
-                    ,A.IMG_KEY
+                SELECT ROW_NUMBER()OVER (PARTITION BY A.HOME_ID ORDER BY A.HOME_IMG_PATH) RNUM
+                    ,A.HOME_IMG_PATH
                     ,A.HOME_ID
                   FROM TBL_HOME_IMG A
-                 WHERE A.HOME_ID = '20200329000000100001'
+                 WHERE A.HOME_ID = #{homeId}
                    AND A.DEL_YN = 'N'
               ORDER BY A.HOME_IMG_IDX ASC) B )C
         GROUP BY C.HOME_ID) D
     WHERE D.HOME_ID =E.HOME_ID
-  
    ]]> 
 </select>
+ 	
+<select id="selectPostscriptList" parameterType="hashmap" resultType="hashmap"> 
+  <![CDATA[ 
+	SELECT B.RNUM 
+      ,B.HOME_ID
+      ,B.USR_ID
+      ,B.RVI_COMM_ID
+      ,B.RVI_COMM
+	FROM ( 
+	SELECT ROWNUM AS RNUM
+	      ,A.HOME_ID
+	      ,A.USR_ID
+	      ,A.RVI_COMM_ID
+	      ,A.RVI_COMM
+	FROM TBL_RVI_COMM A
+	WHERE A.HOME_ID = #{homeId}
+	ORDER BY A.RVL_COMM_INT_DT ASC
+	) B
+	WHERE B.RNUM BETWEEN #{startPag} AND #{endPag}
+   ]]> 
+</select> 	
  	
    
 </mapper>

@@ -97,7 +97,7 @@
 							</div>
 						</div>
 					</div>
-					
+					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 				</form>
 			</div>
 		</div>
@@ -109,6 +109,8 @@
 		//스탭 1 등록
 		$(document).ready(function(){
 			
+			initStep1Form();
+
 			$('#home_reg_step1_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step1_form').serialize();
@@ -129,6 +131,26 @@
 				});
 			});
 		});
+		
+		function initStep1Form(){
+			
+			var home_range = "${homeInfo.homeRange}";
+			var isOnlyGuest = "${homeInfo.homeIsOnlyGuest}";
+			
+			if(home_range == '1'){
+				$('#home_range1').prop('checked',true);
+			}else if(home_range == '2'){
+				$('#home_range2').prop('checked',true);
+			}else{
+				$('#home_range3').prop('checked',true);
+			}
+			
+			if(isOnlyGuest == '1'){
+				$('#is_only_guest1').prop('checked',true);
+			}else{
+				$('#is_only_guest2').prop('checked',true);
+			}
+		}
 		
 		//집 유형 1 선택 시 집 유형2 뿌려주기
 		function createHomeTypeSelectBox(value){
