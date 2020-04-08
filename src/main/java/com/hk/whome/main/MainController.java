@@ -20,11 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hk.whome.domain.HomeListDomain;
 import com.hk.whome.util.EmptyUtils;
-
 
 
 @Controller
@@ -43,6 +40,7 @@ public class MainController {
 		return "error/"+page;
 	}
 	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale, HomeListDomain homeData) {
 		return "main/home";
@@ -110,8 +108,6 @@ public class MainController {
 			homeListDomain.setHomeGuest(homeGuest);
 		}
 		homeList = mainService.selectImgList(homeListDomain);
-        
-        
         
         return homeList;
 	}

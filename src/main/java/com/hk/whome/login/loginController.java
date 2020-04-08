@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hk.whome.security.CustomUserDetails;
+
 
 @Controller
 public class loginController {
@@ -25,9 +27,9 @@ public class loginController {
 	@RequestMapping(value = "/login")
 	public String login(Model model, HttpServletRequest req) {
 		
-		if(req.getSession().getAttribute("user_info") != null) {
-			return "redirect:./";
-		}
+//		if(req.getSession().getAttribute("user_info") != null) {
+//			return "redirect:./";
+//		}
 		
 		return "login/login";
 	}
@@ -41,6 +43,11 @@ public class loginController {
 	public String logout(HttpServletRequest req) {
 		req.getSession().invalidate();
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "loginProcess", method = RequestMethod.POST)
+	public String loginProcess() {
+		return "";
 	}
 	
 	/**
