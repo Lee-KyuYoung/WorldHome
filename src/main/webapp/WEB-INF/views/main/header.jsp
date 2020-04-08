@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ page session="false"%>
+<%@ page session="true"%>
 <%
 	String contextPath = request.getContextPath();
 %>
@@ -52,11 +52,165 @@
 .tab-content{
 	height: 350px;
 }
+body {
+margin: 0;
+height: 100%;
+}
+
+.container-fluid {
+	margin: 30px auto;
+	width: 90%;
+}
+.detailHome_link{
+	wigth: 100%;
+	heigth: 100%
+}
+
+@media ( max-width : 768px ) {
+	.container-fluid {
+		display: grid;
+		grid-gap: 50px 10px;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		/* grid-template-rows: repeat(10, 300px); */
+		grid-auto-rows: minmax(300px, auto);
+		whidth: 90%;
+	}
+}
+
+@media ( min-width : 768px ) {
+	.container-fluid {
+		display: grid;
+		grid-gap: 30px 10px;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		/* grid-template-rows: repeat(${rowSizCnt}, 200px); */
+		grid-auto-rows: minmax(200px, auto);
+		whidth: 90%;
+	}
+}
+
+@media ( min-width : 1024px ) {
+	.container-fluid {
+		display: grid;
+		grid-gap: 30px 5px;
+		grid-template-columns: repeat(auto-fit, 270px);
+		/* grid-template-rows: repeat(${rowSizCnt}, 200px); */
+		grid-auto-rows: minmax(200px, auto);
+		whidth: 90%;
+	}
+}
+
+
+.celBody{
+	height: 100%;
+}
+
+.carousel slide{
+	height: 85%;
+}
+/* .carousel-inner {
+	height: 85%;
+	width: 100%;
+} */
+ .imgComm{
+	height: 15%;
+	width: 100%;
+	background-color: white;
+	display: table-row;
+}
+ 
+
+
+.carousel-item active{
+	height: 90%;
+	width: 100%;
+}
+.carousel-item{
+	height: 90%;
+	width: 100%;
+}
+.imgFile {
+	width: 100%;
+	height:100%;
+}
+
+.main_space {
+	width: 100%;
+	height: 50%;
+}
+
+.detail_comm_all{
+	width: 70%;
+	margin: 0 auto;
+}
+
+.detail_comm_div {
+	float: left;
+	width: 70%;
+	display: inline
+}
+
+.comm_title {
+	font-family: "돋움", dotum, "굴림", gulim, arial, helvetica, sans-serif;
+	font-weight: 800;
+	font-size: 40;
+	width: 70%;
+}
+
+.detail_comm{
+	width: 60%;
+	float: left;
+}
+
+.main_left_img {
+	width: 50%;
+	height: 100%;
+	background-color: red;
+	float: left;
+}
+
+.main_right_img1 {
+	width: 25%;
+	height: 50%;
+	background-color: blue;
+	float: right;
+}
+
+.main_right_img2 {
+	width: 25%;
+	height: 50%;
+	background-color: yellow;
+	float: right;
+}
+
+.main_right_img3 {
+	width: 25%;
+	height: 50%;
+	background-color: yellow;
+	float: right;
+}
+
+.main_right_img4 {
+	width: 25%;
+	height: 50%;
+	background-color: red;
+	float: right;
+}
+
+.img_main {
+	width: 100%;
+	height: 100%;
+}
+
+
+
+
+
 </style>
 </head>
 <body>
 	<header>
 		<nav class="navbar navbar-expand-sm bg-light navbar-light">
+			<div class = "homeLogo"style="cursor:pointer"><img src= "\whome\resources\img\homeMark.png" width="50px" height="50px"></div>
 			<ul class="navbar-nav">
 				<div class="btn-group" data-toggle="modal" data-target="#myModal">
 					<button type="button" class="btn btn-primary">여행지 추가</button>
@@ -135,12 +289,12 @@
 					<div class="search_guest"></div>
 					
 					<form name="homeListDomain" method="post">
-					    <input type="hidden" name="homeAdd" value="테스트 입력1">
-					    <input type="hidden" name="homeDate" value="테스트 입력2">
-					    <input type="hidden" name="homeGuest" value="1234567">
-					    <!-- <input  value =""></input> -->
+					    <input type="hidden" name="homeAdd" id = "homeAdd">
+ 						<input type="hidden" name="homeDateIn" id = "homeDateIn">
+ 						<input type="hidden" name="homeDateOut" id = "homeDateOut">
+ 						<input type="hidden" name="homeGuest" id = "homeGuest">
 					</form>
-						<button class="btn btn-danger" id="homeSearch">search</button>
+						<button class="btn btn-danger" id="homeSearch" data-dismiss="modal">search</button>
 					
 					
 				</div>
@@ -153,7 +307,3 @@
 		</div>
 	</div>
 	<!-- Modal Header end-->
-
-
-</body>
-</html>

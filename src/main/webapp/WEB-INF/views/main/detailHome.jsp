@@ -1,152 +1,57 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ page session="false"%>
-<%
-	String contextPath = request.getContextPath();
-%>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Home</title>
-<link href="<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="<%=contextPath%>/resources/bootstrap/css/jquery-ui.css" rel="stylesheet">
-</head>
-<style>
-.main_space {
-	width: 100%;
-	height: 50%;
-}
+<%@ include file="header.jsp"%>
 
-.detail_comm_all{
-	width: 70%;
-	margin: 0 auto;
-}
-
-.date_inf {
-	float: right;
-	position: absolute;
-	/* position: fixed; */
-	top: 330px;
-	left: 780px;
-	width: 370px;
-	height: 350px;
-	border: 1px solid red;
-	border-radius: 10px;
-}
-
-.comm_title {
-	font-family: "돋움", dotum, "굴림", gulim, arial, helvetica, sans-serif;
-	font-weight: 800;
-	font-size: 40;
-	width: 70%;
-	float: left;
-}
-
-.detail_comm{
-	width: 60%;
-	float: left;
-}
-
-.main_left_img {
-	width: 50%;
-	height: 100%;
-	background-color: red;
-	float: left;
-}
-
-.main_right_img1 {
-	width: 25%;
-	height: 50%;
-	background-color: blue;
-	float: right;
-}
-
-.main_right_img2 {
-	width: 25%;
-	height: 50%;
-	background-color: yellow;
-	float: right;
-}
-
-.main_right_img3 {
-	width: 25%;
-	height: 50%;
-	background-color: yellow;
-	float: right;
-}
-
-.main_right_img4 {
-	width: 25%;
-	height: 50%;
-	background-color: red;
-	float: right;
-}
-
-.img_main {
-	width: 100%;
-	height: 100%;
-}
-</style>
-
-
-<body>
 	<div class="main_space">
 		<div class="main_left_img">
-			<img class="img_main" src="\whome\resources\imgFile\20200329000000200001.jpg">
+			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH1}">
 		</div>
 		<div class="main_right_img1">
-			<img class="img_main" src="\whome\resources\imgFile\20200329000000200011.jpg">
+			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH2}">
 		</div>
 		<div class="main_right_img2">
-			<img class="img_main" src="\whome\resources\imgFile\20200329000000200021.jpg">
+			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH3}">
 		</div>
 		<div class="main_right_img3">
-			<img class="img_main" src="\whome\resources\imgFile\20200329000000200002.jpg">
+			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH4}">
 		</div>
 		<div class="main_right_img4">
-			<img class="img_main" src="\whome\resources\imgFile\20200329000000200001.jpg">
+			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH5}">
 		</div>
 	</div>
 	<div class="detail_comm_all">
-		<div class="comm_title">The World Famous Seashell House ~ Casa Caracol</div>
-		<div class='detail_comm'>${test_comm}
-			<div>집 전체</div>
-			<div>주택 전체를 단독으로 사용하시게 됩니다.</div>
-			<div>높은 청결도</div>
-			<div>최근 게스트 11명이 이 숙소가 티 없이 깨끗하다고 후기를 남겼습니다.</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>The world famous Seashell house is a gated property .
-Your concierge is available next door to help you with tips and tricks
-You will have a private pool, two king beds , kitchenette and BBQ and entire property, both shells . In shell wifi, air conditioning.
-***If you have 5,6 people we have constructed a third shell with a king bed and full bath for an additional $99 per night.
-Enjoy the rare interior like a celebrity as passers by will seek to look in with intrigued expressions.</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
-			<div>1</div>
+		<div class ="detail_comm_div">
+			<div class="comm_title" style="display: inline">${detailMap.HOME_TITLE}</div>
+			<div style="display: inline; float: right; margin-top:10px; text-align: center;">
+				<img src="\whome\resources\img\profile_default.jpg" class="rounded-circle" alt="Cinque Terre" width= "50px" height="50px">
+				<div>${detailMap.USR_ID}</div>
+			</div>
+			<div class="detail_add_1">${detailMap.HOME_ADD_1}</div>
+			<div style ="margin-top: 10px; margin-bottom: 10px;border-bottom: 3px solid #F2F2F2; ">
+				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">인원 ${detailMap.MAX_GUEST}명  </div>
+				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">&nbsp&nbsp&nbsp&nbsp침대 ${detailMap.BED_CNT}개  </div>
+				<div style="display: inline; margin-top: 10px; margin-bottom: 10px;">&nbsp&nbsp&nbsp&nbsp욕실 ${detailMap.BATHROOM_CNT}개</div>
+			</div>
+			<div class='detail_comm' style="width:100%">
+				<div style ="margin-top: 10px; margin-bottom: 10px; ">${detailMap.HOME_RANGE}</div>
+				<div style ="margin-top: 10px; margin-bottom: 10px; ">${detailMap.IS_ONLY_GUEST}</div>
+				<div style ="margin-top: 10px; margin-bottom: 10px; ">높은 청결도</div>
+				<div style ="margin-top: 10px; margin-bottom: 10px; ">최근 게스트 11명이 이 숙소가 티 없이 깨끗하다고 후기를 남겼습니다.</div>
+				<div class ="postscript" style="border-top:3px solid #F2F2F2; width:100%; margin-top: 10px; margin-bottom: 10px;">
+					<div style = "font-size: 20px;padding-top: 20px; padding-bottom:20px">★후기</div>
+					<div class = "postscriptComm">
+						<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">
+							<div>준하</div>
+							<div>너무 아릅다워요</div>
+						</div>
+						<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">
+							<div>효진</div>
+							<div>아름답지 않아요</div>
+						</div>
+					</div>
+				</div>	
+			</div>
 		</div>
-
+	<div style = "float: right; width: 30%; display: inline">
 		<div class="date_inf">
 			<div style="font-size: 18px; width: 90%; margin: 5px auto; height: 15%;">요금을 확인하려면 날짜를 입력하세요.</div>
 			<table style="margin: 5px auto; width: 90%; height: 80%;">
@@ -179,52 +84,114 @@ Enjoy the rare interior like a celebrity as passers by will seek to look in with
 				</tr>
 			</table>
 		</div>
+	</div>	
 	</div>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+	<input type="hidden" id="hiddenHomeId" value="${detailMap.HOME_ID}"/>
+		<%@ include file="footer.jsp"%>
 
 
 
-	<script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="<%=contextPath%>/resources/bootstrap/js/jquery-ui.min.js"></script>
-	<script>
-		$(function() {
-			$("#datepicker1").datepicker({
-				dateFormat : 'yy-mm-dd'
-			});
-		});
-
-		$(function() {
-			$("#datepicker2").datepicker({
-				dateFormat : 'yy-mm-dd'
-			});
-		});
-
-		$(function() {
-
-			$(document).ready(function() {
-
-				var scrollOffset = $('.date_inf').offset();
-
-				$(window).scroll(function() {
-					if ($(document).scrollTop() > 330) {
-						$('.date_inf').css({
-							   "position" : "fixed",
-							   "top" : "30px",
-							   "left" : "780px"
-							})
-					} else {
-						$('.date_inf').css({
-											   "position" : "absolute",
-											   "top" : "330px",
-											   "left" : "780px"
-											})
-					}
-				});
-			});
-
-		});
+<script>		
+		var page =1;
+ 		
 		
-		$(document).ready(function(){
+		getList(page);
+	    page++;
+		$(document).ready(function() {
+			var spaceHeight = $(".main_space").outerHeight(true)
+			var scrollOffset = $('.date_inf').offset();
+			//alert(spaceHeight)
+			$('.date_inf').css({
+					"float" : "right",
+					"position": "fixed",
+					"top": Number(spaceHeight)+100,
+					"left": "70%",
+					"width": "370px",
+					"height": "350px",
+					"border": "1px solid red",
+					"border-radius": "10px",
+			});
+			
+
+			
+	
+			$(window).scroll(function() {
+				var spaceScrollHeight =$(".main_space").outerHeight(true);
+				if ($(document).scrollTop() > spaceScrollHeight) {
+					$('.date_inf').css({
+						   "position" : "fixed",
+						   "top" : "30px",
+						   "left" : "70%"
+						})
+				} else {
+					$('.date_inf').css({
+							   "position" : "fixed",
+							   "top" : spaceScrollHeight+100-$(document).scrollTop(),
+							   "left" : "70%"
+							})
+				}
+				
+				if($(window).scrollTop() >= $(document).height() - $(window).height()){//스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
+			          getList(page);
+			          page++;   
+			     } 
+			});	
+			
+			
+		
+		
+		
+		});
+
+		
+ 		 
+ 		function getList(page){
+ 			
+ 			const csrf_token = $('#csrf_token').val();
+ 			var homeId = $('#hiddenHomeId').val();
+ 			alert(homeId);
+ 		    $.ajax({
+ 				type : "get",
+ 				data: {'_csrf' : csrf_token 
+ 					  ,'page' : page
+ 					  ,'homeId':homeId},
+ 		        url : "<%=contextPath%>/selectPostscriptList",
+ 		        success : function(returnData) {
+ 		        	$.each(data,function(i){
+ 		        		var dataLength = data.length;
+ 		        		var html = "";
+ 		        		var usrId =data[i].USR_ID;
+ 					    var rviComm =data[i].RVI_COMM;
+ 					    
+ 		        		if (page==1){ //페이지가 1일경우에만 id가 list인 html을 비운다.
+ 	 		                  $(".postscriptComm").html(""); 
+ 	 		            }
+ 		                if(dataLength>0){
+	 		                html+='<div style="padding-bottom:20px; border-bottom:3px solid #F2F2F2; margin-bottom: 20px;">'
+								 +'<div>'+usrId+'</div>'
+								 +'<div>'+rviComm+'</div>'
+								 +'</div>';
+ 		                }else{
+ 		                //데이터가 없을경우
+ 		                }
+ 	 		            
+ 		        		
+ 		        	});
+ 		            //html = html.replace(/%20/gi, " ");
+ 		            if (page==1){  //페이지가 1이 아닐경우 데이터를 붙힌다.
+ 		                $("#postscriptComm").html(html); 
+ 		            }else{
+ 		                $("#postscriptComm").append(html);
+ 		            }
+ 		       },error : function(a, c) {
+ 					alert("에러다");
+ 				}
+ 		    }); 
+ 		}
+ 		 
+</script> 		 
+		<%-- $(document).ready(function(){
 			$.ajax({
 				url : "<%=contextPath%>/homeDetailHome",
 				type : 'post',
@@ -241,7 +208,4 @@ Enjoy the rare interior like a celebrity as passers by will seek to look in with
 					alert(error);
 				}
 			})
-		});
-	</script>
-</body>
-</html>
+		}); --%>
