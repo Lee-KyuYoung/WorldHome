@@ -7,7 +7,6 @@
 <html>
 <head>
 	<title>숙소 등록하기</title>
-	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<style type="text/css">
 		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
@@ -54,8 +53,6 @@
 		</div>
 	
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
 		$(document).ready(function(){
 			
@@ -71,14 +68,14 @@
 				var homeid = $('#homeid').val();
 				
 				$.ajax({
-					url : '../homeRegProcStep5',
+					url : '<c:url value="/management/homeRegProcStep5"/>', 
 					type : 'POST',
 					data : reg_step5,
 					processData : false,
 					contentType : false,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step6?homeid='+homeid;
+						location.href = '<c:url value="/management/homeReg/step6?homeid='+homeid+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);

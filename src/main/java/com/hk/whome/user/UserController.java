@@ -45,7 +45,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join(Model model) {
-		return "user/user_join";
+		return "user/user_join.tiles";
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public class UserController {
 		UserInfoDomain userInfo = userService.getUserInfo(userInfoModel);
 		model.addAttribute("user_info" , userInfo);
 		
-		return "user/user_modify";
+		return "user/user_modify.tiles";
 	}
 	
 	/**
@@ -326,14 +326,11 @@ public class UserController {
 				messageCode = "common.error.E001";
 				e.printStackTrace();
 			}
-			
 		}
-		
 		resultMap.put("resCode", resCode);
 		resultMap.put("resMessage", messageSource.getMessage(messageCode, null , "", locale));
 		
 		return resultMap;
 	}
-	
 	
 }

@@ -7,7 +7,6 @@
 <html>
 <head>
 	<title>숙소 등록하기</title>
-	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<style type="text/css">
 		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
@@ -75,8 +74,6 @@
 			</div>
 		</div>
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3514c018ea159141b84061e35f47b501&libraries=services"></script>
 	<script>
@@ -89,14 +86,14 @@
 				var reg_step3 = $('#registration_step3_form').serialize();
 				var homeid = $('#homeid').val();
 				
-				$.ajax({
-					url : '../homeRegProcStep3',
+				$.ajax({  
+					url : '<c:url value="/management/homeRegProcStep3"/>', 
 					type : 'POST',
 					data : reg_step3,
 					success : function(result){
 						alert(result.resCode);
-						location.href = './step4?homeid='+homeid;
-					},
+						location.href = '<c:url value="/management/homeReg/step4?homeid='+homeid+'"/>'
+					}, 
 					error : function(xhr , status , error){
 						alert(error);
 					},

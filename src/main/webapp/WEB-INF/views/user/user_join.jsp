@@ -3,7 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
 <%@ page session="true" %>
 <%String contextPath = request.getContextPath(); %>
-
 <html>
 <head>
 	<title>회원가입</title>
@@ -55,7 +54,6 @@
 					</tr>
 				</tbody>
 			</table>
-			
 			<table class="table">
 				<caption><spring:message code="join.info.J103"/></caption> <!-- 회원 개인정보 -->
 				<colgroup>
@@ -137,11 +135,10 @@
 			<input type="hidden" id = "scrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="<%=contextPath %>/resources/jquery/dev/user_info.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
+	
 	$(document).ready(function(){
 		
 		//비번 유효성 검사

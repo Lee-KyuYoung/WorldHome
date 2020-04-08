@@ -2,12 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
 <%@ page session="true" %>
-<%String contextPath = request.getContextPath(); %>
-
 <html>
 <head>
 	<title>숙소 등록하기</title>
-	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<style type="text/css">
 		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
@@ -102,10 +99,8 @@
 			</div>
 		</div>
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
-	
+
 		//스탭 1 등록
 		$(document).ready(function(){
 			
@@ -115,12 +110,12 @@
 				
 				var reg_step1 = $('#registration_step1_form').serialize();
 				$.ajax({
-					url : '../homeRegProcStep1',
+					url : '<c:url value="/management/homeRegProcStep1"/>',
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						alert(result.resCode);
-						location.href = './step2?homeid='+result.homeID;
+						alert(result.resCode);  
+						location.href = '<c:url value="/management/homeReg/step2?homeid='+result.homeID+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -141,13 +136,13 @@
 				$('#home_range1').prop('checked',true);
 			}else if(home_range == '2'){
 				$('#home_range2').prop('checked',true);
-			}else{
+			}else if(home_range == '3'){
 				$('#home_range3').prop('checked',true);
 			}
 			
 			if(isOnlyGuest == '1'){
 				$('#is_only_guest1').prop('checked',true);
-			}else{
+			}else if(isOnlyGuest == '2'){
 				$('#is_only_guest2').prop('checked',true);
 			}
 		}
@@ -161,8 +156,8 @@
 				return false;
 			}
 			
-			$.ajax({
-				url : '../../admin/getCodeDefine',
+			$.ajax({ 
+				url : '<c:url value="/admin/getCodeDefine"/>',
 				type : 'POST',
 				data : { 'group_key' : value , 'code_type' : 'sub' , '_csrf' : '${_csrf.token}'},
 				success : function(result){

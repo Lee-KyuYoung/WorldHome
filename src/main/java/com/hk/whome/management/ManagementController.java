@@ -64,7 +64,8 @@ public class ManagementController {
 	 */
 	@RequestMapping(value = "/homeReg/{path}", method = RequestMethod.GET)
 	public String registration(Model model, @PathVariable("path") String path, @RequestParam Map<String,String> paramMap, HttpServletRequest req) {		
-
+		logger.info(req.getSession().getServletContext().getRealPath("/")); 
+		logger.info(req.getSession().getServletContext().getContextPath());
 		String homeID = paramMap.get("homeid");
 		
 		if(!EmptyUtils.isEmpty(homeID)) {
@@ -99,7 +100,7 @@ public class ManagementController {
 
 		model.addAttribute("homeid",homeID);
 		
-		return "management/home_reg_"+path;
+		return "management/home_reg_"+path+".tiles";
 	}
 	
 	/**

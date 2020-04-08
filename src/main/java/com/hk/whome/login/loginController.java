@@ -31,7 +31,7 @@ public class loginController {
 //			return "redirect:./";
 //		}
 		
-		return "login/login";
+		return "login/login.tiles";
 	}
 	
 	/**

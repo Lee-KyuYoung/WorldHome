@@ -2,13 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
 <%@ page session="true" %>
-<%String contextPath = request.getContextPath(); %>
-
 <html>
-<head>
-	<title>숙소 등록하기</title>
-	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href = '<%=contextPath%>/resources/jquery-plug-in/datarangepicker/css/daterangepicker.css' rel='stylesheet' />
+<head> 
+	<title>숙소 등록하기</title> 
+	<link href="<c:url value='/resources/jquery-plug-in/datarangepicker/css/daterangepicker.css'/>" rel="stylesheet">
 	<style type="text/css">
 		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
@@ -21,6 +18,8 @@
 		.fc-past:hover{cursor:not-allowed;}
 		.fc-future , .fc-today:hover{cursor:pointer;}
 	</style>
+	
+</head>
 <body>
 	<div class="container">
 		<h4 class="progress_info">8단계 : 예약 가능 날짜 및 요금 설정</h4>
@@ -72,13 +71,10 @@
 				</form>
 			</div>
 		</div>
-	
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src = '<%=contextPath%>/resources/jquery-plug-in/datarangepicker/js/moment.min.js'></script>
-    <script src = '<%=contextPath%>/resources/jquery-plug-in/datarangepicker/js/daterangepicker.js'></script>
-
+	<script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/moment.min.js'/>"></script>
+	<script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/daterangepicker.js'/>"></script>
+    
 	<script>
 		$(document).ready(function(){
 			
@@ -131,12 +127,12 @@
 				
 				var reg_step1 = $('#registration_step8_form').serialize();
 				$.ajax({
-					url : '../homeRegProcStep8',
+					url : '<c:url value="/management/homeRegProcStep8"/>', 
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '../../';
+						location.href = '<c:url value="/"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);

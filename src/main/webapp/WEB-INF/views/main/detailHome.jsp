@@ -1,21 +1,21 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="header.jsp"%>
-
+<%String cc = request.getContextPath(); %>
 	<div class="main_space">
 		<div class="main_left_img">
-			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH1}">
+			<img class="img_main" src="<%=cc%>${detailMap.HOME_IMG_PATH1}">
 		</div>
 		<div class="main_right_img1">
-			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH2}">
+			<img class="img_main" src="<%=cc%>${detailMap.HOME_IMG_PATH2}">
 		</div>
 		<div class="main_right_img2">
-			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH3}">
+			<img class="img_main" src="<%=cc%>${detailMap.HOME_IMG_PATH3}">
 		</div>
 		<div class="main_right_img3">
-			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH4}">
+			<img class="img_main" src="<%=cc%>${detailMap.HOME_IMG_PATH4}">
 		</div>
 		<div class="main_right_img4">
-			<img class="img_main" src="<%=contextPath%>${detailMap.HOME_IMG_PATH5}">
+			<img class="img_main" src="<%=cc%>${detailMap.HOME_IMG_PATH5}">
 		</div>
 	</div>
 	<div class="detail_comm_all">
@@ -156,7 +156,7 @@
  				data: {'_csrf' : csrf_token 
  					  ,'page' : page
  					  ,'homeId':homeId},
- 		        url : "<%=contextPath%>/selectPostscriptList",
+ 		        url : "<%=cc%>/selectPostscriptList",
  		        success : function(returnData) {
  		        	$.each(data,function(i){
  		        		var dataLength = data.length;

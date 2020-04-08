@@ -5,16 +5,15 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>권한없음</title>
+<title>권한이 필요합니다.</title>
 </head>
 <body>
-<h1>권한없다</h1>
-<script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
+<h1>권한이 필요합니다.</h1>
 <script>
 	$(function(){
 		var path = $(location).attr('pathname');
 		if(path == '/whome/loginProcess'){
-			location.href='<%=contextPath%>/';
+			location.href='<c:url value="/"/>';
 		}
 	});
 </script>

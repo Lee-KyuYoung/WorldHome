@@ -1,7 +1,11 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<script src="<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-<script src="<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<%=contextPath%>/resources/bootstrap/js/jquery-ui.min.js"></script>    
+<%
+	String c = request.getContextPath();
+%>
+
+<script src="<%=c%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
+<script src="<%=c%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<%=c%>/resources/bootstrap/js/jquery-ui.min.js"></script>    
 <script>
 	 
 	 	$(function() {
@@ -263,13 +267,13 @@
 				if(HomeGubun == 0){
 					str +='<div class="carousel-inner">'
 				    +'<div class="carousel-item active">'
-				    +'<img class ="imgFile" name="'+homeId+'" src="'+"<%=contextPath%>"+homeImgPath+'" >'
+				    +'<img class ="imgFile" name="'+homeId+'" src="'+"<%=c%>"+homeImgPath+'" >'
 				    +'</div>'
 				    
 			        HomeGubun++;
 				}else{
 					str +='<div class="carousel-item">'
-						+'<img class ="imgFile" name="'+homeId+'" src="'+"<%=contextPath%>"
+						+'<img class ="imgFile" name="'+homeId+'" src="'+"<%=c%>"
 																+ homeImgPath
 																+ '" >'
 																+ '</div>'
@@ -304,7 +308,7 @@
 			 	var homeDateOut = $("#homeDateOut").val();
 			 	var homeGuest = $("#homeGuest").val();
 				$.ajax({
-					url : "<%=contextPath%>/homeList",
+					url : "<%=c%>/homeList",
 					type : "post",
 					data: {'_csrf' : csrf_token, 
 						   'homeAdd' : homeAdd,
@@ -329,7 +333,7 @@
 		 $(document).on("click", ".homeLogo", function(){
 			 const csrf_token = $('#csrf_token').val();
 			 window.location.reload();
-			 location.replace("<%=contextPath%>");
+			 location.replace("<%=c%>");
 			 
 			<%--  $.ajax({
 					url : "<%=contextPath%>/homeList",

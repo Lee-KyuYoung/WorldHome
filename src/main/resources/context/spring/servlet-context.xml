@@ -24,6 +24,20 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- Tilese -->
+	<beans:bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+		<beans:property name="order"  value="1"/>
+	</beans:bean>
+	
+	<beans:bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>classpath:/context/tiles/tiles-context.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
 	<context:component-scan base-package="com.hk.whome" />
 	
 	<tx:annotation-driven/>
@@ -50,6 +64,7 @@
 		</interceptor>
 	</interceptors>
 	
+	<!-- Locale -->
 	<interceptors> 
 		<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"> 
 			<beans:property name="paramName" value="lang" /> 

@@ -43,7 +43,7 @@ public class MainController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale, HomeListDomain homeData) {
-		return "main/home";
+		return "main/home.tiles";
 	}
 	
 	@RequestMapping(value = "/detailHome", method = RequestMethod.GET)

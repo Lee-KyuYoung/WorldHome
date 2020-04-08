@@ -2,12 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
 <%@ page session="true" %>
-<%String contextPath = request.getContextPath(); %>
 
 <html>
 <head>
 	<title>Login</title>
-	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		.form-signin{position:absolute;right:50%;bottom:50%;transform:translate(50%,50%);width:330px; margin: 0 auto; box-sizing: border-box; padding:50px;border-radius:30px;box-shadow: 5px 5px 5px 5px gray;}
 		.form-signin div{padding:7px;}
@@ -23,9 +21,9 @@
 		#id_find_modal p{font-size:0.8em;color:red;}
 	</style>
 </head>
-<body>
+<body> 
 	<div class="container">
-		<form class ="form-signin" id = "login_form" action="<%=contextPath%>/loginProcess" method = "POST">
+		<form class ="form-signin" id = "login_form" action="<c:url value='/loginProcess'/>" method = "POST">
 			<h3>Login.</h3>
 			<div class="row">
 				<label for="user_id" class="sr-only"><spring:message code="login.info.L103"/></label><!-- 유저 아이디 -->
@@ -50,8 +48,8 @@
 					<a href="javascript:;" id="find_id"><spring:message code = "join.info.J104"/> / <spring:message code = "join.info.J113"/></a>
 				 </div>
 			     <div class="div-inline-block float-right">
-			     	<a href="<%=contextPath%>/user/join"><spring:message code="login.info.L102"/></a><!-- 회원가입 -->
-			     </div>
+			     	<a href="<c:url value='/user/join'/>"><spring:message code="login.info.L102"/></a><!-- 회원가입 -->
+			     </div> 
 			</div>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
 		</form>
@@ -127,8 +125,6 @@
 		    </div>
 		</div>
 	</div>
-	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
-	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
 		$(document).ready(function(){
 			
@@ -160,8 +156,8 @@
 					return false;
 				}
 				
-				$.ajax({
-					url : './user/findUserID',
+				$.ajax({  
+					url : '<c:url value="/user/findUserID"/>', 
 					type : 'post',
 					data : {'user_email' : find_id_user_email , 'user_name' : find_id_user_name, '_csrf' : csrf_token},
 					success : function(result){
@@ -195,10 +191,10 @@
 				$('#find_pw_user_id').focus();
 				return false;
 			}
-                  
+			 
 			if(confirm('<spring:message code="join.info.J309"/>')){
 				$.ajax({
-					url : './user/findUserPw/',
+					url : '<c:url value="/user/findUserPw"/>',
 					type : 'POST',
 					data : {'user_id' : find_pw_user_id , 'user_name' : find_pw_user_name, '_csrf' : csrf_token },
 					success : function(result){
@@ -237,7 +233,7 @@
 		function alreayLogin(){
 			var user_id = '${sessionScope.user_info.user_id}';
 			if(user_id != ''){
-				location.href = '<%=contextPath%>/';
+				location.href = '<c:url value="/"/>';
 			}
 		}
 	</script>

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ include file="header.jsp"%>
-	
+<%String aa = request.getContextPath(); %>
 
 
 	<div class="container-fluid" id="imgList"></div>
@@ -12,7 +12,7 @@
 		 $(document).ready(function(){
 			 	const csrf_token = $('#csrf_token').val();
 				$.ajax({
-					url : "<%=contextPath%>/homeList",
+					url : "<%=aa%>/homeList",
 					type : "post",
 					data: { '_csrf' : csrf_token },
 					success : function(data){
@@ -178,7 +178,7 @@
 $(document).ready(function(){
  	const csrf_token = $('#csrf_token').val();
 	$.ajax({
-		url : "<%=contextPath%>/homeList",
+		url : "<%=aa%>/homeList",
 		type : "post",
 		data: {'_csrf' : csrf_token },
 		success : function(data){
