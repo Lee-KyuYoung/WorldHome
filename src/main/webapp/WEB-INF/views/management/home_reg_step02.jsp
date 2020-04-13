@@ -16,14 +16,14 @@
 <body>
 	<div class="container">
 		
-		<h4 class="progress_info">1단계 : 기본사항 입력</h4>
+		<h4 class="progress_info">2단계 : 기본사항 입력</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 15%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">15%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 15%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
 		</div>
 	
 		<div class="row">
 			<div class="col-sm-7 content">
-				<form id="registration_step1_form">
+				<form id="registration_step2_form">
 					<h4>등록하실 숙소의 종류를 선택해주세요.</h4>
 					<p>종류1</p>
 					<div class="row">
@@ -89,8 +89,11 @@
 					</div>
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
+							<div class = "btn-toolbar float-left">
+								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_2_btn">
+							</div>
 							<div class = "btn-toolbar float-right">
-								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step1_btn">
+								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step2_btn">
 							</div>
 						</div>
 					</div>
@@ -101,21 +104,23 @@
 	</div>
 	<script>
 
-		//스탭 1 등록
+		//스탭 2 등록
 		$(document).ready(function(){
 			
-			initStep1Form();
+			initStep2Form();
+			var homeid = $('#homeid').val();
 
-			$('#home_reg_step1_btn').on('click',function(){
+			$('#home_reg_step2_btn').on('click',function(){
 				
-				var reg_step1 = $('#registration_step1_form').serialize();
+				var reg_step2 = $('#registration_step2_form').serialize();
+				
 				$.ajax({
-					url : '<c:url value="/management/homeRegProcStep1"/>',
+					url : '<c:url value="/management/homeRegProcStep2"/>',
 					type : 'POST',
-					data : reg_step1,
+					data : reg_step2,
 					success : function(result){
 						alert(result.resCode);  
-						location.href = '<c:url value="/management/homeReg/step2?homeid='+result.homeID+'"/>'
+						location.href = '<c:url value="/management/homeReg/step03?homeid='+homeid+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -125,9 +130,13 @@
 					}
 				});
 			});
+			
+			$('#prev_step_2_btn').on('click',function(){
+				location.href = './step01?homeid='+homeid;
+			});
 		});
 		
-		function initStep1Form(){
+		function initStep2Form(){
 			
 			var home_range = "${homeInfo.homeRange}";
 			var isOnlyGuest = "${homeInfo.homeIsOnlyGuest}";

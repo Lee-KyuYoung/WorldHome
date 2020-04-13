@@ -19,14 +19,14 @@
 	</style>
 <body>
 	<div class="container">
-		<h4 class="progress_info">3단계 : 숙소의 위치</h4>
+		<h4 class="progress_info">1단계 : 숙소의 위치</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 40%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">40%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">10%</div>
 		</div>
 	
 		<div class="row">
 			<div class="col-sm-7 content">
-				<form id="registration_step3_form">
+				<form id="registration_step1_form">
 					<h4>숙소의 위치를 입력하세요.</h4>
 					<p>주소</p>
 					<div class = "row">
@@ -61,11 +61,8 @@
 					</div>
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
-							<div class = "btn-toolbar float-left">
-								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="back">
-							</div>
 							<div class = "btn-toolbar float-right">
-								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step3_btn">
+								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step1_btn">
 							</div>
 						</div>
 					</div>
@@ -79,20 +76,23 @@
 	<script>
 		$(document).ready(function(){
 			
-			initStep3Form();
+			initStep1Form();
 			
-			$('#home_reg_step3_btn').on('click',function(){
+			$('#home_reg_step1_btn').on('click',function(){
 				
-				var reg_step3 = $('#registration_step3_form').serialize();
+				var reg_step1 = $('#registration_step1_form').serialize();
 				var homeid = $('#homeid').val();
 				
 				$.ajax({  
-					url : '<c:url value="/management/homeRegProcStep3"/>', 
+					url : '<c:url value="/management/homeRegProcStep1"/>', 
 					type : 'POST',
-					data : reg_step3,
+					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step4?homeid='+homeid+'"/>'
+						if(homeid == 'undefined'|| homeid == ''){
+							homeid = result.homeID;
+						}
+						location.href = '<c:url value="/management/homeReg/step02?homeid='+homeid+'"/>'
 					}, 
 					error : function(xhr , status , error){
 						alert(error);
@@ -110,7 +110,7 @@
 		});
 		
 		
-		function initStep3Form(){
+		function initStep1Form(){
 			var homeAddr = "${homeInfo.homeAddr1}";
 			if(homeAddr != ''){
 				searchAddressLatLng(homeAddr);

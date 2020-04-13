@@ -18,14 +18,14 @@
 <body>
 	<div class="container">
 		
-		<h4 class="progress_info">2단계 : 숙소 인원 및 침실, 욕실</h4>
+		<h4 class="progress_info">3단계 : 숙소 인원 및 침실, 욕실</h4>
 		<div class="progress">
 	  		<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
 		</div>
 	
 		<div class="row">
 			<div class="col-sm-7 content">
-				<form id="registration_step2_form">
+				<form id="registration_step3_form">
 					<h4>숙소 수용인원 및 침실 , 욕실개수를 입력해주세요.</h4>
 					<p>모든 게스트가 편안하게 숙박할 수 있도록 침대가 충분히 구비되어 있는지 확인하세요.</p>
 					<div class="row">
@@ -57,10 +57,10 @@
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
-								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_2_btn">
+								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_3_btn">
 							</div>
 							<div class = "btn-toolbar float-right">
-								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step2_btn">
+								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step3_btn">
 							</div>
 						</div>
 					</div>
@@ -73,18 +73,19 @@
 	<script>
 		$(document).ready(function(){
 			
-			$('#home_reg_step2_btn').on('click',function(){
+			var homeid = $('#homeid').val();
+			
+			$('#home_reg_step3_btn').on('click',function(){
 				
-				var reg_step1 = $('#registration_step2_form').serialize();
-				var homeid = $('#homeid').val();
+				var reg_step3 = $('#registration_step3_form').serialize();
 				
 				$.ajax({
-					url : '<c:url value="/management/homeRegProcStep2"/>', 
+					url : '<c:url value="/management/homeRegProcStep3"/>', 
 					type : 'POST',
-					data : reg_step1,
+					data : reg_step3,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step3?homeid='+homeid+'"/>'
+						location.href = '<c:url value="/management/homeReg/step04?homeid='+homeid+'"/>'
 					}, 
 					error : function(xhr , status , error){
 						alert(error);
@@ -95,6 +96,9 @@
 				});
 			});
 			
+			$('#prev_step_3_btn').on('click',function(){
+				location.href = './step02?homeid='+homeid;
+			});
 		});
 	</script>
 </body>

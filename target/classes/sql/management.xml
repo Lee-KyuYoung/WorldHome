@@ -10,18 +10,16 @@
 			INSERT INTO TBL_HOME_INF_TEMP(
 				HOME_ID,
 				USR_ID,
-				HOME_TYPE,
-				REG_STP,
-				HOME_RANGE,
-				IS_ONLY_GUEST,
+				HOME_ADD_1,
+				HOME_ADD_2,
+				HOME_POSTCODE,
 				HOME_INT_DT
 			) VALUES (
 				#{homeID}, 
 				#{userID}, 
-				#{homeType},
-				#{homeRegStep},
-				#{homeRange},
-				#{homeIsOnlyGuest},
+				#{homeAddr1},
+				#{homeAddr2},
+				#{homePostCode},
 				CURRENT_TIMESTAMP
 			)
 		
@@ -45,7 +43,7 @@
 			<if test = "homeAddr2 != null and homeAddr2 !=''">
 				HOME_ADD_2 = #{homeAddr2},
 			</if>
-			<if test = "homeFacility != null and homeFacility !=''">
+			<if test = "homeFacility != null">
 				HOME_FACILITY = #{homeFacility},
 			</if>
 			<if test = "homePostCode != null and homePostCode !=''">
@@ -72,10 +70,10 @@
 			<if test = "homeSurround != null and homeSurround !=''">
 				HOME_SURR = #{homeSurround},
 			</if>
-			<if test = "homeGuestRule != null and homeGuestRule !=''">
+			<if test = "homeGuestRule != null">
 				HOME_GUEST_RULE = #{homeGuestRule},
 			</if>
-			<if test = "homePrecaution != null and homePrecaution !=''">
+			<if test = "homePrecaution != null">
 				HOME_PRECAUTIONS = #{homePrecaution},
 			</if>
 			<if test = "highPay != null and highPay !=''">
@@ -153,7 +151,7 @@
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
 				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
-				ROW_AMT as rowPay, HOME_REV_START as homeRegStep, HOME_REV_END as homeRange, HOME_INT_DT as homeRegData
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep
 		FROM
 				TBL_HOME_INF_TEMP
 		WHERE

@@ -37,7 +37,7 @@ public class ManagementDAOImpl implements ManagementDAO{
 
 	@Override
 	public List<HomeImgInfoDomain> getHomeImgInfo(String homeID) {
-		return sqlSession.selectOne("com.hk.whome.management.sql.getHomeImgInfo",homeID);
+		return sqlSession.selectList("com.hk.whome.management.sql.getHomeImgInfo",homeID);
 	}
 	
 	

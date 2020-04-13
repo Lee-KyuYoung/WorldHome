@@ -40,11 +40,11 @@
 								    <div class="col-sm-7">
 								    	<div class="inline_block_float_right">
 											<div class="custom-control custom-radio custom-control-inline">
-												<input type="radio" class="custom-control-input" id = "geuet_rule_Y_${status.index}" name="guest_rule_${status.index}" value = "${list.codeKey }" checked>
+												<input type="radio" class="custom-control-input" id = "geuet_rule_Y_${status.index}" name="guest_rule_${status.index}" value = "${list.codeKey }">
 												<label class="custom-control-label" for = "geuet_rule_Y_${status.index}">Y</label>
 											</div>
 											<div class="custom-control custom-radio custom-control-inline">
-												<input type="radio" class="custom-control-input" id = "geuet_rule_N_${status.index}" name="guest_rule_${status.index}" value = "N">
+												<input type="radio" class="custom-control-input" id = "geuet_rule_N_${status.index}" name="guest_rule_${status.index}" value = "N" checked>
 												<label class="custom-control-label" for = "geuet_rule_N_${status.index}">N</label>
 											</div>
 										</div>
@@ -87,10 +87,12 @@
 	<script>
 		$(document).ready(function(){
 			
+			initform7();
+			
+			var homeid = $('#homeid').val();
 			$('#home_reg_step7_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step7_form').serialize();
-				var homeid = $('#homeid').val();
 				
 				$.ajax({
 					url : '<c:url value="/management/homeRegProcStep7"/>', 
@@ -98,7 +100,7 @@
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step8?homeid='+homeid+'"/>'
+						location.href = '<c:url value="/management/homeReg/step08?homeid='+homeid+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -108,8 +110,40 @@
 					}
 				});
 			});
+			
+			$('#prev_step_7_btn').on('click',function(){
+				location.href = './step06?homeid='+homeid;
+			});
+			
 		});
 	
+		function initform7(){
+			
+			var guest_rule = "${guestRule}";
+			var home_precaution = "${homePrecaution}";
+			var $gust_rule_radiobox = $('input[type="radio"]');
+			var $home_precaution_checkbox = $('input[type="checkbox"]');
+			
+			if(guest_rule != '' && guest_rule != 'undefined'){
+				$.each(JSON.parse(guest_rule), function(i1, o1){
+					$.each($gust_rule_radiobox , function(i2, o2){
+						if(o1 == $(o2).val()){
+							$(o2).prop("checked",true);
+						}
+					});
+				});
+			}
+			if(home_precaution != '' && guest_rule != 'undefined'){
+				$.each(JSON.parse(home_precaution), function(i1, o1){
+					$.each($home_precaution_checkbox , function(i2, o2){
+						if(o1 == $(o2).val()){
+							$(o2).prop("checked",true);
+						}
+					});
+				});
+			}
+		}
+		
 	</script>
 </body>
 </html>

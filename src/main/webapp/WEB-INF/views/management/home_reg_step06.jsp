@@ -33,11 +33,11 @@
 					<div class="row margin-bottom20">
 						<div class = "col-md-12">
 							<p>숙소의 특징과 장점을 살려 숙소의 이름을 지어주세요.</p>
-							 <input type = "text" class = "form-control" name = "home_name">
+							 <input type = "text" class = "form-control" name = "home_name" value="${homeInfo.homeTitle}">
 						</div>
 						<div class = "col-md-12">
 							<p>숙소에 대해 간략히 설명해 주세요.<br>숙소와 주변 지역에 대한 정보와 게스트와 어떻게 소통하고 싶은지 등의 내용을 적어주세요.</p>
-							 <textarea class="form-control" rows="5" name = "home_introduce_main" onkeyup ="wordLimitCheck(this,'500')"></textarea>
+							 <textarea class="form-control" rows="5" name = "home_introduce_main" onkeyup ="wordLimitCheck(this,'500')">${homeInfo.homeComment}</textarea>
 							 <p class = "word_limit">( 0 / 500자 )</p>
 						</div>
 					</div>
@@ -45,17 +45,17 @@
 					<div class="row margin-bottom20">
 						<div class = "col-md-12">
 						     <p>숙소에대한 기타 세부정보를 추가해주세요.</p>
-							 <textarea class="form-control" rows="3"  name = "home_introduce_detail" onkeyup = "wordLimitCheck(this,'200')"></textarea>
+							 <textarea class="form-control" rows="3"  name = "home_introduce_detail" onkeyup = "wordLimitCheck(this,'200')">${homeInfo.homeETCComment}</textarea>
 							 <p class = "word_limit">( 0 / 200자 )</p>
 						</div>
 						<div class = "col-md-12">
 						     <p>숙소 주위에 키피숍, 공원, 명소 등을 소개해 주세요.</p>
-							 <textarea class="form-control" rows="3" name = "home_introduce_nearby" onkeyup = "wordLimitCheck(this,'200')"></textarea>
+							 <textarea class="form-control" rows="3" name = "home_introduce_nearby" onkeyup = "wordLimitCheck(this,'200')">${homeInfo.homeSurround}</textarea>
 							 <p class = "word_limit">( 0 / 200자 )</p>
 						</div>
 						<div class = "col-md-12">
 						     <p>주변에 대중교통 수단, 운전정보 등을 알려주세요.</p>
-							 <textarea class="form-control" rows="3" name = "home_introduce_traffic" onkeyup = "wordLimitCheck(this,'200')"></textarea>
+							 <textarea class="form-control" rows="3" name = "home_introduce_traffic" onkeyup = "wordLimitCheck(this,'200')">${homeInfo.homeTraffic}</textarea>
 							 <p class = "word_limit">( 0 / 200자 )</p>
 						</div>
 					</div>
@@ -78,10 +78,11 @@
 	<script>
 		$(document).ready(function(){
 			
+			var homeid = $('#homeid').val();
+			
 			$('#home_reg_step_6_btn').on('click',function(){
 				
 				var reg_step1 = $('#registration_step6_form').serialize();
-				var homeid = $('#homeid').val();
 				
 				$.ajax({
 					url : '<c:url value="/management/homeRegProcStep6"/>', 
@@ -89,7 +90,7 @@
 					data : reg_step1,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step7?homeid='+homeid+'"/>'
+						location.href = '<c:url value="/management/homeReg/step07?homeid='+homeid+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -98,6 +99,10 @@
 						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
+			});
+			
+			$('#prev_step_6_btn').on('click',function(){
+				location.href = './step05?homeid='+homeid;
 			});
 		});
 		

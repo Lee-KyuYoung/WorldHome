@@ -45,7 +45,6 @@
 								    </div>
 								</c:if>
 							</c:forEach>
-							
 							<p>안전시설</p>
 							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
 								<c:if test = "${list.codeGroupKey eq '1016' }">
@@ -99,10 +98,12 @@
 	<script>
 		$(document).ready(function(){
 			
+			initform4();
+			var homeid = $('#homeid').val();
+			
 			$('#home_reg_step4_btn').on('click',function(){
 				
 				var reg_step4 = $('#registration_step4_form').serialize();
-				var homeid = $('#homeid').val();
 				
 				$.ajax({
 					url : '<c:url value="/management/homeRegProcStep4"/>', 
@@ -110,7 +111,7 @@
 					data : reg_step4,
 					success : function(result){
 						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step5?homeid='+homeid+'"/>'
+						location.href = '<c:url value="/management/homeReg/step05?homeid='+homeid+'"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -121,7 +122,28 @@
 				});
 			});
 			
+			$('#prev_step_4_btn').on('click',function(){
+				location.href = './step03?homeid='+homeid;
+			});
 		});
+
+		//선택된 체크박스 세팅
+		function initform4(){
+			
+			var home_offer_list = "${homeOffer}";
+			var checkbox = $('input[type="checkbox"]');
+
+			if(home_offer_list != '' && home_offer_list != 'undefined'){
+				$.each(JSON.parse(home_offer_list), function(i1, o1){
+					$.each(checkbox , function(i2 , o2){
+						if(o1 == $(o2).val()){
+							$(o2).prop('checked',true);
+						}
+					});
+				});
+			}
+		}
+		
 	</script>
 </body>
 </html>

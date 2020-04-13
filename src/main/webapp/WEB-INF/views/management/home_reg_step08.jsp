@@ -78,6 +78,8 @@
 	<script>
 		$(document).ready(function(){
 			
+			initform8();
+			
 			var date = new Date();
 			var year = date.getFullYear();
 			var month = date.getMonth() + 1;
@@ -142,6 +144,10 @@
 					}
 				});
 			});
+			
+			$('#prev_step_8_btn').on('click',function(){
+				location.href = './step07?homeid='+$('#homeid').val();
+			});
 		});
 		
 		//콤마 찍기
@@ -170,9 +176,26 @@
 //   	        calendar.render();
 //    		}
 		  	  
+		 function initform8(){
+			 var reg_start_day = "${homeInfo.homeAvailableReservStartDay}";
+			 var reg_end_day = "${homeInfo.homeAvailableReservEndDay}";
+			 
+			 if(reg_start_day != '' && reg_end_day != ''){
+				 $('#reserv_date').val(reg_start_day+"~"+reg_end_day);
+			 }
+			 
+			 var high_pay = '${homeInfo.highPay}';
+			 var row_pay = '${homeInfo.rowPay}';
+			 
+			 if(reg_start_day != '' && reg_end_day != ''){
+				 $('#peak_season_pay').val(numberFormat(high_pay));
+				 $('#offpeak_season_pay').val(numberFormat(row_pay));
+			 } 
+		 }
 
 	</script>
 </body>
 </html>
+
 
 
