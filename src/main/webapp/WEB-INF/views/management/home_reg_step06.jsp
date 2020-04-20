@@ -13,7 +13,7 @@
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
-		.margin-bottom20{margin-bottom:20px}
+		.margin-bottom20{margin-bottom:20px;}
 		.margin-top10{margin-top:10px;}
 		.content{margin:0 auto;}
 		.img_view{width:100%;height:200px;border:2px dashed #c2c2d6;border-radius:5px;margin-top:20px;background-image:url('../../resources/img/img_upload.png');background-size:30% 45%;background-repeat:no-repeat;background-position:center center;}
@@ -24,7 +24,7 @@
 	<div class="container">
 		<h4 class="progress_info">6단계 : 숙소 소개</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">85%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">80%</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-7 content">
@@ -59,7 +59,7 @@
 							 <p class = "word_limit">( 0 / 200자 )</p>
 						</div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_6_btn">
@@ -70,6 +70,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -89,8 +90,11 @@
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step07?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step07?homeid='+homeid+'"/>'
+						}else{
+							location.href = '<c:url value="/management/homeMod/step07?homeid='+homeid+'"/>'
+						}
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -115,44 +119,7 @@
 				$(obj).next().text('( '+word_count+' / '+limit_num+' )').css('color','#767676');	
 			}
 		}
-		
-		var home_img_count = 1;
-		function imgView(f){
-			
-			var file = f.files; 
-			var reader = new FileReader(); 
-			var img_count = $('input[type="file"]').length;
-			var current_index = $('input[type="file"]').index($(f));
-			
-			//이미지는 5개로 제한을 둔다.
-			//current_index + 1 == img_count는 새롭게 추가되는 이미지 요소
-			if(img_count >= 6 && current_index + 1 == img_count){
-				alert('이미지는 최대 5개 등록 가능합니다.');
-				return false;
-			}				
-			
-			reader.onload = function(rst){
-				
-				$(f).parent().css('background-image','url('+rst.target.result+')').css('background-size','100% 100%').css('border','0px');
-				$(f).parent().find('input[type="button"]').remove(); // 이미지를 다시 선택할 경우 버튼 지우고 만들기
-				$(f).after('<input type = "button" class = "btn btn-danger" value = "삭제" onclick="deleteHomeDetailImg(this)">');
-				
-				//새로운 이미지 추가 시 만들어주기 
-				if(current_index + 1 == img_count){ 
-					$(f).parent().parent().after('<div class = "col-md-6 margin-top20">' +
-	                        '<label class="img_view" for="img_file_'+home_img_count+'" id="test">'+
-	                            '<input type="file" id="img_file_'+home_img_count+'" name="home_detail_img" accept="image/*" onchange="imgView(this)">' +
-	                        '</label>' +
-	                    '</div>');	
-				}
-			}
-			home_img_count += 1;
-			reader.readAsDataURL(file[0]); 
-		}
-		
-		function deleteHomeDetailImg(btn){
-			$(btn).parent().parent().remove();
-		}
+
 	</script>
 </body>
 </html>

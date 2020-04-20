@@ -73,7 +73,7 @@
 			
 			//취소버튼
 			$('#cancel_btn').on('click',function(){
-				location.href='../';
+				location.href='../login';
 			});
 		});
 

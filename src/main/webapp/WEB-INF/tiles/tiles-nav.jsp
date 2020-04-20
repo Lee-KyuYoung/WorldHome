@@ -1,20 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 	<header>
-		<nav class="navbar navbar-expand-sm bg-light navbar-light">
-			<div class = "homeLogo"style="cursor:pointer"><img src= "\whome\resources\img\homeMark.png" width="50px" height="50px"></div>
-			<ul class="navbar-nav">
-				<div class="btn-group" data-toggle="modal" data-target="#myModal">
-					<button type="button" class="btn btn-primary">여행지 추가</button>
-					<button type="button" class="btn btn-primary">날짜추가</button>
-					<button type="button" class="btn btn-primary">게스트 추가</button>
-				</div>
-			</ul>
+<!-- 		<nav class="navbar navbar-expand-sm bg-light navbar-light"> -->
+<%-- 			<div class = "homeLogo"><a href = "<c:url value ='/'/>"><img src= "\whome\resources\img\homeMark.png" width="50px" height="50px"></a></div> --%>
+<!-- 			<ul class="navbar-nav"> -->
+<!-- 				<div class="btn-group" data-toggle="modal" data-target="#myModal"> -->
+<!-- 					<button type="button" class="btn btn-primary">여행지 추가</button> -->
+<!-- 					<button type="button" class="btn btn-primary">날짜추가</button> -->
+<!-- 					<button type="button" class="btn btn-primary">게스트 추가</button> -->
+<!-- 				</div> -->
+<!-- 			</ul> -->
+<!-- 		</nav> -->
+
+		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		  <a class="navbar-brand" href="<c:url value ='/'/>" target="_blank">
+		    <img src="\whome\resources\img\homeMark.png" style="width:50px;height:50px;"/>
+		  </a>
+		  <div class="collapse navbar-collapse order-last order-md-0" id="collapsibleNavbar">
+		    <ul class="navbar-nav" data-target="#myModal" data-toggle="modal">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">여행지 추가</a>
+		      </li>
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">날짜추가</a>
+		      </li>
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">게스트 추가</a>
+		      </li>
+		    </ul>
+		  </div>
+		<div class = "btn-toolbar float-right">
+			<c:choose>
+				<c:when test = "${empty sessionScope.user_info}">
+					<input type = "button" class = "btn btn-light" value = "로그인" id="login_btn" onclick = "location.href='<c:url value="/login"/>'">
+				</c:when>
+				<c:otherwise>
+				  <ul class="navbar-nav">
+				    <!-- Dropdown -->
+				    <li class="nav-item dropdown">
+				      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+				        ${sessionScope.user_info.user_id}님 환영합니다.
+				      </a>
+				      <div class="dropdown-menu">
+				        <a class="dropdown-item" href="<c:url value='/user/modify'/>">회원 정보수정</a>
+				        <a class="dropdown-item" href="<c:url value='/management/homeReg'/>">숙소 등록</a>
+				        <a class="dropdown-item" href="<c:url value ='/logout'/>">로그아웃</a>
+				      </div>
+				    </li>
+				  </ul>
+				</c:otherwise>	
+			</c:choose>
+		</div>
 		</nav>
+
 	</header>
 	<!-- The Modal -->
 	<div class="modal fade" id="myModal">
-		<div class="modal-dialog">
+		<div class="modal-dialog nav-modal">
 			<div class="modal-content">
 				<!-- Modal Header -->
 				<div class="modal-header">
@@ -66,17 +109,17 @@
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer" style="background-color: white;">
-					<div>
-						<button type="button" class="close" id="closeBut01">×</button>
-					</div>
-					<div class="search_add"></div>
-					<div>
-						<button type="button" class="close" id="closeBut02">×</button>
-					</div>
-					<div class="search_date"></div>
-					<div>
-						<button type="button" class="close" id="closeBut03">×</button>
-					</div>
+<!-- 					<div> -->
+<!-- 						<button type="button" class="close" id="closeBut01">×</button> -->
+<!-- 					</div> -->
+<!-- 					<div class="search_add"></div> -->
+<!-- 					<div> -->
+<!-- 						<button type="button" class="close" id="closeBut02">×</button> -->
+<!-- 					</div> -->
+<!-- 					<div class="search_date"></div> -->
+<!-- 					<div> -->
+<!-- 						<button type="button" class="close" id="closeBut03">×</button> -->
+<!-- 					</div> -->
 					<div class="search_guest"></div>
 					
 					<form name="homeListDomain" method="post">

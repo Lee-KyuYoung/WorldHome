@@ -20,7 +20,7 @@
 	<div class="container">
 		<h4 class="progress_info">4단계 : 편의 시설제공 입력</h4>
 		<div class="progress">
-		  	<div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">60%</div>
+		  	<div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">50%</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-7 content">
@@ -79,7 +79,7 @@
 							</c:forEach>
 						</div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_4_btn">
@@ -90,6 +90,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -110,8 +111,11 @@
 					type : 'POST',
 					data : reg_step4,
 					success : function(result){
-						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step05?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step05?homeid='+homeid+'"/>'
+						}else{
+							location.href = '<c:url value="/management/homeMod/step05?homeid='+homeid+'"/>'
+						}
 					},
 					error : function(xhr , status , error){
 						alert(error);

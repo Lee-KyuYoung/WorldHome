@@ -9,7 +9,7 @@
 	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<%=contextPath%>/resources/css/dev/user_info.css" rel="stylesheet">
 	<style>
-		.form-signin{position:absolute;right:50%;transform:translate(50%);width:750px;border:1px solid #6c757d; padding:60px; border-radius:20px; box-sizing: border-box;}
+		.form-signin{position:absolute;right:50%;transform:translate(50%);width:750px;border:2px solid #6c757d; padding:30px; border-radius:10px; box-sizing: border-box;margin-top:30px;margin-bottom:30px;}
 		.form-signin caption{caption-side: top;font-size:0.8em;border-bottom:1px solid black;}
 		.form-signin th{background-color:#f4f4f7; font-size:0.9em; color:#6c757d;border-bottom:1px solid #dee2e6}
 		.form-signin td{border-bottom:1px solid #dee2e6;}
@@ -23,6 +23,7 @@
 <body>
 	<div class="container">
 		<form class ="form-signin" id = "join_form">
+			<h3>회원가입</h3>
 			<table class ="table">
 				<caption><spring:message code="join.info.J102"/></caption><!-- 회원 이용정보 -->
 				<colgroup>

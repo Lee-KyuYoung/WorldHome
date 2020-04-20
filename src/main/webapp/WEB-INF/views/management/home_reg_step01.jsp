@@ -8,28 +8,30 @@
 <head>
 	<title>숙소 등록하기</title>
 	<style type="text/css">
-		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
+		.title_p{margin:20 0 5 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
-		#load_map_wrapper{display:none;}
-		#load_map{width:100%;height:300px;}
+		#load_map_wrapper{display:none;} 
+ 		#load_map{width:100%;height:300px;} 
+ 		.info_p{margin:20 0 5 0;font-size:16px;color:red;font-weight:bold}
 
 	</style>
 <body>
 	<div class="container">
 		<h4 class="progress_info">1단계 : 숙소의 위치</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">10%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
 		</div>
 	
 		<div class="row">
 			<div class="col-sm-7 content">
 				<form id="registration_step1_form">
 					<h4>숙소의 위치를 입력하세요.</h4>
-					<p>주소</p>
-					<div class = "row">
+					<p class ="title_p">주소</p>
+					<div class = "row margin-bottom20">
 						<div class="col-sm-10">
 							<div class="input-group">
 								<input type="text" class="form-control" id="user_address_1" name="user_address_1" value = "${homeInfo.homeAddr1}" readonly>
@@ -39,21 +41,21 @@
 							</div>						
 						</div>
 					</div>
-					<p>나머지 주소 ( 선택사항 )</p>
-					<div class="row">
+					<p class ="title_p">나머지 주소 ( 선택사항 )</p>
+					<div class="row margin-bottom20">
 						<div class = "col-sm-10">
 							<input type="text" class="form-control" id="user_address_2" name="user_address_2" value = "${homeInfo.homeAddr2}" placeholder = "예 ) 105동 606호">
 						</div>
 					</div>
-					<p>우편번호</p>
-					<div class="row">
+					<p class ="title_p">우편번호</p>
+					<div class="row margin-bottom20">
 						<div class = "col-sm-4">
 							<input type="text" class="form-control" id="user_postcode" name="user_postcode" value = "${homeInfo.homePostCode}" readonly>
 						</div>
 					</div>
 					<div class="row">
 						<div class = "col-sm-12" id = "load_map_wrapper">
-							<p>해당 위치가 정확한가요?</p>
+							<p class = "info_p">해당 위치가 정확한가요?</p>
 							<div id = "load_map">
 							
 							</div>
@@ -61,12 +63,16 @@
 					</div>
 					<div class = "row margin-top20">
 						<div class="col-sm-12">
+							<div class = "btn-toolbar float-left">
+								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_1_btn">
+							</div>
 							<div class = "btn-toolbar float-right">
 								<input type = "button" class = "btn btn-info" value = "계속" id="home_reg_step1_btn">
 							</div>
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -75,7 +81,7 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3514c018ea159141b84061e35f47b501&libraries=services"></script>
 	<script>
 		$(document).ready(function(){
-			
+
 			initStep1Form();
 			
 			$('#home_reg_step1_btn').on('click',function(){
@@ -88,11 +94,14 @@
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						alert(result.resCode);
 						if(homeid == 'undefined'|| homeid == ''){
 							homeid = result.homeID;
 						}
-						location.href = '<c:url value="/management/homeReg/step02?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step02?homeid='+homeid+'"/>'	
+						}else{
+							location.href = '<c:url value="/management/homeMod/step02?homeid='+homeid+'"/>'
+						}
 					}, 
 					error : function(xhr , status , error){
 						alert(error);
@@ -101,6 +110,11 @@
 						 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 					}
 				});
+			});
+			
+			//뒤로가기
+			$('#prev_step_1_btn').on('click',function(){
+				location.href = "../homeReg";
 			});
 			
 			//주소검색
@@ -175,6 +189,8 @@
 		//카카오맵에 주소에 맞는 좌표에 마커 찍기
 		function searchAddressLatLng(address){
 			
+			document.getElementById('load_map_wrapper').style.display = 'block';
+			
 			var map = initKaKaoMap();
 			var geocoder = new kakao.maps.services.Geocoder();
             geocoder.addressSearch(address , function(result , status){
@@ -189,10 +205,7 @@
 					map.setCenter(coords);
             	}
             });
-            document.getElementById('load_map_wrapper').style.display = 'block';
 		}
-		
-		
 		
 	</script>
 </body>

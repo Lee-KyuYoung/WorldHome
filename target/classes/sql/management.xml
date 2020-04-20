@@ -13,13 +13,16 @@
 				HOME_ADD_1,
 				HOME_ADD_2,
 				HOME_POSTCODE,
+				REG_STP,
 				HOME_INT_DT
+				
 			) VALUES (
 				#{homeID}, 
 				#{userID}, 
 				#{homeAddr1},
 				#{homeAddr2},
 				#{homePostCode},
+				#{homeRegStep},
 				CURRENT_TIMESTAMP
 			)
 		
@@ -106,6 +109,84 @@
 		
 	</update>
 	
+	<!-- 등록된 집 수정 -->
+	<update id = "updateHomeInfo" parameterType = "com.hk.whome.domain.HomeInfoDomain">
+		
+		UPDATE 
+				TBL_HOME_INF
+		SET
+			<if test = "homeBathroomCnt != null and homeBathroomCnt !=''">
+				BATHROOM_CNT = #{homeBathroomCnt},
+			</if>
+			<if test = "homeBedCnt != null and homeBedCnt !=''">
+				BED_CNT = #{homeBedCnt},
+			</if>
+			<if test = "homeAddr1 != null and homeAddr1 !=''">
+				HOME_ADD_1 = #{homeAddr1},
+			</if>
+			<if test = "homeAddr2 != null and homeAddr2 !=''">
+				HOME_ADD_2 = #{homeAddr2},
+			</if>
+			<if test = "homeFacility != null">
+				HOME_FACILITY = #{homeFacility},
+			</if>
+			<if test = "homePostCode != null and homePostCode !=''">
+				HOME_POSTCODE = #{homePostCode},
+			</if>
+			<if test = "homeTitle != null and homeTitle !=''">
+				HOME_TITLE = #{homeTitle},
+			</if>
+			<if test = "homeComment != null and homeComment !=''">
+				HOME_COMM = #{homeComment},
+			</if>
+			<if test = "homeType != null and homeType !=''">
+				HOME_TYPE = #{homeType},
+			</if>
+			<if test = "homeETCComment != null and homeETCComment !=''">
+				HOME_ETC_COMM = #{homeETCComment},
+			</if>
+			<if test = "homemaxGuest != null and homemaxGuest !=''">
+				MAX_GUEST = #{homemaxGuest},
+			</if>
+			<if test = "homeTraffic != null and homeTraffic !=''">
+				HOME_TRP = #{homeTraffic},
+			</if>
+			<if test = "homeSurround != null and homeSurround !=''">
+				HOME_SURR = #{homeSurround},
+			</if>
+			<if test = "homeGuestRule != null">
+				HOME_GUEST_RULE = #{homeGuestRule},
+			</if>
+			<if test = "homePrecaution != null">
+				HOME_PRECAUTIONS = #{homePrecaution},
+			</if>
+			<if test = "highPay != null and highPay !=''">
+				HIGH_AMT = #{highPay},
+			</if>
+			<if test = "rowPay != null and rowPay !=''">
+				ROW_AMT = #{rowPay},
+			</if>
+			<if test = "homeRange != null and homeRange !=''">
+				HOME_RANGE = #{homeRange},
+			</if>
+			<if test = "homeIsOnlyGuest != null and homeIsOnlyGuest !=''">
+				IS_ONLY_GUEST = #{homeIsOnlyGuest},
+			</if>
+			<if test = "homeAvailableReservStartDay != null and homeAvailableReservStartDay !=''">
+				HOME_REV_START = #{homeAvailableReservStartDay},
+			</if>
+			<if test = "homeAvailableReservEndDay != null and homeAvailableReservEndDay !=''">
+				HOME_REV_END = #{homeAvailableReservEndDay},
+			</if>
+			<if test = "DelYN != null and DelYN !=''">
+				DEL_YN = #{DelYN},
+			</if>
+			 	HOME_MOD_DT = CURRENT_TIMESTAMP
+		WHERE
+				HOME_ID = #{homeID}
+		
+	</update>
+	
 	<!-- 집 등록 절차가 완료되고 정식으로 등록되는 테이블 -->
 	<insert id = "insertHomeInfo" parameterType = "String">
 		INSERT INTO TBL_HOME_INF(
@@ -146,7 +227,8 @@
 
 	</insert>
 	
-	<select id = "getHomeInfoTemp" parameterType = "String" resultType = "com.hk.whome.domain.HomeInfoDomain">
+	<!-- 임시저장된 집 정보 가져오기 -->
+	<select id = "getHomeInfoTemp" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.HomeInfoDomain">
 		SELECT 
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
@@ -155,8 +237,71 @@
 		FROM
 				TBL_HOME_INF_TEMP
 		WHERE
-				HOME_ID = #{homeID}
+			<choose>
+				<when test = "homeID != null and homeID != ''">
+					HOME_ID = #{homeID}
+				</when>
+				<when test = "userID != null and userID != ''">
+					USR_ID = #{userID}
+				</when>
+			</choose>
 	</select>
+	
+	<!-- 임시저장된 집 정보 리스트 가져오기 -->
+	<select id = "getHomeInfoTempList" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.HomeInfoDomain">
+		SELECT 
+				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
+				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
+				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep
+		FROM
+				TBL_HOME_INF_TEMP
+		WHERE
+			<choose>
+				<when test = "homeID != null and homeID != ''">
+					HOME_ID = #{homeID}
+				</when>
+				<when test = "userID != null and userID != ''">
+					USR_ID = #{userID}
+				</when>
+			</choose>
+			AND REG_STP = '01'
+	</select>
+
+	<!-- 정식 등록된 집 정보 가져오기 -->
+	<select id = "getHomeInfo" parameterType = "String" resultType = "com.hk.whome.domain.HomeInfoDomain">
+		SELECT 
+				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
+				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
+				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData
+		FROM
+				TBL_HOME_INF
+		WHERE
+				HOME_ID = #{homeID} AND DEL_YN = 'N'
+	</select>
+	
+	<!-- 저장된 집 정보 리스트 가져오기 -->
+	<select id = "getHomeInfoList" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.HomeInfoDomain">
+		SELECT 
+				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
+				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
+				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData 
+		FROM
+				TBL_HOME_INF
+		WHERE
+			<choose>
+				<when test = "homeID != null and homeID != ''">
+					HOME_ID = #{homeID}
+				</when>
+				<when test = "userID != null and userID != ''">
+					USR_ID = #{userID}
+				</when>
+			</choose>
+			AND DEL_YN = 'N'
+	</select>
+	
 	
 	<!-- 이미지 정보 저장 -->
 	<insert id = "insertImgInfo" parameterType = "com.hk.whome.domain.HomeImgInfoDomain">
@@ -187,7 +332,26 @@
 		FROM 
 				TBL_HOME_IMG
 		WHERE
-				HOME_ID = #{homeID}
+				HOME_ID = #{homeID} AND DEL_YN = 'N'
 	</select>
+	
+	<!-- 이미지 정보 변경 -->
+	<update id = "updateHomeImgInfo" parameterType = "com.hk.whome.domain.HomeImgInfoDomain">
+		UPDATE 
+				TBL_HOME_IMG
+		SET
+			<if test = "homeMainImgYN != null and homeMainImgYN !=''">
+				MA_IMG_YN = #{homeMainImgYN}
+			</if>
+			<if test = "homeImgOrder != null and homeImgOrder !=''">
+				HOME_IMG_IDX = #{homeImgOrder}
+			</if>
+			<if test = "delYN != null and delYN !=''">
+				DEL_YN = #{delYN}
+			</if>	
+		WHERE
+				IMG_KEY = #{homeImgKey} 
+	</update>
+		
 
 </mapper>

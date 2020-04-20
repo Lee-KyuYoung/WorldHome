@@ -13,6 +13,7 @@
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
 		.margin-top10{margin-top:10px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 		.img_view{width:100%;height:200px;border:2px dashed #c2c2d6;border-radius:5px;margin-top:20px;background-image:url('../../resources/imgFile/img_upload.png');background-size:30% 45%;background-repeat:no-repeat;background-position:center center;}
 		.img_view:hover{cursor:pointer;border-color:black; -webkit-transform:scale(1.05); -moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05); transform:scale(1.05);}
@@ -23,7 +24,7 @@
 	<div class="container">
 		<h4 class="progress_info">5단계 : 숙소 사진</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">70%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">65%</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-7 content">
@@ -45,7 +46,7 @@
 							</label>
 						</div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_5_btn">
@@ -56,6 +57,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -84,8 +86,11 @@
 					processData : false,
 					contentType : false,
 					success : function(result){
-						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step06?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step06?homeid='+homeid+'"/>'
+						}else{
+							location.href = '<c:url value="/management/homeMod/step06?homeid='+homeid+'"/>'
+						}
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -101,7 +106,7 @@
 			});
 		});
 		
-		var home_img_count = 1;
+		var home_img_count = 100;
 		function imgView(f){
 			
 			var file = f.files; 
@@ -133,8 +138,29 @@
 			//브라우저에서 추가한 이미지 삭제
 			if(val == null){
 				$(btn).parent().parent().remove();	
-			}else{ //이미 저장된 이미지 삭제
-				
+			}
+			else{ //이미 저장된 이미지 삭제
+
+				if(confirm("등록된 이미지 입니다.\n정말 삭제하시겠습니까?")){
+					$.ajax({
+						url : '../removeHomeImg',
+						data : { 'imgKey' : val },
+						type : 'POST',
+						success : function(resData){
+							if(resData.resCode == 'E001'){
+								$(btn).parent().parent().remove();
+							}else{
+								alert('일시적이 오류입니다.\n잠시 후 다시 시도해 주세요.');
+							}
+						},
+						error : function(xhr , status , error){
+							
+						},
+						beforeSend : function(xhr){
+							 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+						}
+					});
+				}
 			}
 		}
 		

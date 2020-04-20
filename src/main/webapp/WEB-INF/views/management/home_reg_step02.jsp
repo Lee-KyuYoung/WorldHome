@@ -10,6 +10,7 @@
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 
 	</style>
@@ -18,7 +19,7 @@
 		
 		<h4 class="progress_info">2단계 : 기본사항 입력</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 15%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">20%</div>
 		</div>
 	
 		<div class="row">
@@ -26,12 +27,12 @@
 				<form id="registration_step2_form">
 					<h4>등록하실 숙소의 종류를 선택해주세요.</h4>
 					<p>종류1</p>
-					<div class="row">
+					<div class="row margin-bottom20">
 						<div class = "col-sm-6">
-							<select class="form-control" onchange = "createHomeTypeSelectBox(this.value)">
+							<select class="form-control" id = "home_type1" name = "home_type1" onchange = "createHomeTypeSelectBox(this.value)">
 								<option value = "">선택하세요</option>
 								<c:forEach var = "list" items = "${codeList}">
-									<option value = "${list.codeNum}/${list.codeSubGroupKey}">${list.codeComment}</option>
+									<option value = "${list.codeNum}/${list.codeSubGroupKey}/${list.codeKey}" ${list.codeKey eq home_type1 ? 'selected="selected"' : ''}>${list.codeComment}</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -39,7 +40,7 @@
 					<p>종류2</p>
 					<div class="row">
 						<div class = "col-sm-6">
-							<select class="form-control" id = "home_type" name = "home_type">
+							<select class="form-control" id = "home_type" name = "home_type2">
 								<option>종류1을 선택해주세요</option>
 							</select>
 						</div>
@@ -87,7 +88,7 @@
 							</div>
 						</div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_2_btn">
@@ -98,6 +99,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -119,8 +121,11 @@
 					type : 'POST',
 					data : reg_step2,
 					success : function(result){
-						alert(result.resCode);  
-						location.href = '<c:url value="/management/homeReg/step03?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step03?homeid='+homeid+'"/>'
+						}else{
+							location.href = '<c:url value="/management/homeMod/step03?homeid='+homeid+'"/>'
+						}
 					},
 					error : function(xhr , status , error){
 						alert(error);
@@ -136,11 +141,19 @@
 			});
 		});
 		
+		//이미 등록된 데이터가 있으면
 		function initStep2Form(){
 			
-			var home_range = "${homeInfo.homeRange}";
-			var isOnlyGuest = "${homeInfo.homeIsOnlyGuest}";
+			const home_range = "${homeInfo.homeRange}";
+			const isOnlyGuest = "${homeInfo.homeIsOnlyGuest}";
+			const home_type1 = '${home_type1}';
+			const home_type2 = '${home_type2}';
 			
+			if(home_type1 != ''){
+				createHomeTypeSelectBox($('#home_type1').val());
+				$('#home_type').val(home_type2).prop('selected',true);
+			}
+
 			if(home_range == '1'){
 				$('#home_range1').prop('checked',true);
 			}else if(home_range == '2'){
@@ -169,6 +182,7 @@
 				url : '<c:url value="/admin/getCodeDefine"/>',
 				type : 'POST',
 				data : { 'group_key' : value , 'code_type' : 'sub' , '_csrf' : '${_csrf.token}'},
+				async : false,
 				success : function(result){
 
 					$('#home_type').empty();
@@ -186,4 +200,5 @@
 	</script>
 </body>
 </html>
+
 

@@ -56,8 +56,8 @@
    								<input type = "text" class="form-control" id = "offpeak_season_pay" name = "offpeak_season_pay">
  							</div>
 						</div>
-					</div>
-					<div class = "row margin-top20">
+					</div> 
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_8_btn">
@@ -68,6 +68,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -133,8 +134,7 @@
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						alert(result.resCode);
-						location.href = '<c:url value="/"/>'
+						location.href = '<c:url value="/management/homeReg"/>'
 					},
 					error : function(xhr , status , error){
 						alert(error);

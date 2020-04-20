@@ -9,10 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hk.whome.admin.AdminService;
@@ -43,7 +39,7 @@ import com.hk.whome.util.SelectKeySeqUtil;
 public class ManagementController{
 
 	@Autowired
-	private ManagementService managementSerive;
+	private ManagementService managementService;
 	
 	@Autowired
 	private SelectKeySeqUtil selectKeySeq;
@@ -54,8 +50,38 @@ public class ManagementController{
 	@Autowired
 	private FileUtils fileUtils;
 
-	
 	private Logger logger = LoggerFactory.getLogger(ManagementController.class);
+	
+	/**
+	 * 집 등록 메인 화면
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/homeReg")
+	public String homeReg(Model model, HttpServletRequest req) {
+		
+		CustomUserDetails userInfo = (CustomUserDetails)req.getSession().getAttribute("user_info");
+		
+		if(EmptyUtils.isEmpty(userInfo)) {
+			return "redirect:../login";
+		}
+
+		String userID = userInfo.getUser_id();
+		
+		Map<String,String> paramMap = new HashMap<>();
+		paramMap.put("userID", userID);
+		
+		//등록중인 집 정보 가져오기
+		List<HomeInfoDomain> userHomeTempList = managementService.getHomeInfoTempList(paramMap);
+		
+		//등록 완료된 집 정보 가져오기
+		List<HomeInfoDomain> userHomeList = managementService.getHomeInfoList(paramMap);
+		
+		model.addAttribute("userHomeTempList",userHomeTempList);
+		model.addAttribute("userHomeList",userHomeList);
+		
+		return "management/home_reg_main.tiles";
+	}
 	
 	/**
 	 *  숙소를 등록하면 단계별로 home_temp 테이블에 저장이되고 
@@ -66,24 +92,77 @@ public class ManagementController{
 	 * @return
 	 */
 	@RequestMapping(value = "/homeReg/{path}", method = RequestMethod.GET)
-	public String registration(Model model, @PathVariable("path") String path, @RequestParam Map<String,String> paramMap, HttpServletRequest req) {		
+	public String registration(Model model, @PathVariable("path") String path, @RequestParam Map<String,String> paramMap){		
 		
 		String homeID = paramMap.get("homeid");
+		setHomeInfo(path, homeID, "reg", model);
 		
+		return "management/home_reg_"+path+".tiles";
+	}
+	
+	/**
+	 * 집 수정하기
+	 * @param model
+	 * @param path
+	 * @param paramMap
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/homeMod/{path}" , method = RequestMethod.GET)
+	public String homeMod(Model model, @PathVariable("path") String path, @RequestParam Map<String,String> paramMap, HttpServletRequest req) {
+		
+		String homeID = paramMap.get("homeid");
+		setHomeInfo(path, homeID, "mod", model);
+		
+		return "management/home_reg_"+path+".tiles";
+	}
+	
+	/**
+	 * 집 등록 또는 수정에 필요한 데이터 세팅
+	 * @param path
+	 * @param homeID
+	 * @param flag    : 집 등록인지 수정인지 상태값
+	 * @param model
+	 */
+	public void setHomeInfo(String path, String homeID ,String flag ,Model model) {
+		
+		//기존에 진행중인 데이터 가져오기 
 		if(!EmptyUtils.isEmpty(homeID)) {
 			
-			HomeInfoDomain homeInfoDomain = managementSerive.getHomeInfoTemp(homeID);
+			HomeInfoDomain homeInfoDomain = null;
+			
+			//등록일때는 HOME_TEMP 테이블에서 가져오고 수정일떄는 HOME테이블에서 가져온다.
+			if(flag.equals("reg")) {
+				homeInfoDomain = managementService.getHomeInfoTemp(homeID);
+			}
+			else if(flag.equals("mod")) {
+				homeInfoDomain = managementService.getHomeInfo(homeID);
+			}
 			model.addAttribute("homeInfo" , homeInfoDomain);
 			
-			if(path.equals("step04")) { 
+			if(path.equals("step04")) {  // 집에서 제공하는 시설 
 				
 				if(!EmptyUtils.isEmpty(homeInfoDomain.getHomeFacility())) {
 					List<String> homeOffer = new ArrayList<>(Arrays.asList(homeInfoDomain.getHomeFacility().split(",")));
 					model.addAttribute("homeOffer",homeOffer);
 				}
 			}
+			else if(path.equals("step02")) { // 집 타입 가공
+				try {
+					String homeType = homeInfoDomain.getHomeType();
+					
+					if(!EmptyUtils.isEmpty(homeType)) {
+						String homeType1 = homeType.split(",")[0];
+						String homeType2 = homeType.split(",")[1];
+						model.addAttribute("home_type1",homeType1);
+						model.addAttribute("home_type2",homeType2);
+					}
+				}catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+					e.printStackTrace();
+				}
+			}
 			else if(path.equals("step05")) { //숙소 이미지 가져오기
-				List<HomeImgInfoDomain> homeImgInfoList = managementSerive.getHomeImgInfo(homeID);
+				List<HomeImgInfoDomain> homeImgInfoList = managementService.getHomeImgInfo(homeID);
 				model.addAttribute("homeImgInfoList", homeImgInfoList);
 			}
 			else if(path.equals("step07")) { // 게스타가 지켜야할 숙소 이용규칙, 알아두어야 할 세부사항 리스트로 만들어서 checked해주기 
@@ -98,7 +177,7 @@ public class ManagementController{
 				}
 			}
 		}
-
+		//단계별 필요한 데이터 가져오기
 		if(path.equals("step02") || path.equals("step04") ||  path.equals("step07")) {
 			
 			Map<String,Object> getCodeDefineParam = new HashMap<String,Object>(); 
@@ -119,11 +198,11 @@ public class ManagementController{
 			List<CodeDomain> homeCodeList = adminService.getCodeDefine(getCodeDefineParam);
 			model.addAttribute("codeList",homeCodeList);
 		}
-
-		model.addAttribute("homeid",homeID);
 		
-		return "management/home_reg_"+path+".tiles";
+		model.addAttribute("homeid",homeID);
+		model.addAttribute("flag",flag);
 	}
+	
 	
 	/**
 	 * 
@@ -138,6 +217,7 @@ public class ManagementController{
 		
 		String resCode = "E001";
 		String homeID = paramMap.get("homeid");
+		String flag = paramMap.get("flag");
 		String address1 = paramMap.get("user_address_1");
 		String address2 = paramMap.get("user_address_2");
 		String postCode = paramMap.get("user_postcode");
@@ -167,7 +247,11 @@ public class ManagementController{
 				homeInfo.setHomeID(homeID);
 				
 				try {
-					managementSerive.updateHomeInfoTemp(homeInfo);
+					if(flag.equals("reg")) {
+						managementService.updateHomeInfoTemp(homeInfo);
+					}else {
+						managementService.updateHomeInfo(homeInfo);
+					}
 					resultMap.put("homeID", homeID);
 					
 				}catch(Exception e) {
@@ -181,7 +265,7 @@ public class ManagementController{
 				homeInfo.setUserID(userDetail.getUser_id());
 				
 				try {
-					managementSerive.insertHomeInfoTemp(homeInfo);
+					managementService.insertHomeInfoTemp(homeInfo);
 					resultMap.put("homeID", generatedKey);
 					
 				}catch (Exception e) {
@@ -206,37 +290,47 @@ public class ManagementController{
 	public Map<String,String> registrationStep2(@RequestParam Map<String,String> paramMap){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
-		String homeType = paramMap.get("home_type");
+		String homeType1 = paramMap.get("home_type1");
+		String homeType2 = paramMap.get("home_type2");
 		String homeRange = paramMap.get("home_range");
 		String isOnlyGuest = paramMap.get("is_only_guest");
 		
 		if(EmptyUtils.isEmpty(homeID)) {
 			resCode = "E002";
 		}
-		else if(EmptyUtils.isEmpty(homeType)) {
+		else if(EmptyUtils.isEmpty(homeType1)) {
 			resCode = "E003";
 		}
-		else if(EmptyUtils.isEmpty(homeRange)) {
+		else if(EmptyUtils.isEmpty(homeType2)) {
 			resCode = "E004";
 		}
-		else if(EmptyUtils.isEmpty(isOnlyGuest)) {
+		else if(EmptyUtils.isEmpty(homeRange)) {
 			resCode = "E005";
 		}
-		
+		else if(EmptyUtils.isEmpty(isOnlyGuest)) {
+			resCode = "E006";
+		}
 		if(resCode.equals("E001")) {
-			
+
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
-			homeInfo.setHomeType(homeType);
 			homeInfo.setHomeRange(homeRange);
 			homeInfo.setHomeIsOnlyGuest(isOnlyGuest);
 			
 			try {
-				managementSerive.updateHomeInfoTemp(homeInfo);
+				String homeType = homeType1.split("/")[2] + "," + homeType2;
+				homeInfo.setHomeType(homeType);
+				
+				if(flag.equals("reg")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
-				resCode = "E005";
+				resCode = "E007";
 			}
 		}
 		Map<String,String> resultMap = new HashMap<>();
@@ -255,6 +349,7 @@ public class ManagementController{
 	public Map<String,String> registrationStep3(@RequestParam Map<String,String> paramMap){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String maxGeople = paramMap.get("max_guest");
 		String bedCount = paramMap.get("bed_count");
@@ -281,7 +376,12 @@ public class ManagementController{
 			homeInfo.setHomeBathroomCnt(Integer.parseInt(bathroomCount));
 			
 			try {
-				managementSerive.updateHomeInfoTemp(homeInfo);
+				if(flag.equals("reg")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}
+				else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				resCode = "E006";
@@ -304,6 +404,7 @@ public class ManagementController{
 	public Map<String,String> registrationStep4(@RequestParam Map<String,String> paramMap, @RequestParam(value = "home_facility", required = false) String[] homeFacility){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String seperatedHomeFacility = "";
 			
@@ -323,9 +424,14 @@ public class ManagementController{
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
 			homeInfo.setHomeFacility(seperatedHomeFacility);
-			logger.info("-------------------------------------- ",homeInfo.getHomeFacility());
+			
 			try {
-				managementSerive.updateHomeInfoTemp(homeInfo);
+				if(flag.equals("reg")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}
+				else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				resCode = "E003";
@@ -380,6 +486,7 @@ public class ManagementController{
 	public Map<String,String> registrationStep6(@RequestParam Map<String,String> paramMap){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String homeName = paramMap.get("home_name");
 		String homeIntroduceMain = paramMap.get("home_introduce_main");
@@ -407,7 +514,12 @@ public class ManagementController{
 			homeInfo.setHomeETCComment(homeIntroduceDetail);
 			
 			try {
-				managementSerive.updateHomeInfoTemp(homeInfo);
+				if(flag.equals("reg")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}
+				else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				resCode = "E003";
@@ -429,6 +541,7 @@ public class ManagementController{
 	public Map<String,String> registrationStep7(@RequestParam Map<String,String> paramMap, HttpServletRequest req, @RequestParam(value = "home_precaution" , required = false) String[] homePrecaution){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String guestRule = "";
 		String precuatuin = "";
@@ -467,7 +580,12 @@ public class ManagementController{
 			homeInfo.setHomePrecaution(precuatuin);
 			
 			try {
-				managementSerive.updateHomeInfoTemp(homeInfo);
+				if(flag.equals("reg")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}
+				else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				resCode = "E003";
@@ -479,6 +597,7 @@ public class ManagementController{
 	}
 	
 	/**
+	 * 8단계
 	 * 예약 가능 날짜 및 요금 설정
 	 * @param paramMap
 	 * @param req
@@ -490,6 +609,7 @@ public class ManagementController{
 	public Map<String,String> registrationStep8(@RequestParam Map<String,String> paramMap){
 		
 		String resCode = "E001";
+		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String reservAvailableDay = paramMap.get("reserv_date");
 		String strPeakSeasonPay = paramMap.get("peak_season_pay");
@@ -517,7 +637,6 @@ public class ManagementController{
 			homeInfo.setHomeID(homeID);
 			
 			try {
-				
 				reservAvailableStartDay = reservAvailableDay.split("~")[0];
 				reservAvailableEndDay = reservAvailableDay.split("~")[1];
 				peakSeasonPay = Integer.parseInt(strPeakSeasonPay.replaceAll(",", ""));
@@ -528,17 +647,55 @@ public class ManagementController{
 				homeInfo.setHomeAvailableReservStartDay(reservAvailableStartDay);
 				homeInfo.setHomeAvailableReservEndDay(reservAvailableEndDay);
 				homeInfo.setHomeRegStep("02");
-				managementSerive.lastRegStepHomeInfoTemp(homeInfo);
 				
+				if(flag.equals("reg")) {
+					managementService.lastRegStepHomeInfoTemp(homeInfo);
+				}
+				else {
+					managementService.updateHomeInfo(homeInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				resCode = "E006";
 			}
 		}
-		
 		Map<String,String> resultMap = new HashMap<>();
 		resultMap.put("resCode", resCode);
 		return resultMap;
 	}
+	
+	/**
+	 * 등록된 집 이미지 삭제
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/removeHomeImg", method = RequestMethod.POST , produces = "application/json;charset=utf-8" )
+	public Map<String,String> removeHomeImg(@RequestParam Map<String,String> paramMap){
+		
+		String resCode = "E001";
+		String imgKey = paramMap.get("imgKey");
+		
+		if(EmptyUtils.isEmpty(imgKey)) {
+			resCode = "E002";
+		}
+		else {
+			HomeImgInfoDomain imgInfo = new HomeImgInfoDomain();
+			imgInfo.setHomeImgKey(imgKey);
+			imgInfo.setDelYN("Y");
+			
+			try {
+				managementService.updateHomeImg(imgInfo);
+			}catch (Exception e) {
+				e.printStackTrace();
+				resCode = "E003";
+			}
+		}
+		Map<String,String> resMap = new HashMap<>();
+		resMap.put("resCode", resCode);
+		
+		return resMap;
+	}
 }
+
 

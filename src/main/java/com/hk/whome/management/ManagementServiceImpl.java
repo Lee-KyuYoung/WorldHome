@@ -1,6 +1,7 @@
 package com.hk.whome.management;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,31 @@ public class ManagementServiceImpl implements ManagementService{
 	public List<HomeImgInfoDomain> getHomeImgInfo(String homeID) {
 		return managementDAO.getHomeImgInfo(homeID);
 	}
+
+	@Override
+	public List<HomeInfoDomain> getHomeInfoTempList(Map<String, String> paramMap) {
+		return managementDAO.getHomeInfoTempList(paramMap);
+	}
+
+	@Override
+	public void updateHomeImg(HomeImgInfoDomain homeImgInfo) {
+		managementDAO.updateHomeImg(homeImgInfo);
+	}
+
+	@Override
+	public void updateHomeInfo(HomeInfoDomain homeInfo) {
+		managementDAO.updateHomeInfo(homeInfo);
+	}
+
+	@Override
+	public HomeInfoDomain getHomeInfo(String homeID) {
+		return managementDAO.getHomeInfo(homeID);
+	}
+
+	@Override
+	public List<HomeInfoDomain> getHomeInfoList(Map<String, String> paramMap) {
+		return managementDAO.getHomeInfoList(paramMap);
+	}
+
 	
 }

@@ -12,6 +12,7 @@
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
+		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 
 	</style>
@@ -20,7 +21,7 @@
 		
 		<h4 class="progress_info">3단계 : 숙소 인원 및 침실, 욕실</h4>
 		<div class="progress">
-	  		<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+	  		<div class="progress-bar" role="progressbar" style="width: 35%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">35%</div>
 		</div>
 	
 		<div class="row">
@@ -54,7 +55,7 @@
 						    </div>
 					    </div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom20">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_3_btn">
@@ -65,6 +66,7 @@
 						</div>
 					</div>
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
+					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
 			</div>
 		</div>
@@ -84,8 +86,11 @@
 					type : 'POST',
 					data : reg_step3,
 					success : function(result){
-						alert(result.resCode);
-						location.href = '<c:url value="/management/homeReg/step04?homeid='+homeid+'"/>'
+						if('${flag}' == 'reg'){
+							location.href = '<c:url value="/management/homeReg/step04?homeid='+homeid+'"/>'
+						}else{
+							location.href = '<c:url value="/management/homeMod/step04?homeid='+homeid+'"/>'
+						}
 					}, 
 					error : function(xhr , status , error){
 						alert(error);

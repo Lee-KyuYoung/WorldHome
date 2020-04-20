@@ -255,6 +255,9 @@
 //				});
 		 });
 	
+		 $('#login_btn').on('click',function(){
+			 location.href = getContextPath()+"/login";
+		 });
 	});
 		 
 		 

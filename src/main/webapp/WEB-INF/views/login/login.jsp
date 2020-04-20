@@ -34,7 +34,7 @@
 				<input type="password" class="form-control" id="user_password" name="user_password" placeholder="PASSWORD" onkeydown="if(event.keyCode==13) loginProcess();">
 			</div>
 			<div class="row">
-				<input type="button" class="btn btn-outline-secondary btn-block submit" value ="Login">
+				<input type="button" class="btn btn-secondary btn-block submit" value ="Login">
 			</div>
 			<div class="row">
 				<font class = "login_invalid">
@@ -54,7 +54,7 @@
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
 		</form>
 		<div class="modal fade" id="id_find_modal">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 		      		<!-- Modal Header -->
 					<div class="modal-header" style="background-color:#2e314f">
