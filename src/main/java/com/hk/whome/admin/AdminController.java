@@ -48,49 +48,10 @@ public class AdminController {
 	public String codeManageMent(Model model , @RequestParam Map<String,String> paramMap ) {
 		
 		List<CodeDomain> codeList = adminService.getCodeDefine(null);
-		
 		model.addAttribute("codeList",codeList);
 		
 		return "admin/admin_code_management";
 	}
-	
-	/**
-	 * 코등 등록
-	 * @param paramMap
-	 * @return
-	 */
-//	@ResponseBody
-//	@RequestMapping(value = "/insertCode", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-//	public Map<String,String> insertCode(@RequestParam Map<String,String> paramMap) {
-//		
-//		String resCode = "E001";
-//		String codeName = paramMap.get("code_name");
-//		String codeMent = paramMap.get("code_ment");
-//		
-//		String getKeySep = whomeUtilDAO.getKeySep();
-//		String generatedKey = selectKeySeq.selectSeqKey(getKeySep); 
-//		
-//		CodeDomain codeDomain = new CodeDomain();
-//		codeDomain.setCodeKey(generatedKey);
-//		codeDomain.setCodeColName("KEY_SEP");
-//		codeDomain.setCodeNum(getKeySep);
-//		codeDomain.setCodeName(codeName);
-//		codeDomain.setCodeComment(codeMent);
-//		
-//		logger.info(codeDomain.toString());
-//		
-//		try {
-//			adminService.insertCodeDefine(codeDomain);
-//		}catch (Exception e) {
-//			resCode = "E002";
-//			e.printStackTrace();
-//		}
-//
-//		Map<String,String> resMap = new HashMap<>();
-//		resMap.put("resCode", resCode);
-//		
-//		return resMap;
-//	}
 	
 	/**
 	 * 코드 등록
@@ -113,7 +74,8 @@ public class AdminController {
 		//메인 카테고리 등록 시 SEQ_KEY 테이블에 새로운 SEQ발급
 		if(!EmptyUtils.isEmpty(path) && path.equals("main")) { 
 			getKeySep = whomeUtilDAO.getKeySep();
-		}else {
+		}
+		else {
 			try {
 				getKeySep = cateInfo.split("/")[0];
 				cateGroupKey = cateInfo.split("/")[1];
@@ -123,7 +85,7 @@ public class AdminController {
 				resCode = "E002";
 			}
 		}
-
+		
 		if(resCode == "E001") {
 			
 			String generatedKey = selectKeySeq.selectSeqKey(getKeySep); 
@@ -148,9 +110,6 @@ public class AdminController {
 			//등록한 HomeKey Session 저장
 			req.getSession().setAttribute("homeID", generatedKey);
 		}
-		
-		
-		
 		Map<String,String> resMap = new HashMap<>();
 		resMap.put("resCode", resCode);
 		

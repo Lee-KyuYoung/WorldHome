@@ -302,16 +302,12 @@ public class UserController {
 		if(resCode == "") {
 			
 			try {
-				
 				//임시비번 발급
 				int randomPw = ((int)(Math.random()*999999)+1);
 				
 				UserInfoDomain userInfo = new UserInfoDomain();
 				userInfo.setUserId(userId);
 				userInfo.setUserPw(passwordEncoder.encode(String.valueOf(randomPw)));
-				
-				logger.info("발급한 비번    :::::::::::::  "+randomPw);
-				logger.info("암호화된 비번  :::::::::::::  "+passwordEncoder.encode(String.valueOf(randomPw)));
 				
 				//비번 업데이트
 				userService.updateUserInfo(userInfo);

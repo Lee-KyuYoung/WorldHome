@@ -9,16 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.hk.whome.security.CustomUserDetails;
-
 
 @Controller
 public class loginController {
 
-
-	@Autowired
-	private LoginService loginService;
-	
+	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(loginController.class);
 
 	/**

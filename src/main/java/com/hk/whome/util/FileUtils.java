@@ -58,7 +58,8 @@ public class FileUtils {
 				HomeImgInfoDomain homeImgInfoDomain = new HomeImgInfoDomain();
 				homeImgInfoDomain.setHomeImgKey(imgKey);
 				homeImgInfoDomain.setHomeID(homeID);
-				homeImgInfoDomain.setHomeImgPath(path+fileName);
+//				homeImgInfoDomain.setHomeImgPath(path+fileName);
+				homeImgInfoDomain.setHomeImgPath(fileName);
 				homeImgInfoDomain.setHomeImgOrder(i + 1);
 				
 				if(i == 0) {

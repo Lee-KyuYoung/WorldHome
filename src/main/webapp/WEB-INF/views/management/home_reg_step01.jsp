@@ -17,7 +17,7 @@
 		#load_map_wrapper{display:none;} 
  		#load_map{width:100%;height:300px;} 
  		.info_p{margin:20 0 5 0;font-size:16px;color:red;font-weight:bold}
-
+		.margin-bottom100{margin-bottom:100px;}
 	</style>
 <body>
 	<div class="container">
@@ -61,7 +61,7 @@
 							</div>
 						</div>
 					</div>
-					<div class = "row margin-top20">
+					<div class = "row margin-top20 margin-bottom100">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_1_btn">
@@ -71,6 +71,7 @@
 							</div>
 						</div>
 					</div>
+					<input type="hidden" name="sigungu" id = "sigungu">
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 					<input type="hidden" name="flag" id = "flag" value="${flag}">
 				</form>
@@ -161,6 +162,7 @@
 		                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
 		                }
 		
+		                $('#sigungu').val(data.sido+" "+data.sigungu)
 		                $('#'+addr_field_1).val(fullAddr);
 		                $('#'+postcode_field).val(data.zonecode);
 		                $('#'+addr_field_2).focus();

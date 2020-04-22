@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ include file="header.jsp"%>
 <%String cc = request.getContextPath(); %>
 	<div class="main_space">
 		<div class="main_left_img">

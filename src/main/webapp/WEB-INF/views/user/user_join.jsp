@@ -135,6 +135,7 @@
 			</div>
 			<input type="hidden" id = "scrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
+		<div style="height:1000px;"></div>
 	</div>
 	<script src="<%=contextPath %>/resources/jquery/dev/user_info.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>

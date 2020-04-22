@@ -2,6 +2,7 @@ package com.hk.whome.main;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,21 +19,18 @@ public class MainServiceImpl implements MainService{
 
 	
 	@Override
-	public List selectImgList(HomeListDomain homeListDomain) {
-		List aa = mainDAO.selectImgList(homeListDomain);
-		return aa;
+	public List<Map<String,Object>> selectImgList(HomeListDomain homeListDomain) {
+		return mainDAO.selectImgList(homeListDomain);
 	}
 
-
 	@Override
-	public HashMap selectDetailHome(String homeId) {
-		// TODO Auto-generated method stub
-		HashMap homeIdMap = new HashMap();
+	public Map<String,Object> selectDetailHome(String homeId) {
+
+		HashMap<String,String> homeIdMap = new HashMap<>();
 		homeIdMap.put("homeId", homeId);
 		
 		return mainDAO.selectDetailHome(homeIdMap);
 	}
-
 
 	@Override
 	public List selectPostscriptList(HashMap postscriptListParam) {

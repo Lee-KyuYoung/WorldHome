@@ -13,6 +13,7 @@
 <body>
 	<div class="container">
 		<form class ="form-signin" id = "user_info_modify_form">
+			<h3>회원 정보 수정</h3>
 			<table class ="table table-bordered">
 				<caption><spring:message code="join.info.J102"/></caption><!-- 회원 이용정보 -->
 				<colgroup>
@@ -90,6 +91,7 @@
 			</div>
 			<input type="hidden" id = "scrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
+		<div style="height:900px;"></div>
 	</div>
 	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
 	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>

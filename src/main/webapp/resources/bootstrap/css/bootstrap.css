@@ -6529,10 +6529,12 @@ a.close.disabled {
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: no-repeat 50% / 100% 100%;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: no-repeat 50%/100% 60%;
+    border-radius: 50%;
+    background-color: black;
 }
 
 .carousel-control-prev-icon {

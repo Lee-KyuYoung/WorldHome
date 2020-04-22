@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"  pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-	<header>
+<style>
+	.navbar-custom li{font-size:14px;color:rgb(113, 113, 113);cursor:pointer;}
+	.navbar-custom ul{border-radius:15px;box-shadow: 2px 2px 4px #f2f2f2;-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s; }
+	.navbar-custom ul:hover{box-shadow:4px 4px 12px rgba(0, 0, 0, 0.1);}
+	.navbar-custom li:first-child{border-radius:15px 0px 0px 15px !important}
+	.navbar-custom li:last-child{border-radius:0px 15px 15px 0px !important}
+	.navbar{border-bottom:2px solid #f2f2f2;height:80px; padding:0px 30px 0px 30px;}
+	.navbar-nav a{color:#4d4d4d;font-weight:600}
+	.wh_font{color:#FF385C;font-size:23px;font-weight:1000}
+	.wh_font:hover{color:#FF385C;}
+</style>
 <!-- 		<nav class="navbar navbar-expand-sm bg-light navbar-light"> -->
 <%-- 			<div class = "homeLogo"><a href = "<c:url value ='/'/>"><img src= "\whome\resources\img\homeMark.png" width="50px" height="50px"></a></div> --%>
 <!-- 			<ul class="navbar-nav"> -->
@@ -13,26 +23,23 @@
 <!-- 			</ul> -->
 <!-- 		</nav> -->
 
-		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-		  <a class="navbar-brand" href="<c:url value ='/'/>" target="_blank">
-		    <img src="\whome\resources\img\homeMark.png" style="width:50px;height:50px;"/>
+		<nav class="navbar navbar-expand-md">
+		  <a class="navbar-brand wh_font" href="<c:url value ='/'/>">
+<!-- 		    <img src="\whome\resources\imgFile\wh_icon.png" style="width:50px;height:50px;"/> -->
+		    <font>World Home</font>
 		  </a>
-		  <div class="collapse navbar-collapse order-last order-md-0" id="collapsibleNavbar">
-		    <ul class="navbar-nav" data-target="#myModal" data-toggle="modal">
-		      <li class="nav-item active">
-		        <a class="nav-link" href="#">여행지 추가</a>
-		      </li>
-		      <li class="nav-item active">
-		        <a class="nav-link" href="#">날짜추가</a>
-		      </li>
-		      <li class="nav-item active">
-		        <a class="nav-link" href="#">게스트 추가</a>
-		      </li>
-		    </ul>
+		  <div class="collapse navbar-collapse order-last order-md-0 navbar-custom" id="collapsibleNavbar">
+			<ul class="navbar-nav list-group list-group-horizontal">
+			  <li class="list-group-item">여행지 추가</li>
+			  <li class="list-group-item">날짜 추가</li>
+			  <li class="list-group-item">게스트 추가</li>
+			  <li class="list-group-item"><i class="fas fa-search" style="color:#FF385C"></i></li>
+			</ul>
 		  </div>
-		<div class = "btn-toolbar float-right">
+		<div class = "float-right">
 			<c:choose>
 				<c:when test = "${empty sessionScope.user_info}">
+					<input type = "button" class = "btn btn-light" value = "회원가입" id="login_btn" onclick = "location.href='<c:url value="/user/join"/>'">
 					<input type = "button" class = "btn btn-light" value = "로그인" id="login_btn" onclick = "location.href='<c:url value="/login"/>'">
 				</c:when>
 				<c:otherwise>
@@ -52,9 +59,7 @@
 				</c:otherwise>	
 			</c:choose>
 		</div>
-		</nav>
-
-	</header>
+	</nav>
 	<!-- The Modal -->
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog nav-modal">
@@ -133,4 +138,26 @@
 			</div>
 		</div>
 	</div>
+<!-- 	<script> -->
+<!-- // 		$(document).ready(function(){ -->
+			
+<!-- // 			$(window).resize(function(){ -->
+<!-- // 				var width = $(window).width(); -->
+<!-- // 				console.log(width); -->
+<!-- // 				if(width <= 600){ -->
+<!-- // 					$('.navbar').css('padding','0px 20px 0px 20px'); -->
+<!-- // 				}else if(width <= 1000){ -->
+<!-- // 					$('.navbar font').text('WH'); -->
+<!-- // 					$('.navbar').css('padding','0px 60px 0px 60px'); -->
+<!-- // 				}else if(width <= 1600){ -->
+<!-- // 					$('.navbar font').text('World Home'); -->
+<!-- // 					$('.navbar').css('padding','0px 100px 0px 100px'); -->
+<!-- // 				}else{ -->
+<!-- // 					$('.navbar').css('padding','0px 120px 0px 120px'); -->
+<!-- // 				} -->
+<!-- // 			}); -->
+			
+<!-- // 		}); -->
+		
+<!-- 	</script> -->
 	<!-- Modal Header end-->

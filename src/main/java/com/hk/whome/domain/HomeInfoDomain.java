@@ -33,8 +33,15 @@ public class HomeInfoDomain {
 	private Timestamp homeRegData;
 	private String homeIsOnlyGuest;
 	private String homeRange;
+	private String sigungu;
 
 	
+	public String getSigungu() {
+		return sigungu;
+	}
+	public void setSigungu(String sigungu) {
+		this.sigungu = sigungu;
+	}
 	public String getHomeAvailableReservStartDay() {
 		return homeAvailableReservStartDay;
 	}

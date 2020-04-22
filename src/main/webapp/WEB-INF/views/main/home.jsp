@@ -4,30 +4,8 @@
 
 	<div class="container-fluid" id="imgList"></div>
 
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
-
 	<script>
-	
-		 $(document).ready(function(){
-			 	const csrf_token = $('#csrf_token').val();
-				$.ajax({
-					url : '<c:url value="/homeList"/>',
-					type : "post",
-					data: { '_csrf' : csrf_token },
-					success : function(data){
-							bodyAppend(data);
-						},
-										error : function(a, c) {
-											alert("에러다");
-										}
-									});
-				
-				
-						$("#closeBut01").hide();
-						$("#closeBut02").hide();
-				
-			});
-		 
+
 	 	 //집 이미지 선택 -> 상세화면 호출
 		 $(document).on("click", ".imgFile", function(){
 			 location.href ='detailHome?homeId='+$(this).attr("name");
@@ -171,18 +149,19 @@
 
 
 $(document).ready(function(){
- 	const csrf_token = $('#csrf_token').val();
+
 	$.ajax({
 		url : "<%=contextPath%>/homeList",
 		type : "post",
-		data: {'_csrf' : csrf_token },
 		success : function(data){
 				//숙소 조회 후 화면 구성
 				bodyAppend(data);
-				
-			},
+		},
 		error : function(a, c) {
 			alert("에러다");
+		},
+		beforeSend : function(xhr){
+			 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 		}
 	});
 		$("#closeBut01").hide();
@@ -213,7 +192,7 @@ $(document).ready(function(){
 			    
 				if(pastHomeId == ''){
 					str +='<div class ="celBody"  style="cursor:pointer;">'
-						    +'<div id="IMG'+homeId+'" class="carousel slide" data-ride="carousel">'
+						    +'<div id="IMG'+homeId+'" class="carouselslide" data-ride="carousel">'
 							+'<ul class="carousel-indicators">'
 						    +'<li data-target="#IMG'+homeId+'" data-slide-to="0" class="active"></li>'
 						    +'<li data-target="#IMG'+homeId+'" data-slide-to="1"></li>'
@@ -238,7 +217,7 @@ $(document).ready(function(){
 							+'</div>'
 							+'</div>'
 					str += '<div class ="celBody" style="cursor:pointer;">'
-						+'<div id="IMG'+homeId+'" class="carousel slide" data-ride="carousel">'
+						+'<div id="IMG'+homeId+'" class="carouselslide" data-ride="carousel">'
 						+'<ul class="carousel-indicators">'
 					    +'<li data-target="#IMG'+homeId+'" data-slide-to="0" class="active"></li>'
 					    +'<li data-target="#IMG'+homeId+'" data-slide-to="1"></li>'
@@ -252,13 +231,13 @@ $(document).ready(function(){
 				if(HomeGubun == 0){
 					str +='<div class="carousel-inner">'
 				    +'<div class="carousel-item active">'
-				    +'<img class ="imgFile" name="'+homeId+'" src="'+"<%=contextPath%>"+homeImgPath+'" >'
+				    +'<img class ="imgFile" name="'+homeId+'" src="/img/'+homeImgPath+'" >'
 				    +'</div>'
 				    
 			        HomeGubun++;
 				}else{
 					str +='<div class="carousel-item">'
-						+'<img class ="imgFile" name="'+homeId+'" src="'+"<%=contextPath%>"
+						+'<img class ="imgFile" name="'+homeId+'" src="/img/'
 																+ homeImgPath
 																+ '" >'
 																+ '</div>'

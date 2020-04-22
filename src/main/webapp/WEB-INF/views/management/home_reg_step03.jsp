@@ -14,7 +14,7 @@
 		.margin-top20{margin-top:20px;}
 		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
-
+		.margin-bottom100{margin-bottom:100px;}
 	</style>
 <body>
 	<div class="container">
@@ -55,7 +55,7 @@
 						    </div>
 					    </div>
 					</div>
-					<div class = "row margin-top20 margin-bottom20">
+					<div class = "row margin-top20 margin-bottom100">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_3_btn">

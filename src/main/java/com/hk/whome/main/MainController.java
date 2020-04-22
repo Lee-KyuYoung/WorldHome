@@ -41,9 +41,72 @@ public class MainController {
 		return "error/"+page;
 	}
 	
+	/**
+	 * 메인 화면 
+	 * @param model
+	 * @param locale
+	 * @param homeData
+	 * @return
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(Model model, Locale locale, HomeListDomain homeData) {
-		return "main/home.tiles";
+	public String main(Model model, Locale locale, HomeListDomain homeData, @RequestParam Map<String,String> paramMap) {
+		
+		String message = paramMap.get("message");
+		
+		List<Map<String,Object>> homeList = new ArrayList<>();
+		HomeListDomain homeListDomain = new HomeListDomain();
+		
+		try {
+			homeList = mainService.selectImgList(homeListDomain);
+			
+			for(Map<String,Object> m : homeList) {
+				String[] tempHomeImg = ((String)m.get("HOME_IMG")).split(","); 
+				m.put("HOME_IMG", tempHomeImg);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("homeList",homeList);
+		model.addAttribute("message",message);
+		
+		return "main/home_main.tiles";
+	}
+	
+	/**
+	 * 등록된 집 상세 보기
+	 * @param model
+	 * @param paramMap
+	 * @return
+	 */
+	@RequestMapping(value = "/homeDetail")
+	public String homeDetail(Model model, @RequestParam Map<String,String> paramMap) {
+		
+		String homeId = paramMap.get("homeId");
+		String errorCode = "";
+		
+		if(EmptyUtils.isEmpty(homeId)) {
+			errorCode = "E101";
+		}
+		if(errorCode.equals("")) {
+			
+			try {
+				Map<String,Object> homeDetailInfo = mainService.selectDetailHome(homeId);
+			
+			if(EmptyUtils.isEmpty(homeDetailInfo)) {
+				errorCode = "E102";
+			}
+			else {
+				model.addAttribute("homeDetailInfo" , homeDetailInfo);
+			}
+			}catch (Exception e) {
+				e.printStackTrace();
+				errorCode ="E103";
+			}
+		}
+		model.addAttribute("errorCode", errorCode);
+		
+		return "main/home_detail.tiles";
 	}
 	
 	@RequestMapping(value = "/detailHome", method = RequestMethod.GET)
@@ -52,11 +115,11 @@ public class MainController {
 		
 		String homeId = req.getParameter("homeId");
 		
-		HashMap detailMap = mainService.selectDetailHome(homeId);
+		Map<String,Object> detailMap = mainService.selectDetailHome(homeId);
 		/* model.addAttribute("detailMap", detailMap); */
 		System.out.println("::::::::::::"+detailMap);
 		model.addAttribute("detailMap",detailMap);
-		return "main/detailHome";
+		return "main/detailHome.tiles";
 	}
 	
 	@ResponseBody
@@ -84,8 +147,8 @@ public class MainController {
 	public List homeList(@RequestParam Map<String,String> paramMap, Locale locale) {
 		System.out.println("good");
 		
-		List<HashMap> homeList = new ArrayList<HashMap>();
-		HashMap homeMap = new HashMap();
+		List<Map<String,Object>> homeList = new ArrayList<>();
+//		Map<String,String> homeMap = new HashMap();
 		HomeListDomain homeListDomain = new HomeListDomain();
 		String homeAdd = paramMap.get("homeAdd");
 		String homeDateIn = paramMap.get("homeDateIn");

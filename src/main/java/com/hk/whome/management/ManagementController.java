@@ -221,7 +221,7 @@ public class ManagementController{
 		String address1 = paramMap.get("user_address_1");
 		String address2 = paramMap.get("user_address_2");
 		String postCode = paramMap.get("user_postcode");
-		
+		String sigungu = paramMap.get("sigungu");
 		
 		CustomUserDetails userDetail = ((CustomUserDetails)req.getSession().getAttribute("user_info"));
 		Map<String,String> resultMap = new HashMap<>();
@@ -240,7 +240,8 @@ public class ManagementController{
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeAddr1(address1.trim());
 			homeInfo.setHomeAddr2(address2.trim());
-			homeInfo.setHomePostCode(postCode.trim());			
+			homeInfo.setHomePostCode(postCode.trim());	
+			homeInfo.setSigungu(sigungu);
 
 			if(!EmptyUtils.isEmpty(homeID)){ //homeID가 있을경우 업데이트 없으면 신규 INSERT
 

@@ -14,6 +14,7 @@
 		.margin-top20{margin-top:20px;}
 		.margin-top10{margin-top:10px;}
 		.margin-bottom20{margin-bottom:20px;}
+		.margin-bottom100{margin-bottom:100px;}
 		.content{margin:0 auto;}
 		.img_view{width:100%;height:200px;border:2px dashed #c2c2d6;border-radius:5px;margin-top:20px;background-image:url('../../resources/imgFile/img_upload.png');background-size:30% 45%;background-repeat:no-repeat;background-position:center center;}
 		.img_view:hover{cursor:pointer;border-color:black; -webkit-transform:scale(1.05); -moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05); transform:scale(1.05);}
@@ -34,7 +35,7 @@
 					<div class="row" id="img_group">
 						<c:forEach var = "list" items = "${homeImgInfoList}" varStatus="status">
 							<div class = "col-md-6 margin-top20">
-								<label class="img_view" for="img_file_${status.index+1}" id="test" style = "background-image:url();background-size:100%,100%;border:0px;">
+								<label class="img_view" for="img_file_${status.index+1}" id="test" style = "background-image:url('/img/${list.homeImgPath}');background-size:cover;border:0px;">
 									<input type = "button" class = "btn btn-danger" value = "삭제" onclick="deleteHomeDetailImg(this,${list.homeImgKey})">
 									<input type="file" id="img_file_${status.index+1}" name="home_detail_img" accept="image/*" onchange="imgView(this)">
 								</label>
@@ -46,7 +47,7 @@
 							</label>
 						</div>
 					</div>
-					<div class = "row margin-top20 margin-bottom20">
+					<div class = "row margin-top20 margin-bottom100">
 						<div class="col-sm-12">
 							<div class = "btn-toolbar float-left">
 								<input type = "button" class = "btn btn-secondary" value = "뒤로" id="prev_step_5_btn">
