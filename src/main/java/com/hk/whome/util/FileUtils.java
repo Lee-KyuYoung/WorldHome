@@ -1,10 +1,14 @@
 package com.hk.whome.util;
 
 import java.io.File;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.whome.domain.HomeImgInfoDomain;
 
@@ -30,14 +34,14 @@ public class FileUtils {
 	}
 	
 	/**
-	 * 파일 업로드
+	 * 숙소 이미지 등록
 	 * @param files
 	 * @param path
 	 * @param surfix
 	 * @return
 	 * @throws Exception
 	 */
-	public void uploadFiles(MultipartFile[] files, String path, String homeID) throws Exception{
+	public void uploadHomeImg(MultipartFile[] files, String path, String homeID) throws Exception{
 
 		for(int i = 0; i < files.length; i ++) {
 			
@@ -71,5 +75,31 @@ public class FileUtils {
 				whomeUtileDAO.insertImgInfo(homeImgInfoDomain);
 			}
 		}
+	}
+	
+	/**
+	 * 유저 이미지 업로드
+	 * @param mreq
+	 * @param userID
+	 * @param req
+	 * @return
+	 * @throws Exception
+	 */
+	public String uploadUserImg(MultipartHttpServletRequest mreq , String userID , HttpServletRequest req) throws Exception {
+		
+		String imgName = "";
+		
+		MultipartFile userImg = mreq.getFile("user_img");
+		if(userImg !=null && !userImg.getOriginalFilename().equals("")) {
+
+			String originName = userImg.getOriginalFilename();
+			String path = req.getSession().getServletContext().getRealPath("/resources/imgFile/user/");
+			String extension = originName.substring(originName.lastIndexOf("."), originName.length());
+			imgName = UUID.randomUUID().toString() + "_" + userID + extension;
+			
+			File file = new File(path+imgName);
+			userImg.transferTo(file);
+		}
+		return imgName;
 	}
 }

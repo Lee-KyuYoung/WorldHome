@@ -10,11 +10,11 @@
 	<title>WorldHome</title>
 	<style type="text/css">
 		.container-fluid{width:100%}
-		.home_list{border: 0px solid black; height:350px;margin:0px 10px 40px 10px;padding:0px;}
-		.row{margin-top:30px; text-align:center;}
+		.home_list{border: 0px solid black; height:350px;margin:0px 10px 10px 10px;padding:0px;}
+		.row{margin-top:20px; text-align:center;}
 		.home_info_p1{margin-bottom:3px; font-size:15px; color:#717171;}
 		.home_info_p2{margin-bottom:3px; font-size:16px; font-weight:bold; color:black;}
-		.home_img{width:100%;height:250px;margin-bottom:10px;border-radius:10px;}
+		.home_img{width:100%;height:210px;margin-bottom:10px;border-radius:10px;}
  		.carousel-control-prev-icon,.carousel-control-next-icon {display: inline-block;width: 30px;height: 30px;background: no-repeat 50%/100% 60%;border-radius: 50%;background-color: black;} 
   		.carousel-control-prev-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5L4.25 4l2.5-2.5L5.25 0z'/%3e%3c/svg%3e");} 
  		.carousel-control-next-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e");} 
@@ -63,11 +63,11 @@
 					</div>
 					<p class="home_info_p2">
 						<c:choose>
-							<c:when test = "${fn:length(list.HOME_COMM) gt 20}">
-								${fn:substring(list.HOME_COMM,0,20)}...		
+							<c:when test = "${fn:length(list.HOME_TITLE) gt 20}">
+								${fn:substring(list.HOME_TITLE,0,20)}...		
 							</c:when>
 							<c:otherwise>
-								${list.HOME_COMM}
+								${list.HOME_TITLE}
 						</c:otherwise>
 						</c:choose>
 					</p>

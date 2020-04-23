@@ -135,6 +135,7 @@ FROM TBL_HOME_INF E
 			      ,A.HOME_ADD_1       /*집 주소*/
 			      ,A.HOME_ADD_2       /*집 나머지 주소*/
 			      ,A.HOME_COMM      /*집 설명*/
+			      ,A.HOME_TITLE
 			      ,A.HIGH_AMT       /*성수기 가격*/
 			      ,A.ROW_AMT        /*비성수기 가격*/
 			      ,A.HOME_RSV_CNT   /*예약수*/

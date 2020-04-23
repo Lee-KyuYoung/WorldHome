@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=utf-8" %>
+<%@ page contentType="text/html; charset=utf-8" %>	
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
 <%@ page session="true" %>
@@ -9,15 +9,9 @@
 	<link href = "<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<%=contextPath%>/resources/css/dev/user_info.css" rel="stylesheet">
 	<style>
-		.form-signin{position:absolute;right:50%;transform:translate(50%);width:750px;border:2px solid #6c757d; padding:30px; border-radius:10px; box-sizing: border-box;margin-top:30px;margin-bottom:30px;}
-		.form-signin caption{caption-side: top;font-size:0.8em;border-bottom:1px solid black;}
-		.form-signin th{background-color:#f4f4f7; font-size:0.9em; color:#6c757d;border-bottom:1px solid #dee2e6}
-		.form-signin td{border-bottom:1px solid #dee2e6;}
-		.data_role{font-size:0.75em;color:#6c757d;}
-		.join_custom_group > div > input , select{width:121px !important;}
-		.form-signin > input[type="text"]{font-size:0.8em !important;}
-		input::placeholder{font-size:0.8em;color:#6c757d;}
-		.invalid_data{color:red;margin-top:5px;margin-bottom:0px;font-size:0.75em;}
+	.img_view{width:50%;height:200px;border:2px dashed #c2c2d6;border-radius:5px;margin-top:20px;background-image:url('../resources/imgFile/img_upload.png');background-size:30% 45%;background-repeat:no-repeat;background-position:center center;}
+	.img_view:hover{cursor:pointer;border-color:black; -webkit-transform:scale(1.05); -moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05); transform:scale(1.05);}
+	input[type="file"]{width:100%;display:none};
 	</style>
 </head>
 <body>
@@ -127,15 +121,37 @@
 					</tr>
 				</tbody>
 			</table>
+			<table class="table">
+				<caption>기타정보(선택사항)</caption>
+				<colgroup>
+					<col style="width:100px;">
+					<col style="width:300px;">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th class="align-middle">프로필 사진</th> 
+						<td>
+							<label class="img_view" for="user_img" id="test">
+								<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)">
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th class="align-middle">자기소개</th>
+						<td>
+							<textarea class = "form-control" rows="4" name = "user_introduce"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<div class="btn-toolbar float-right">
 				<div class="btn-group mr-2">
 					<input type="button" class="btn btn-outline-secondary" id = "join_btn" value="<spring:message code='common.info.I002'/>">
 				</div>
 				<input type="button" class="btn btn-outline-secondary" id = "cancel_btn" value="<spring:message code='common.info.I003'/>">			
 			</div>
-			<input type="hidden" id = "scrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
-		<div style="height:1000px;"></div>
+		<div style="height:1400px;"></div>
 	</div>
 	<script src="<%=contextPath %>/resources/jquery/dev/user_info.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -184,7 +200,35 @@
 				$('[role="user_phone"]').text('<spring:message code="join.info.J213"/>');
 			}	
 		});
-		
+
+		//아이디 중복 체크
+		$('#user_id').on('blur',function(){
+			
+			var user_id = $('#user_id').val();
+			var obj = $('[role="user_id"]');
+
+			if(user_id != ''){
+				$.ajax({
+					url : './userIDCheck',
+					data : {'user_id' : user_id },
+					type : 'post',
+					success : function(result){
+						$(obj).text('');
+						if(result.resCode == 'E001'){
+							$(obj).css('color','red').text(result.resMessage);
+						}else{
+							$(obj).css('color','green').text(result.resMessage);	
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					},
+					beforeSend : function(xhr){
+						xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					},
+				})
+			}
+		});	
 		
 		//회원가입 데이터 유효성 체크
 		$('#join_btn').on('click',function(){
@@ -269,13 +313,14 @@
 			};
 
 			if(invalid_check){
-				
-				var user_data = $('#join_form').serialize();
-				
+
+				var user_data = new FormData($('#join_form')[0]);
 				$.ajax({
 					url : '<%=contextPath%>/user/joinProcess',
 					type : 'POST',
 				 	data : user_data,
+					processData : false,
+					contentType : false,
 				 	success : function(result){
 				 		alert(result.resMessage);
 				 		if(result.resCode == 'E001'){
@@ -284,11 +329,28 @@
 				 	},
 				 	error : function(jqXHR, textStatus, errorThrown){
 						alert(errorThrown);					 		
-				 	}
+				 	},
+				 	beforeSend : function(xhr){
+				 		$('#spinner').show();
+						xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					},
+					complete : function(){
+						$('#spinner').hide();
+					}
 				});
 			}
 		});
 	});
+	
+	//이미지 미리보기
+	function imgView(f){
+		var file = f.files; 
+		var reader = new FileReader(); 
+		reader.onload = function(rst){
+			$(f).parent().css('background-image','url('+rst.target.result+')').css('background-size','100% 100%').css('border','0px');
+		}
+		reader.readAsDataURL(file[0]); 
+	}
 	</script>
 </body>
 </html>

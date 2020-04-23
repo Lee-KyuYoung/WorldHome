@@ -1,26 +1,25 @@
 package com.hk.whome.main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.hk.whome.admin.AdminService;
+import com.hk.whome.domain.CodeDomain;
 import com.hk.whome.domain.HomeListDomain;
+import com.hk.whome.domain.UserInfoDomain;
+import com.hk.whome.user.UserService;
 import com.hk.whome.util.EmptyUtils;
 
 
@@ -30,6 +29,12 @@ public class MainController {
 
 	@Autowired
 	private MainService mainService;
+	
+	@Autowired
+	private AdminService adminService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	MessageSource message;
@@ -59,6 +64,7 @@ public class MainController {
 		try {
 			homeList = mainService.selectImgList(homeListDomain);
 			
+			//집 이미지
 			for(Map<String,Object> m : homeList) {
 				String[] tempHomeImg = ((String)m.get("HOME_IMG")).split(","); 
 				m.put("HOME_IMG", tempHomeImg);
@@ -66,7 +72,6 @@ public class MainController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		model.addAttribute("homeList",homeList);
 		model.addAttribute("message",message);
 		
@@ -88,17 +93,48 @@ public class MainController {
 		if(EmptyUtils.isEmpty(homeId)) {
 			errorCode = "E101";
 		}
+		
 		if(errorCode.equals("")) {
 			
 			try {
+				//집 상세 정보
 				Map<String,Object> homeDetailInfo = mainService.selectDetailHome(homeId);
-			
-			if(EmptyUtils.isEmpty(homeDetailInfo)) {
-				errorCode = "E102";
-			}
-			else {
-				model.addAttribute("homeDetailInfo" , homeDetailInfo);
-			}
+				
+				//유저 정보
+				Model userInfoModel = new ExtendedModelMap();
+				userInfoModel.addAttribute("userId",homeDetailInfo.get("USR_ID"));
+				UserInfoDomain userInfo = userService.getUserInfo(userInfoModel);
+				
+				//코드 정보( 집 종류, 시설, 규칙 등 정의된 정보 ) 
+				List<CodeDomain> homeCodeList = adminService.getCodeDefine(null);
+				
+				//String으로 되어있는 집 종류, 집에서 제공하는 시설, 게스트 규칙, 알아야할 사항을 String배열로 만든다. 
+				String homeType = (String)homeDetailInfo.get("HOME_TYPE");
+				String homeFacility = (String)homeDetailInfo.get("HOME_FACILITY");
+				String homeGuestRule = (String)homeDetailInfo.get("HOME_GUEST_RULE");
+				String homePrecautions = (String)homeDetailInfo.get("HOME_PRECAUTIONS");
+				
+				if(!EmptyUtils.isEmpty(homeType)) {
+					model.addAttribute("homeType",homeType.split(","));
+				}
+				if(!EmptyUtils.isEmpty(homeFacility)) {
+					model.addAttribute("homeFacility",homeFacility.split(","));
+				}
+				if(!EmptyUtils.isEmpty(homeGuestRule)) {
+					model.addAttribute("homeGuestRule",homeGuestRule.split(","));
+				}
+				if(!EmptyUtils.isEmpty(homePrecautions)) {
+					model.addAttribute("homePrecautions",homePrecautions.split(","));
+				}
+				
+				if(EmptyUtils.isEmpty(homeDetailInfo)) {
+					errorCode = "E102";
+				}
+				else {
+					model.addAttribute("homeCodeList",homeCodeList);
+					model.addAttribute("homeDetailInfo" , homeDetailInfo);
+					model.addAttribute("userInfo",userInfo);
+				}
 			}catch (Exception e) {
 				e.printStackTrace();
 				errorCode ="E103";
@@ -109,73 +145,5 @@ public class MainController {
 		return "main/home_detail.tiles";
 	}
 	
-	@RequestMapping(value = "/detailHome", method = RequestMethod.GET)
-	public String detailReg(Model model,HttpServletRequest req) {
-		model.getAttribute("");
-		
-		String homeId = req.getParameter("homeId");
-		
-		Map<String,Object> detailMap = mainService.selectDetailHome(homeId);
-		/* model.addAttribute("detailMap", detailMap); */
-		System.out.println("::::::::::::"+detailMap);
-		model.addAttribute("detailMap",detailMap);
-		return "main/detailHome.tiles";
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/selectPostscriptList", method = RequestMethod.POST)
-	public List selectPostscriptList(@RequestParam Map<String,String> paramMap, Locale locale) {
-		System.out.println("여기오냥:::::::::");
-		List<HashMap> postscriptList = new ArrayList<HashMap>();
-		HashMap postscriptListParam = new HashMap();
-		postscriptListParam.put("homeId", paramMap.get("homeId"));
-		postscriptListParam.put("page", paramMap.get("page"));
-		System.out.println("여기는!!!:::::::::"+postscriptListParam);
-		postscriptList = mainService.selectPostscriptList(postscriptListParam);
-		System.out.println("마지막!!!:::::::::"+postscriptList);
-		return postscriptList;
-	}
-	
-	
-	/**
-	 * 숙소 조회
-	 * @param model
-	 * @return 숙소 List
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/homeList", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public List homeList(@RequestParam Map<String,String> paramMap, Locale locale) {
-		System.out.println("good");
-		
-		List<Map<String,Object>> homeList = new ArrayList<>();
-//		Map<String,String> homeMap = new HashMap();
-		HomeListDomain homeListDomain = new HomeListDomain();
-		String homeAdd = paramMap.get("homeAdd");
-		String homeDateIn = paramMap.get("homeDateIn");
-		String homeDateOut = paramMap.get("homeDateOut");
-		String homeGuest = paramMap.get("homeGuest");
-		System.out.println("::::::::::"+homeAdd);
-		System.out.println("::::::::::"+homeDateIn);
-		System.out.println("::::::::::"+homeDateOut);
-		System.out.println("::::::::::"+homeGuest);
-		
-		if(!EmptyUtils.isEmpty(homeAdd)) {
-			homeListDomain.setHomeAdd(homeAdd);
-		}
-		if(!EmptyUtils.isEmpty(homeDateIn)) {
-			homeListDomain.setHomeDateIn(homeDateIn);
-		}
-		if(!EmptyUtils.isEmpty(homeDateOut)) {
-			homeListDomain.setHomeDateOut(homeDateOut);
-		}
-		if(!EmptyUtils.isEmpty(homeGuest)) {
-			homeListDomain.setHomeGuest(homeGuest);
-		}
-		homeList = mainService.selectImgList(homeListDomain);
-        
-        
-        
-        return homeList;
-	}
-	
+
 }

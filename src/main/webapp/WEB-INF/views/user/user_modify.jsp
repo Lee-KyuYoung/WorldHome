@@ -9,6 +9,11 @@
 	<title>정보수정</title>
 	<link href="<%=contextPath%>/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<%=contextPath%>/resources/css/dev/user_info.css" rel="stylesheet">
+		<style>
+	.img_view{width:50%;height:200px;border:2px dashed #c2c2d6;border-radius:5px;margin-top:20px;background-image:url('../resources/imgFile/img_upload.png');background-size:30% 45%;background-repeat:no-repeat;background-position:center center;}
+	.img_view:hover{cursor:pointer;border-color:black; -webkit-transform:scale(1.05); -moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05); transform:scale(1.05);}
+	input[type="file"]{width:100%;display:none};
+	</style>
 </head>
 <body>
 	<div class="container">
@@ -45,7 +50,6 @@
 					</tr>
 				</tbody>
 			</table>
-			
 			<table class="table table-bordered">
 				<caption><spring:message code="join.info.J103"/></caption> <!-- 회원 개인정보 -->
 				<colgroup>
@@ -83,6 +87,29 @@
 					</tr>
 				</tbody>
 			</table>
+			<table class="table">
+				<caption>기타정보(선택사항)</caption>
+				<colgroup>
+					<col style="width:100px;">
+					<col style="width:300px;">
+				</colgroup>
+				<tbody>
+					<tr>
+						<th class="align-middle">프로필 사진</th>
+						<td>
+							<label class="img_view" for="user_img" <c:if test ="${!empty user_info.userImg}">style='background-image:url(/user_img/${user_info.userImg});background-size:cover;border:0px;'</c:if>>
+								<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)">
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th class="align-middle">자기소개</th>
+						<td>
+							<textarea class = "form-control" rows="4" id = "user_introduce" name = "user_introduce">${user_info.userIntroduce}</textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<div class="btn-toolbar float-right">
 				<div class="btn-group mr-2">
 					<input type="button" class="btn btn-outline-secondary" id = "modify_btn" value="<spring:message code='common.info.I005'/>">
@@ -91,7 +118,7 @@
 			</div>
 			<input type="hidden" id = "scrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
-		<div style="height:900px;"></div>
+		<div style="height:1400px;"></div>
 	</div>
 	<script src = "<%=contextPath%>/resources/jquery/js/jquery-3.4.1.min.js"></script>
 	<script src = "<%=contextPath%>/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -203,49 +230,57 @@
 				var ori_address2 = "${user_info.userAddress2}";
 				var ori_email = "${user_info.userEmail}";
 				var ori_phone = "${user_info.userPhone}";
+				var ori_introduce = "${user_info.userIntroduce}";
 				
 				var modi_pw = $("#user_password").val();
 				var modi_address1 = $("#user_address_1").val();
 				var modi_address2 = $("#user_address_2").val();
 				var modi_email = $("#user_email").val();
 				var modi_phone = $("#user_phone").val();
+				var modi_introduce = $("#user_introduce").val();
+				var modi_img = $('#user_img').val();
 				
 				var isModify = false;
-				var modify_data = {};
-				modify_data.userID = user_ID;
-				modify_data._csrf = "${_csrf.token}";
-
+				var modify_data = new FormData();
+				modify_data.append('userID' , user_ID) 
+				
 				//변경된 데이터만 저장
 				if(modi_pw != '' && (ori_pw != modi_pw)){
 					isModify = true;
-					modify_data.userPw = modi_pw;
-					
+					modify_data.append('userPw',modi_pw);
 				}
 				if(ori_address1 != modi_address1){
 					isModify = true;
-					modify_data.userAddress1 = modi_address1
-					
+					modify_data.append('userAddress1',modi_address1);
 				}
 				if(ori_address2 != modi_address2){
 					isModify = true;
-					modify_data.userAddress2 = modi_address2;
-					
+					modify_data.append('userAddress2',modi_address2);
 				}
 				if(ori_email != modi_email){
 					isModify = true;
-					modify_data.userEmail = modi_email;
-					
+					modify_data.append('userEmail',modi_email);
 				}
 				if(ori_phone != modi_phone){
 					isModify = true;
-					modify_data.userPhone = modi_phone;
+					modify_data.append('userPhone',modi_phone);
 				}
-				
+				if(ori_introduce != modi_introduce){
+					isModify = true;
+					modify_data.append('userIntroduce',modi_introduce);
+				}
+				if(modi_img != ''){
+					isModify = true;
+					modify_data.append('user_img',$('#user_img')[0].files[0]);
+				}
+
 				if(isModify){
 					$.ajax({
 						url : '<%=contextPath%>/user/modifyProcess',
 						type : 'POST',
 					 	data : modify_data,
+						processData : false,
+						contentType : false,
 					 	success : function(result){
 					 		alert(result.resMessage);
 					 		if(result.resCode == 'E001'){
@@ -254,7 +289,14 @@
 					 	},
 					 	error : function(jqXHR, textStatus, errorThrown){
 							alert(errorThrown);					 		
-					 	}
+					 	},
+					 	beforeSend : function(xhr){
+					 		xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					 		$('#spinner').show();
+						},
+						complete : function(){
+							$('#spinner').hide();
+						}
 					});		
 				}else{
 					alert('<spring:message code="join.info.J214"/>'); //수정된 정보가 없습니다.
@@ -262,6 +304,15 @@
 			}
 		});
 	});
+	//이미지 미리보기
+	function imgView(f){
+		var file = f.files; 
+		var reader = new FileReader(); 
+		reader.onload = function(rst){
+			$(f).parent().css('background-image','url('+rst.target.result+')').css('background-size','100% 100%').css('border','0px');
+		}
+		reader.readAsDataURL(file[0]); 
+	}
 	</script>
 </body>
 </html>

@@ -250,7 +250,8 @@ public class ManagementController{
 				try {
 					if(flag.equals("reg")) {
 						managementService.updateHomeInfoTemp(homeInfo);
-					}else {
+					}
+					else {
 						managementService.updateHomeInfo(homeInfo);
 					}
 					resultMap.put("homeID", homeID);
@@ -464,7 +465,7 @@ public class ManagementController{
 		if(resCode.equals("E001")) {
 			
 			try {
-				fileUtils.uploadFiles(files, uploadPath, homeID);
+				fileUtils.uploadHomeImg(files, uploadPath, homeID);
 			} catch (Exception e) {
 				resCode = "E003";
 				e.printStackTrace();

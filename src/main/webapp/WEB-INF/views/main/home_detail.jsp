@@ -15,19 +15,29 @@
 		.home_img_group2 div{border:1px solid #484848;overflow:hidden;}
 		.home_img_group3{height:500px;}
 		.home_img_group3 div{border:1px solid #484848;overflow:hidden;}
- 		.home_img img{width:100%;height:100%;-webkit-transform:scale(1);-moz-transform:scale(1);-ms-transform:scale(1); -o-transform:scale(1); transform:scale(1);-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s;}
+ 		.home_img img{width:100%;height:100%;-webkit-transform:scale(1);-moz-transform:scale(1);-ms-transform:scale(1); -o-transform:scale(1); transform:scale(1);-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s;} 
+/* 		.home_img img{display: inline-block; min-width: 100%; min-height: 100%; -ms-interpolation-mode: bicubic; */
+/* 		-webkit-transform:scale(1);-moz-transform:scale(1);-ms-transform:scale(1); -o-transform:scale(1); transform:scale(1);-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s;} */
  		.home_img img:hover{cursor:pointer;-webkit-transform:scale(1.1);-moz-transform:scale(1.1);-ms-transform:scale(1.1);-o-transform:scale(1.1);transform:scale(1.1);transition-delay: 0.1s;}
  		.container{margin-top:30px;}
  		.comm{ font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important; font-size: 32px !important; font-weight: 800; line-height: 1.125em; color: rgb(72, 72, 72); padding-top: 6px; padding-bottom: 6px; margin-bottom: 10px;}
         .home_info p{display:inline-block;font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important; font-size: 16px; font-weight: 500; line-height: 1.375em; color: rgb(72, 72, 72); margin:0px 15px 0px 0px;}
         .home_info div{padding:0px}
-        .home_info_title{font-size:17px;font-weight:900;}
+        .home_info i{font-size:17px; color:#484848;}
+        .home_info_title{margin-bottom:20px;font-size:18px;font-weight:900;}
         #load_map{width:100%;height:400px;margin-top:20px}
         .container-fluid{width:100%;margin:0px 0px 20px 0px;}
         .reserv_form{margin:20px 0px 20px 0px;}
         .reserv_form p{margin-bottom:5px;font-size:14px;color:rgb(72, 72, 72);font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;}
         .reserv_form label{font-size:12px; font-weight:700;color:rgb(72, 72, 72);margin-bottom:2px;}
+        .margin-bottom10{margin-bottom:10px;}
         .margin-top20{margin-top:20px;}
+        .margin-top40{margin-top:40px;}
+        .m-tb30{margin:30px 0px 30px 0px;}
+        .user_profile{text-align:center;}
+        .user_profile img{width:65px; height:65px; border-radius:50%;}
+        .user_profile p{margin:0px;color:rgb(118, 118, 118);font-size:14px;}
+        
 	</style>
 <body>
 	<div class="container-fluid">
@@ -57,16 +67,33 @@
 		<div class="row">
 			<div class="col-lg-8 home_info">
 				<div class="col-12">
-					<h2 class="comm">${homeDetailInfo.HOME_ETC_COMM}</h2>
-				</div>
-				<div class="col-12"> 
-					<p>${homeDetailInfo.HOME_RANGE}</p> 
-					<p>인원 ${homeDetailInfo.MAX_GUEST}명</p>
-					<p>침대 ${homeDetailInfo.BED_CNT}개</p>
-					<p>욕실 ${homeDetailInfo.BATHROOM_CNT}개</p>
+					<div class ="row" style="margin:0px;">
+						<div class="col-10">
+							<h2 class="comm">${homeDetailInfo.HOME_TITLE}</h2>
+							<p>${homeDetailInfo.HOME_RANGE}</p> 
+							<p>인원 ${homeDetailInfo.MAX_GUEST}명</p>
+							<p>침대 ${homeDetailInfo.BED_CNT}개</p>
+							<p>욕실 ${homeDetailInfo.BATHROOM_CNT}개</p>
+						</div>
+						<div class="col-2 user_profile">
+							<div>
+								<a href ="javascript:;">
+									<c:choose>
+										<c:when test="${!empty userInfo.userImg}">
+											<img src = "/user_img/${userInfo.userImg}">		
+										</c:when>
+										<c:otherwise>
+											<img src = "\whome\resources\img\profile_default.jpg">										
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</div>
+							<p>${homeDetailInfo.USR_ID}</p>
+						</div>
+					</div>
 				</div>
 				<hr>
-				<div class="col-12">
+				<div class="col-12 m-tb30">
 					<h5 class="home_info_title">숙소 위치</h5>
 					<p>
 						${homeDetailInfo.HOME_ADD_1}
@@ -75,13 +102,118 @@
 					<div id="load_map"></div>
 				</div>
 				<hr>
-				<div class="col-12"> 
-					<h5 class="home_info_title">편의시설</h5>
+				<div class="col-12 m-tb30">
+					<h5 class="home_info_title">편의 시설</h5> 
+					<div class="row" style="margin:0px;">
+						<c:forEach var = "code_1" items ="${homeCodeList}"> 
+							<c:if test ="${code_1.codeNum eq 11 }">
+								<c:forEach var = "code_2" items = "${homeFacility}">
+									<c:if test = "${code_1.codeKey eq  code_2}">
+										<div class="col-3 margin-bottom10">
+											<p><i class="fas fa-caret-right"></i> ${status.index} ${code_1.codeComment}</p>
+										</div>		
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="col-12 margin-top40">
+					<h5 class="home_info_title">안전 시설</h5> 
+					<div class="row" style="margin:0px;">
+						<c:forEach var = "code_1" items ="${homeCodeList}"> 
+							<c:if test ="${code_1.codeNum eq 12 }">
+								<c:forEach var = "code_2" items = "${homeFacility}">
+									<c:if test = "${code_1.codeKey eq  code_2}">
+										<div class="col-3 margin-bottom10">
+											<p><i class="fas fa-caret-right"></i> ${status.index} ${code_1.codeComment}</p>
+										</div>		
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="col-12 margin-top40">
+					<h5 class="home_info_title">사용 가능한 공간</h5> 
+					<div class="row" style="margin:0px;">
+						<c:forEach var = "code_1" items ="${homeCodeList}"> 
+							<c:if test ="${code_1.codeNum eq 13 }">
+								<c:forEach var = "code_2" items = "${homeFacility}">
+									<c:if test = "${code_1.codeKey eq  code_2}">
+										<div class="col-3 margin-bottom10">
+											<p><i class="fas fa-caret-right"></i> ${status.index} ${code_1.codeComment}</p>
+										</div>		
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</div>
 				</div>
 				<hr>
-				<div class="col-12">
-					<h5 class="home_info_title">안전시설</h5>
+				<div class="col-12  m-tb30">
+					<div class = "row" style = "margin:0px;">
+						<div class = "col-10">
+							<h5 class="home_info_title">호스트 : ${homeDetailInfo.USR_ID}님</h5>
+							<p>회원 가입  :
+								<fmt:parseDate value="${userInfo.userRegData}" var="regdate" pattern="yyyy-MM-dd"/>
+								<fmt:formatDate value="${regdate}" type="date" dateStyle="LONG"/>
+							</p>
+							<p><i class="fa fa-star" style="color:#FF385C;"></i> 후기 1,024개</p>
+						</div>
+						<div class="col-2 user_profile">
+							<div>
+								<a href ="javascript:;">
+									<c:choose>
+										<c:when test="${!empty userInfo.userImg}">
+											<img src = "/user_img/${userInfo.userImg}">		
+										</c:when>
+										<c:otherwise>
+											<img src = "\whome\resources\img\profile_default.jpg">										
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class = "col-12 margin-top20">
+						<p>${userInfo.userIntroduce}</p>
+					</div>
 				</div>
+				<hr>
+				<div class="col-12 m-tb30">
+					<h5 class="home_info_title">유의 사항</h5> 
+					<div class="row" style="margin:0px;">
+						<c:forEach var = "code_1" items ="${homeCodeList}"> 
+							<c:if test ="${code_1.codeNum eq 22}">
+								<c:forEach var = "code_2" items = "${homePrecautions}">
+									<c:if test = "${code_1.codeKey eq  code_2}">
+										<div class="col-6 margin-bottom10">
+											<p><i class="fas fa-caret-right"></i> ${status.index} ${code_1.codeComment}</p>
+										</div>		
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="col-12 margin-top40">
+					<h5 class="home_info_title">게스트가 지켜야할 규칙</h5> 
+					<div class="row" style="margin:0px;">
+						<c:forEach var = "code_1" items ="${homeCodeList}"> 
+							<c:if test ="${code_1.codeNum eq 21}">
+								<c:forEach var = "code_2" items = "${homeGuestRule}">
+									<c:if test = "${code_1.codeKey eq  code_2}">
+										<div class="col-6 margin-bottom10">
+											<p><i class="fas fa-caret-right"></i> ${status.index} ${code_1.codeComment}</p>
+										</div>		
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
+				<hr>
 			</div>
 			<div class="col-lg-4">
 				<div class="col-12 reserv_div" style="border:1px solid #e4e4e4">
@@ -205,10 +337,10 @@
 		
 		//폼 초기화
 		function initHomeDetailForm(){
-			var title = '${homeDetailInfo.HOME_ETC_COMM}'; 
 			var address = '${homeDetailInfo.HOME_ADD_1}';
-			$(document).attr('title',title);
 			searchAddressLatLng(address);
+			var title = '${homeDetailInfo.HOME_TITLE}';
+			$(document).attr('title',title);
 		}
 		
 		//카카오맵 할 때 카카오 디벨로퍼 사이트에서 도메인을 설정해줘함 

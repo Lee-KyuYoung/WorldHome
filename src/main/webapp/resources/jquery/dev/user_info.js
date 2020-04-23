@@ -1,31 +1,4 @@
 		$(document).ready(function(){
-			//아이디 중복 체크
-			$('#user_id').on('blur',function(){
-				
-				var user_id = $('#user_id').val();
-				var obj = $('[role="user_id"]');
-				const csrf_token = $('#scrf_token').val();
-
-				if(user_id != ''){
-					$.ajax({
-						url : './userIDCheck',
-						data : {'user_id' : user_id ,'_csrf' : csrf_token },
-						type : 'post',
-						success : function(result){
-							$(obj).text('');
-							if(result.resCode == 'E001'){
-								$(obj).css('color','red').text(result.resMessage);
-							}else{
-								$(obj).css('color','green').text(result.resMessage);	
-							}
-							
-						},
-						error : function(jqXHR, textStatus, errorThrown){
-							alert(errorThrown);
-						}
-					})
-				}
-			});	
 
 			//경고 멘트 제거
 			$('input').on('keydown', function(){

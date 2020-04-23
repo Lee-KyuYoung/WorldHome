@@ -36,19 +36,23 @@
 			USR_RRN_NO,
 			USR_EMAIL,
 			USR_AUTH,
-			USR_INT_DT
+			USR_INT_DT,
+			USR_IMG,
+			USR_INTRODUCE
 		) 
 		SELECT
 			#{userId},
 			#{userPw},
 			#{userName},
 			#{userAddress1},
-			#{userAddress2},
+			#{userAddress2,jdbcType=VARCHAR},
 			#{userPhone},
 			#{userBirth},
 			#{userEmail},
 			#{userAuth},
-			CURRENT_TIMESTAMP
+			CURRENT_TIMESTAMP,
+			#{userImg,jdbcType=VARCHAR},
+			#{userIntroduce,jdbcType=VARCHAR}
 		FROM
 			DUAL
 		WHERE
@@ -68,7 +72,8 @@
 	<!-- 회원정보 가져오기 -->
 	<select id = "getUserInfo" parameterType = "java.util.Map" resultType ="com.hk.whome.domain.UserInfoDomain">
 		SELECT
-				USR_ID as userId , USR_ADD_1 as userAddress1 , USR_ADD_2 as userAddress2 , USR_EMAIL as userEmail , USR_PH_NO as userPhone
+				USR_ID as userId , USR_ADD_1 as userAddress1 , USR_ADD_2 as userAddress2 , USR_EMAIL as userEmail , USR_PH_NO as userPhone,
+				USR_IMG as userImg, USR_INTRODUCE as userIntroduce ,USR_INT_DT as userRegData
 		FROM		
 				TBL_USR_INF
 		WHERE
@@ -106,6 +111,12 @@
 			</if>
 			<if test = "userAuth != null and userAuth != ''">
 				USR_AUTH = #{userAuth},
+			</if>
+			<if test = "userIntroduce != null and userIntroduce != ''">
+				USR_INTRODUCE = #{userIntroduce},
+			</if>
+			<if test = "userImg != null and userImg != ''">
+				USR_IMG = #{userImg},
 			</if>
 			<if test = "userD_YN != null and userD_YN !=''">
 				DEL_YN = #{userD_YN},

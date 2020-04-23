@@ -13,10 +13,25 @@ public class UserInfoDomain {
 	private String userEmail;
 	private String userPhone;
 	private String userAuth;
+	private String userIntroduce;
+	private String userImg;
 	private String userD_YN;
 	private Timestamp userModDate;
 	private Timestamp userRegData;
 	
+	
+	public String getUserIntroduce() {
+		return userIntroduce;
+	}
+	public void setUserIntroduce(String userIntroduce) {
+		this.userIntroduce = userIntroduce;
+	}
+	public String getUserImg() {
+		return userImg;
+	}
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
 	public String getUserId() {
 		return userId;
 	}

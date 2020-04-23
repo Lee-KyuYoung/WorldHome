@@ -2,15 +2,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <style>
-	.navbar-custom li{font-size:14px;color:rgb(113, 113, 113);cursor:pointer;}
-	.navbar-custom ul{border-radius:15px;box-shadow: 2px 2px 4px #f2f2f2;-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s; }
-	.navbar-custom ul:hover{box-shadow:4px 4px 12px rgba(0, 0, 0, 0.1);}
-	.navbar-custom li:first-child{border-radius:15px 0px 0px 15px !important}
-	.navbar-custom li:last-child{border-radius:0px 15px 15px 0px !important}
-	.navbar{border-bottom:2px solid #f2f2f2;height:80px; padding:0px 30px 0px 30px;}
+
+	.navbar-search-custom li{font-size:14px;color:rgb(113, 113, 113);cursor:pointer;}
+	.navbar-search-custom ul{border-radius:15px;box-shadow: 2px 2px 4px #f2f2f2;-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s; }
+	.navbar-search-custom ul:hover{box-shadow:4px 4px 12px rgba(0, 0, 0, 0.1);}
+	.navbar-search-custom li:first-child{border-radius:15px 0px 0px 15px !important}
+	.navbar-search-custom li:last-child{border-radius:0px 15px 15px 0px !important}
+	.navbar{position:fixed;width:100%;background-color:white;border-bottom:2px solid #f2f2f2;height:80px; padding:0px 30px 0px 30px !important;z-index:3333;;}
+	.navbar-nav{margin:0 auto;}
 	.navbar-nav a{color:#4d4d4d;font-weight:600}
-	.wh_font{color:#FF385C;font-size:23px;font-weight:1000}
+	.wh_font{color:#FF385C;font-size:23px !important;font-weight:1000}
 	.wh_font:hover{color:#FF385C;}
+	.navbar-join-custom li{font-size:14px;color:rgb(34, 34, 34);font-weight:800;cursor:pointer; border-radius:30px !important;border:1px solid rgba(0,0,0,.125) !important}
+	.navbar-join-custom li{box-shadow: 2px 2px 4px #f2f2f2;-webkit-transition:.2s;-moz-transition:.2s;-ms-transition:.2s;-o-transition:.2s;transition:.2s; }
+	.navbar-join-custom li:first-child{margin-right:10px;}
+	.navbar-join-custom li:hover{box-shadow:4px 4px 12px rgba(0, 0, 0, 0.1);}
+		#spinner {
+	    display: none;
+	    position: fixed;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+		-moz-opacity: 0.8;
+	    opacity: .70;
+	    filter: alpha(opacity=80);
+		background: url('/whome/resources/imgFile/spinner.gif') 50% 50% no-repeat;
+	}
 </style>
 <!-- 		<nav class="navbar navbar-expand-sm bg-light navbar-light"> -->
 <%-- 			<div class = "homeLogo"><a href = "<c:url value ='/'/>"><img src= "\whome\resources\img\homeMark.png" width="50px" height="50px"></a></div> --%>
@@ -23,43 +42,46 @@
 <!-- 			</ul> -->
 <!-- 		</nav> -->
 
-		<nav class="navbar navbar-expand-md">
+		<nav class="navbar navbar-expand">
 		  <a class="navbar-brand wh_font" href="<c:url value ='/'/>">
-<!-- 		    <img src="\whome\resources\imgFile\wh_icon.png" style="width:50px;height:50px;"/> -->
 		    <font>World Home</font>
 		  </a>
-		  <div class="collapse navbar-collapse order-last order-md-0 navbar-custom" id="collapsibleNavbar">
+		  <div class="collapse navbar-collapse navbar-search-custom" id="collapsibleNavbar">
 			<ul class="navbar-nav list-group list-group-horizontal">
-			  <li class="list-group-item">여행지 추가</li>
+			  <li class="list-group-item" >여행지 추가</li>
 			  <li class="list-group-item">날짜 추가</li>
 			  <li class="list-group-item">게스트 추가</li>
 			  <li class="list-group-item"><i class="fas fa-search" style="color:#FF385C"></i></li>
 			</ul>
 		  </div>
-		<div class = "float-right">
-			<c:choose>
-				<c:when test = "${empty sessionScope.user_info}">
-					<input type = "button" class = "btn btn-light" value = "회원가입" id="login_btn" onclick = "location.href='<c:url value="/user/join"/>'">
-					<input type = "button" class = "btn btn-light" value = "로그인" id="login_btn" onclick = "location.href='<c:url value="/login"/>'">
-				</c:when>
-				<c:otherwise>
-				  <ul class="navbar-nav">
-				    <!-- Dropdown -->
-				    <li class="nav-item dropdown">
-				      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-				        ${sessionScope.user_info.user_id}님 환영합니다.
-				      </a>
-				      <div class="dropdown-menu">
-				        <a class="dropdown-item" href="<c:url value='/user/modify'/>">회원 정보수정</a>
-				        <a class="dropdown-item" href="<c:url value='/management/homeReg'/>">숙소 등록</a>
-				        <a class="dropdown-item" href="<c:url value ='/logout'/>">로그아웃</a>
-				      </div>
-				    </li>
-				  </ul>
-				</c:otherwise>	
-			</c:choose>
-		</div>
+		<c:choose>
+			<c:when test = "${empty sessionScope.user_info}">
+				<div class="navbar-join-custom">
+					<ul class="navbar-nav list-group">
+					  <li class="list-group-item" onclick = "location.href='<c:url value="/user/join"/>'">회원가입</li>
+					  <li class="list-group-item" onclick = "location.href='<c:url value="/login"/>'">로그인</li>
+					</ul>
+				</div>
+			</c:when>
+			<c:otherwise>
+			  <ul class="navbar-nav">
+			    <!-- Dropdown -->
+			    <li class="nav-item dropdown">
+			      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+			        ${sessionScope.user_info.user_id}님 환영합니다.
+			      </a>
+			      <div class="dropdown-menu">
+			        <a class="dropdown-item" href="<c:url value='/user/modify'/>">회원 정보수정</a>
+			        <a class="dropdown-item" href="<c:url value='/management/homeReg'/>">숙소 등록</a>
+			        <a class="dropdown-item" href="<c:url value ='/logout'/>">로그아웃</a>
+			      </div>
+			    </li>
+			  </ul>
+			</c:otherwise>	
+		</c:choose>
 	</nav>
+	<div id="spinner"></div>
+	<div style="height:80px;"></div>
 	<!-- The Modal -->
 	<div class="modal fade" id="myModal">
 		<div class="modal-dialog nav-modal">
@@ -138,26 +160,39 @@
 			</div>
 		</div>
 	</div>
-<!-- 	<script> -->
-<!-- // 		$(document).ready(function(){ -->
-			
-<!-- // 			$(window).resize(function(){ -->
-<!-- // 				var width = $(window).width(); -->
-<!-- // 				console.log(width); -->
-<!-- // 				if(width <= 600){ -->
-<!-- // 					$('.navbar').css('padding','0px 20px 0px 20px'); -->
-<!-- // 				}else if(width <= 1000){ -->
-<!-- // 					$('.navbar font').text('WH'); -->
-<!-- // 					$('.navbar').css('padding','0px 60px 0px 60px'); -->
-<!-- // 				}else if(width <= 1600){ -->
-<!-- // 					$('.navbar font').text('World Home'); -->
-<!-- // 					$('.navbar').css('padding','0px 100px 0px 100px'); -->
-<!-- // 				}else{ -->
-<!-- // 					$('.navbar').css('padding','0px 120px 0px 120px'); -->
-<!-- // 				} -->
-<!-- // 			}); -->
-			
-<!-- // 		}); -->
+	<script>
+	$(document).ready(function(){
 		
-<!-- 	</script> -->
+		setNavbar();
+		
+		$(window).resize(function(){
+			setNavbar();
+		});
+	});	
+	
+	function setNavbar(){
+		
+		var width = $(window).width();
+		
+		if(width <= 716){
+			$('.dropdown').css('display','none');
+			$('.navbar-join-custom').css('display','none');
+		}else {
+			$('.dropdown').css('display','list-item');
+			$('.navbar-join-custom').css('display','block');
+		}
+		
+		if(width <= 526){
+			$('.navbar-brand font').css('display','none');
+		}else{
+			$('.navbar-brand font').css('display','block');
+		}
+		
+		if(width <= 850){
+			$('.navbar-brand font').text('WH')
+		}else{
+			$('.navbar-brand font').text('World Home')
+		}
+	}
+	</script>
 	<!-- Modal Header end-->

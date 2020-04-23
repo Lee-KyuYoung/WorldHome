@@ -1,8 +1,10 @@
 package com.hk.whome.user;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,10 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.whome.domain.UserInfoDomain;
 import com.hk.whome.security.CustomUserDetails;
 import com.hk.whome.util.EmptyUtils;
+import com.hk.whome.util.FileUtils;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -35,6 +40,9 @@ public class UserController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private FileUtils fileUtils;
 	
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 	
@@ -56,7 +64,8 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/joinProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Map<String,String> joinProcess(Model model, @RequestParam Map<String,String> paramMap, Locale locale) {
+	public Map<String,String> joinProcess(Model model, @RequestParam Map<String,String> paramMap, 
+			Locale locale, MultipartHttpServletRequest mreq, HttpServletRequest req) {
 
 		String resCode = "";
 		String messageCode = "";
@@ -70,6 +79,7 @@ public class UserController {
 		String userAddress2 = paramMap.get("user_address_2");
 		String userEmail = paramMap.get("user_email");
 		String userPhone = paramMap.get("user_phone");
+		String userIntro = paramMap.get("user_introduce");
 		
 		Map<String,String> resultMap = new HashMap<>();
 		
@@ -108,9 +118,19 @@ public class UserController {
 			userInfo.setUserAddress2(userAddress2);
 			userInfo.setUserEmail(userEmail);
 			userInfo.setUserPhone(userPhone);
+			userInfo.setUserIntroduce(userIntro);
 			userInfo.setUserAuth("ROLE_MEMBER"); //권한을 넣을 시 ROLE_권한이름 이런식으로 앞에 ROLE_을 붙여줘야한다.
+			
 			try {
+				//이미지 업로드
+				String imgName = fileUtils.uploadUserImg(mreq, userId, req);
+				if(!imgName.equals("")) {
+					userInfo.setUserImg(imgName);
+				}
+				
+				//유저 정보 저장
 				userService.insertUserInfo(userInfo);
+				
 			} catch (Exception e) {
 				messageCode = "common.error.E001";
 				e.printStackTrace();
@@ -187,7 +207,7 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/modifyProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public Map<String,String> modifyProcess(@RequestParam Map<String,String> paramMap, Locale locale) {
+	public Map<String,String> modifyProcess(@RequestParam Map<String,String> paramMap, Locale locale, MultipartHttpServletRequest mreq, HttpServletRequest req) {
 		
 		String resCode = "E001";
 		String messageCode = "";
@@ -197,6 +217,7 @@ public class UserController {
 		String userAddress2 = paramMap.get("userAddress2");
 		String userEmail = paramMap.get("userEmail");
 		String userPhone = paramMap.get("userPhone");
+		String userIntro = paramMap.get("userIntroduce");
 		
 		UserInfoDomain userInfo = new UserInfoDomain();
 		userInfo.setUserId(userID);
@@ -216,10 +237,20 @@ public class UserController {
 		if(!EmptyUtils.isEmpty(userPhone)) {
 			userInfo.setUserPhone(userPhone);
 		}
+		if(!EmptyUtils.isEmpty(userIntro)) {
+			userInfo.setUserIntroduce(userIntro);
+		}
 		
 		try {
+			
+			String imgName = fileUtils.uploadUserImg(mreq, userID, req);
+			if(!imgName.equals("")) {
+				userInfo.setUserImg(imgName);
+			}
+			
 			userService.updateUserInfo(userInfo);
 			messageCode = "join.info.J304";
+		
 		}catch(Exception e) {
 			messageCode = "common.error.E001";
 			resCode = "E002";
