@@ -43,13 +43,12 @@ public class MainServiceImpl implements MainService{
         	postscriptListParam.put("startPag",page+(9*(page-1)));
         	postscriptListParam.put("endPag", page*10);  //데이터를 20개씩 가져오겠다.
         }
-		
-		
 		return mainDAO.selectPostscriptList(postscriptListParam);
 	}
-	
 
-	
-	
+	@Override
+	public int getHomeListTotalCount(HomeListDomain homeListDomain) {
+		return mainDAO.getHomeListTotalCount(homeListDomain);
+	}
 	
 }

@@ -4,8 +4,8 @@
 	.wh_fm a{display:block;font-size:14px;color:rgb(72, 72, 72);margin-bottom:8px;}
 	.wh_fm a:hover{text-decoration: none;}
 	.wh_fm p{font-size:15px;font-weight:700}
-	.footer{border-top:1px solid rgba(0,0,0,.1);}
-	.footer .row{margin-top:30px;}
+	.footer{border-top:1px solid rgba(0,0,0,.1);margin-top:100px;}
+	.footer .row{margin-top:40px;}
 </style>
 <div class="col-12 footer">
 	<div class="row">

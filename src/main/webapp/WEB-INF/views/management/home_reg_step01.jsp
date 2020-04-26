@@ -15,7 +15,7 @@
 		.margin-bottom20{margin-bottom:20px;}
 		.content{margin:0 auto;}
 		#load_map_wrapper{display:none;} 
- 		#load_map{width:100%;height:300px;} 
+ 		#load_map{width:100%;height:400px;} 
  		.info_p{margin:20 0 5 0;font-size:16px;color:red;font-weight:bold}
 		.margin-bottom100{margin-bottom:100px;}
 	</style>
@@ -25,7 +25,6 @@
 		<div class="progress">
 	  		<div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
 		</div>
-	
 		<div class="row">
 			<div class="col-sm-7 content">
 				<form id="registration_step1_form">

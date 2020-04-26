@@ -19,20 +19,14 @@ public class MainDAOImpl implements MainDAO{
 
 	@Override
 	public List<Map<String,Object>> selectImgList(HomeListDomain homeListDomain) {
-		// TODO Auto-generated method stub
-		System.out.println(":::::::::::::"+homeListDomain.getHomeAdd());
-		System.out.println(":::::::::::::"+homeListDomain.getHomeDateIn());
-		System.out.println(":::::::::::::"+homeListDomain.getHomeDateOut());
 		return sqlsession.selectList("com.hk.whome.main.sql.selectImgList", homeListDomain);
 	}
 
 
 	@Override
 	public Map<String,Object> selectDetailHome(HashMap<String,String> postscriptListParam) {
-		// TODO Auto-generated method stub
 		return sqlsession.selectOne("com.hk.whome.main.sql.selectDetailHome", postscriptListParam);
 	}
-
 
 	@Override
 	public List selectPostscriptList(HashMap postscriptListParam) {
@@ -41,5 +35,11 @@ public class MainDAOImpl implements MainDAO{
 		return sqlsession.selectList("com.hk.whome.main.sql.selectPostscriptList", postscriptListParam);
 	}
 
+	@Override
+	public int getHomeListTotalCount(HomeListDomain homeListDomain) {
+		return sqlsession.selectOne("com.hk.whome.main.sql.getHomeListTotalCount", homeListDomain);
+	}
+
+	
 	
 }

@@ -7,7 +7,7 @@
 	<!-- 로그인 정보 가져오기 -->
 	<select id = "getLoginInfo" parameterType = "String" resultType = "com.hk.whome.security.CustomUserDetails">
 		SELECT
-				USR_ID as user_id , USR_PWS_ENC as user_pw , USR_NM as name , USR_AUTH as authority
+				USR_ID as user_id , USR_PWS_ENC as user_pw , USR_NM as name , USR_AUTH as authority, USR_IMG as userImg
 		FROM
 				TBL_USR_INF
 		WHERE
@@ -73,7 +73,7 @@
 	<select id = "getUserInfo" parameterType = "java.util.Map" resultType ="com.hk.whome.domain.UserInfoDomain">
 		SELECT
 				USR_ID as userId , USR_ADD_1 as userAddress1 , USR_ADD_2 as userAddress2 , USR_EMAIL as userEmail , USR_PH_NO as userPhone,
-				USR_IMG as userImg, USR_INTRODUCE as userIntroduce ,USR_INT_DT as userRegData
+				USR_IMG as userImg, USR_INTRODUCE as userIntroduce ,USR_INT_DT as userRegData, USR_IMG as userImg
 		FROM		
 				TBL_USR_INF
 		WHERE

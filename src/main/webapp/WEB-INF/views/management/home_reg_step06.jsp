@@ -8,8 +8,8 @@
 <head>
 	<title>숙소 등록하기</title>
 	<style type="text/css">
-		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
-		.word_limit{margin:5 0 10 0;font-size:16px;color:#767676;font-weight:bold}
+		p{font-size:16px;color:#767676;font-weight:bold}
+		.word_limit{font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
 		.progress{margin-bottom:30px;}
 		.margin-top20{margin-top:20px;}
@@ -36,7 +36,7 @@
 							<p>숙소의 특징과 장점을 살려 숙소의 이름을 지어주세요.</p>
 							 <input type = "text" class = "form-control" name = "home_name" value="${homeInfo.homeTitle}">
 						</div>
-						<div class = "col-md-12">
+						<div class = "col-md-12 margin-top20">
 							<p>숙소에 대해 간략히 설명해 주세요.<br>숙소와 주변 지역에 대한 정보와 게스트와 어떻게 소통하고 싶은지 등의 내용을 적어주세요.</p>
 							 <textarea class="form-control" rows="5" name = "home_introduce_main" onkeyup ="wordLimitCheck(this,'500')">${homeInfo.homeComment}</textarea>
 							 <p class = "word_limit">( 0 / 500자 )</p>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.whome.reservation.sql">
+	
+	<!-- 숙소 후기 가져오기 -->
+	<select id = "getReviewList" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.HomeReviewDomain">
+		
+		SELECT 
+				*
+		FROM
+				(
+					SELECT 
+							ROW_NUMBER() OVER (ORDER BY RVI_COMM_INT_DT DESC) NUM, RVI_COMM_ID as reviewID, RVI_COMM as reviewComm, RVI_COMM_INT_DT as regDate, 
+							(
+								SELECT
+										USR_IMG
+								FROM
+										TBL_USR_INF B
+								WHERE
+										 A.RVI_COMM_ID = B.USR_ID
+							) as userImg
+							
+					FROM
+							TBL_RVI_COMM A
+							
+					WHERE
+							HOME_ID = #{homeID} AND 
+							DEL_YN = 'N'
+							
+					ORDER BY
+							RVI_COMM_INT_DT DESC
+				)
+		WHERE
+				NUM BETWEEN #{startListNo} AND #{endListNo}
+	</select>
+	
+	
+	<!-- 숙소 후기 등록 -->
+	<insert id = "insertReview" parameterType = "com.hk.whome.domain.HomeReviewDomain">
+		
+		INSERT INTO TBL_RVI_COMM(
+			HOME_ID,
+			USR_ID,
+			RVI_COMM_ID,
+			RVI_COMM,
+			RVI_S_CL,
+			RVI_S_A,
+			RVI_S_C,
+			RVI_S_L,
+			RVI_S_CI,
+			RVI_S_S,
+			RVI_COMM_MOD_DT,
+			RVI_COMM_INT_DT
+		) VALUES (
+			#{homeID},
+			#{userID},
+			#{reviewID},
+			#{reviewComm},
+			#{scoreCL},
+			#{scoreA},
+			#{scoreC},
+			#{scoreL},
+			#{scoreCI},
+			#{scoreS},
+			CURRENT_TIMESTAMP,
+			CURRENT_TIMESTAMP
+		)
+		
+ 	</insert>
+ 	
+ 	<!-- 별점 정보 가져오기 -->
+ 	<select id = "getReviewStarRate" parameterType = "String" resultType = "java.util.Map">
+ 			SELECT
+			        A1.* , ROUND( ( A1.rate_cl + A1.rate_a + A1.rate_c + A1.rate_l + A1.rate_ci + A1.rate_s ) / 6 , 1 ) as total_rate
+			FROM
+        (
+            SELECT
+                    NVL( COUNT(*), 0 ) as total_count, 
+                    ROUND( SUM(RVI_S_CL) / COUNT(*), 1 ) as rate_cl,
+                    ROUND( SUM(RVI_S_A) / COUNT(*), 1 ) as rate_a, 
+                    ROUND( SUM(RVI_S_C) / COUNT(*), 1 ) as rate_c, 
+                    ROUND( SUM(RVI_S_L) / COUNT(*), 1 ) as rate_l, 
+                    ROUND( SUM(RVI_S_Ci) / COUNT(*), 1 ) as rate_ci,
+                    ROUND( SUM(RVI_S_S) / COUNT(*), 1 ) as rate_s
+            FROM
+                    TBL_RVI_COMM 
+            GROUP BY
+                    HOME_ID
+            HAVING HOME_ID = #{homeID}
+        ) A1
+ 	</select>
+   
+</mapper>

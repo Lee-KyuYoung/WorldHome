@@ -14,6 +14,7 @@ public class CustomUserDetails implements UserDetails{
 	private String user_pw;
 	private String authority;
 	private String name;
+	private String userImg;
 	private boolean enabled;
 
 	@Override
@@ -47,6 +48,15 @@ public class CustomUserDetails implements UserDetails{
 		return enabled;
 	}
 	
+	public String getUserImg() {
+		return userImg;
+	}
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getAuthority() {
 		return authority;
 	}
@@ -73,6 +83,11 @@ public class CustomUserDetails implements UserDetails{
 	}
 	public void setUser_pw(String user_pw) {
 		this.user_pw = user_pw;
+	}
+	@Override
+	public String toString() {
+		return "CustomUserDetails [user_id=" + user_id + ", user_pw=" + user_pw + ", authority=" + authority + ", name="
+				+ name + ", userImg=" + userImg + ", enabled=" + enabled + "]";
 	}
 	
 	

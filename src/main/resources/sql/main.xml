@@ -3,44 +3,6 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.whome.main.sql">
-
-<!-- <select id="selectImgList" parameterType = "com.hk.whome.domain.HomeListDomain" resultType="hashmap">  -->
- 
-<!--              SELECT A.HOME_ID        /*집 ID*/ -->
-<!-- 			      ,A.USR_ID         /*사용자 ID*/ -->
-<!-- 			      ,A.HOME_ADD_1       /*집 주소*/ -->
-<!-- 			      ,A.HOME_ADD_2       /*집 나머지 주소*/ -->
-<!-- 			      ,A.HOME_COMM      /*집 설명*/ -->
-<!-- 			      ,A.HIGH_AMT       /*성수기 가격*/ -->
-<!-- 			      ,A.ROW_AMT        /*비성수기 가격*/ -->
-<!-- 			      ,A.HOME_RSV_CNT   /*예약수*/ -->
-<!-- 			      ,A.HOME_VI_CNT    /*조회수*/ -->
-<!-- 			      ,A.HOME_MOD_DT    /*집 수정일*/ -->
-<!-- 			      ,A.HOME_INT_DT    /*집 저장일*/ -->
-<!-- 			      ,B.HOME_IMG_PATH  /*집 이미지 경로*/ -->
-<!-- 			      ,B.IMG_KEY        /*이미지 KEY*/ -->
-<!-- 			  FROM TBL_HOME_INF A   /*집 정보 테이블*/ -->
-<!-- 			      ,TBL_HOME_IMG B   /*집 이미지 테이블*/ -->
-<!-- 			 WHERE A.HOME_ID = B.HOME_ID -->
-<!--                <if test = "homeAdd != null and homeAdd != ''"> -->
-<!-- 				AND HOME_ADD_1 like '%'||#{homeAdd}||'%' -->
-<!--                </if> -->
-<!--                <if test = "homeDateIn != null and homeDateIn != ''  and homeDateOut != null  and homeDateOut != ''">  -->
-<!--                AND A.HOME_ID NOT IN(   SELECT C.HOME_ID -->
-<!--                                          FROM TBL_RSV_INF C -->
-<!--                                         WHERE C.END_DT   <![CDATA[>=   ]]>  #{homeDateIn} -->
-<!--                                           AND C.STR_DT <![CDATA[ <= ]]> #{homeDateOut} -->
-<!--                                     ) -->
-<!--                </if> -->
-<!--                <if test = "homeGuest != null and homeGuest != ''"> -->
-<!--                AND A.HOME_GUEST >= #{homeGuest} -->
-<!--                </if> -->
-               
-<!-- 			   AND B.MA_IMG_YN = 'Y' -->
- 
-<!-- </select> -->
-
-
 	
 	<select id="selectDetailHome" parameterType="hashmap" resultType="hashmap"> 
   <![CDATA[ 
@@ -126,46 +88,114 @@ FROM TBL_HOME_INF E
    ]]> 
 </select> 	
 
+<!-- 숙소 리스트  -->
 <select id="selectImgList" parameterType = "com.hk.whome.domain.HomeListDomain" resultType="hashmap"> 
- 
-             SELECT A.HOME_ID        /*집 ID*/
-			      ,A.USR_ID         /*사용자 ID*/
-			      ,DECODE(A.HOME_RANGE,'1','집 전체','2','개인실','3','다인실','')AS HOME_RANGE
-			      ,A.BED_CNT          /*침대 수*/ 
-			      ,A.HOME_ADD_1       /*집 주소*/
-			      ,A.HOME_ADD_2       /*집 나머지 주소*/
-			      ,A.HOME_COMM      /*집 설명*/
-			      ,A.HOME_TITLE
-			      ,A.HIGH_AMT       /*성수기 가격*/
-			      ,A.ROW_AMT        /*비성수기 가격*/
-			      ,A.HOME_RSV_CNT   /*예약수*/
-			      ,A.HOME_VI_CNT    /*조회수*/
-			      ,A.HOME_MOD_DT    /*집 수정일*/
-			      ,A.HOME_INT_DT    /*집 저장일*/
-			      ,( SELECT 
-			      			LISTAGG(HOME_IMG_PATH,',') WITHIN GROUP(ORDER BY IMG_KEY) AS HOME_IMG
-					 FROM
-							TBL_HOME_IMG B
-					 WHERE
-					 		A.HOME_ID = B.HOME_ID
-			       ) AS HOME_IMG
-			 FROM TBL_HOME_INF A   /*집 정보 테이블*/
+ 		SELECT
+ 				*
+ 		FROM
+	 			(
+	             SELECT 
+	             	   ROW_NUMBER() OVER (ORDER BY HOME_ID DESC) RNUM
+	                  ,A.HOME_ID        /*집 ID*/
+				      ,A.USR_ID         /*사용자 ID*/
+				      ,DECODE(A.HOME_RANGE,'1','집 전체','2','개인실','3','다인실','')AS HOME_RANGE
+				      ,A.BED_CNT          /*침대 수*/ 
+				      ,A.HOME_ADD_1       /*집 주소*/
+				      ,A.HOME_ADD_2       /*집 나머지 주소*/
+				      ,A.HOME_COMM      /*집 설명*/
+				      ,A.HOME_TITLE     /*집 제목*/
+				      ,A.HIGH_AMT       /*성수기 가격*/
+				      ,A.ROW_AMT        /*비성수기 가격*/
+				      ,A.HOME_RSV_CNT   /*예약수*/
+				      ,A.HOME_VI_CNT    /*조회수*/
+				      ,A.HOME_MOD_DT    /*집 수정일*/
+				      ,A.HOME_INT_DT    /*집 저장일*/
+					  ,(
+					    	 SELECT 
+					      			LISTAGG(HOME_IMG_PATH,',') WITHIN GROUP(ORDER BY IMG_KEY) AS HOME_IMG
+							 FROM
+									TBL_HOME_IMG B
+							 WHERE
+							 		A.HOME_ID = B.HOME_ID
+				       ) AS HOME_IMG
+				       ,(
+							 SELECT
+								        ROUND( ( C.rate_cl + C.rate_a + C.rate_c + C.rate_l + C.rate_ci + C.rate_s ) / 6 , 1 ) as total_rate
+								FROM
+					        (
+					            SELECT
+					                    ROUND( SUM(RVI_S_CL) / COUNT(*), 1 ) as rate_cl,
+					                    ROUND( SUM(RVI_S_A) / COUNT(*), 1 ) as rate_a, 
+					                    ROUND( SUM(RVI_S_C) / COUNT(*), 1 ) as rate_c, 
+					                    ROUND( SUM(RVI_S_L) / COUNT(*), 1 ) as rate_l, 
+					                    ROUND( SUM(RVI_S_Ci) / COUNT(*), 1 ) as rate_ci,
+					                    ROUND( SUM(RVI_S_S) / COUNT(*), 1 ) as rate_s
+					            FROM
+					                    TBL_RVI_COMM 
+					            GROUP BY
+					                    HOME_ID
+					            HAVING 
+					            		HOME_ID = A.HOME_ID
+					        ) C	
+				       ) AS TOTAL_RATE
+				 FROM 
+				 		TBL_HOME_INF A   /*집 정보 테이블*/
+				 WHERE
+				 		A.DEL_YN = 'N' 
+	               <if test = "area != null and area != ''">
+						AND HOME_ADD_1 like '%'||#{area}||'%'
+	               </if>
+	               <if test = "homeDateIn != null and homeDateIn != ''  and homeDateOut != null  and homeDateOut != ''"> 
+	               	   AND HOME_REV_START <![CDATA[ <= ]]> #{homeDateIn}
+               	       AND HOME_REV_END <![CDATA[ >= ]]> #{homeDateOut}
+		               AND HOME_ID NOT IN(  
+		               						 SELECT 
+		               						 		C.HOME_ID
+		                                     FROM 
+		                                     		TBL_RSV_INF C
+		                                     WHERE 
+		                                     		    C.END_DT <![CDATA[ >= ]]>  #{homeDateOut}
+		                                            AND C.STR_DT <![CDATA[ <= ]]> #{homeDateIn}
+		                                    )
+	               </if>
+	               <if test = "homeGuest != null and homeGuest != ''">
+	               		AND MAX_GUEST >= #{homeGuest}
+	               </if>
+	               ORDER BY
+	               		A.HOME_ID DESC
+				)
+		WHERE
+				RNUM BETWEEN #{startListNo} AND #{endListNo}
+			
+</select>
+
+<!-- 숙소 리스트 총 수 -->
+<select id = "getHomeListTotalCount" parameterType = "com.hk.whome.domain.HomeListDomain" resultType = "Integer">
+	         SELECT 
+	         		COUNT(*) 
+			 FROM 
+			 		TBL_HOME_INF A   /*집 정보 테이블*/
 			 WHERE
-			 	A.DEL_YN = 'N' 
-               <if test = "homeAdd != null and homeAdd != ''">
-				AND HOME_ADD_1 like '%'||#{homeAdd}||'%'
+			 		A.DEL_YN = 'N' 
+               <if test = "area != null and area != ''">
+					AND HOME_ADD_1 like '%'||#{area}||'%'
                </if>
                <if test = "homeDateIn != null and homeDateIn != ''  and homeDateOut != null  and homeDateOut != ''"> 
-               AND HOME_ID NOT IN(   SELECT C.HOME_ID
-                                         FROM TBL_RSV_INF C
-                                        WHERE C.END_DT   <![CDATA[>=   ]]>  #{homeDateIn}
-                                          AND C.STR_DT <![CDATA[ <= ]]> #{homeDateOut}
-                                    )
+	               	   AND HOME_REV_START <![CDATA[ <= ]]> #{homeDateIn}
+               	       AND HOME_REV_END <![CDATA[ >= ]]> #{homeDateOut}
+	               AND HOME_ID NOT IN(  
+	               						 SELECT 
+	               						 		C.HOME_ID
+	                                     FROM 
+	                                     		TBL_RSV_INF C
+	                                     WHERE 
+	                                     		    C.END_DT <![CDATA[ >= ]]>  #{homeDateOut}
+	                                            AND C.STR_DT <![CDATA[ <= ]]> #{homeDateIn}
+	                                    )
                </if>
                <if test = "homeGuest != null and homeGuest != ''">
-               AND HOME_GUEST >= #{homeGuest}
+               		AND MAX_GUEST >= #{homeGuest}
                </if>
-
 </select>
  	
    

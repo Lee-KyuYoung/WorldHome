@@ -8,7 +8,11 @@ import com.hk.whome.domain.HomeListDomain;
 
 public interface MainDAO {
 
-	List<Map<String,Object>> selectImgList(HomeListDomain homeListDomain);
-	Map<String,Object> selectDetailHome(HashMap<String,String> map);
-	List selectPostscriptList(HashMap postscriptListParam);
+	public List<Map<String,Object>> selectImgList(HomeListDomain homeListDomain);
+	
+	public Map<String,Object> selectDetailHome(HashMap<String,String> map);
+	
+	public List selectPostscriptList(HashMap postscriptListParam);
+	
+	public int getHomeListTotalCount(HomeListDomain homeListDomain);
 }

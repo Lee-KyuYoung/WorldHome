@@ -5,7 +5,6 @@
 <html>
 <head> 
 	<title>숙소 등록하기</title> 
-	<link href="<c:url value='/resources/jquery-plug-in/datarangepicker/css/daterangepicker.css'/>" rel="stylesheet">
 	<style type="text/css">
 		p{margin:20 0 10 0;font-size:16px;color:#767676;font-weight:bold}
 		.progress_info{color:#767676;margin-top:40px;margin-bottom:20px;font-weight:bold;}
@@ -43,7 +42,7 @@
 							<p>성수기 요금</p>
 							<div class="input-group">
 								<div class="input-group-prepend">
-     								<span class="input-group-text">￦</span>
+     								<span class="input-group-text">₩</span>
    								</div>
    								<input type = "text" class="form-control" id = "peak_season_pay" name = "peak_season_pay">
  							</div>
@@ -52,7 +51,7 @@
 							<p>비성수기 요금</p>
 							<div class="input-group">
 								<div class="input-group-prepend">
-     								<span class="input-group-text">￦</span>
+     								<span class="input-group-text">₩</span>
    								</div>
    								<input type = "text" class="form-control" id = "offpeak_season_pay" name = "offpeak_season_pay">
  							</div>
@@ -74,8 +73,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/moment.min.js'/>"></script>
-	<script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/daterangepicker.js'/>"></script>
     
 	<script>
 		$(document).ready(function(){

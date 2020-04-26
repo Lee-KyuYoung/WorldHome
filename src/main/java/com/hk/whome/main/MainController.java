@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hk.whome.admin.AdminService;
 import com.hk.whome.domain.CodeDomain;
 import com.hk.whome.domain.HomeListDomain;
+import com.hk.whome.domain.PagingDomain;
 import com.hk.whome.domain.UserInfoDomain;
 import com.hk.whome.user.UserService;
 import com.hk.whome.util.EmptyUtils;
@@ -40,6 +41,8 @@ public class MainController {
 	MessageSource message;
 	
 	private Logger logger = LoggerFactory.getLogger(MainController.class);
+	private final int PAGE_SIZE = 5;
+	private final int LIST_SIZE = 15;
 	
 	@RequestMapping(value="/{errorPage}")
 	public String errorPage(@PathVariable("errorPage") String page) {
@@ -56,24 +59,54 @@ public class MainController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale, HomeListDomain homeData, @RequestParam Map<String,String> paramMap) {
 		
+		int pageNo = EmptyUtils.isEmpty(paramMap.get("page_no")) ? 1 : Integer.parseInt(paramMap.get("page_no"));
 		String message = paramMap.get("message");
+		String area = paramMap.get("area");
+		String reservD = paramMap.get("reserv_d");
+		String reservP = paramMap.get("reserv_p");
 		
 		List<Map<String,Object>> homeList = new ArrayList<>();
 		HomeListDomain homeListDomain = new HomeListDomain();
+		PagingDomain paging = null;
+		
+		if(!EmptyUtils.isEmpty(area)) {
+			homeListDomain.setArea(area);
+		}
+		if(!EmptyUtils.isEmpty(reservD)) {
+			homeListDomain.setHomeDateIn(reservD.split("~")[0]);
+			homeListDomain.setHomeDateOut(reservD.split("~")[1]);
+		}
+		if(!EmptyUtils.isEmpty(reservP)) {
+			homeListDomain.setHomeGuest(reservP);
+		}
 		
 		try {
+			//숙소 리스트 총 개수
+			int totalListCount = mainService.getHomeListTotalCount(homeListDomain);
+			
+			paging = new PagingDomain(pageNo, PAGE_SIZE, LIST_SIZE, totalListCount);
+			homeListDomain.setStartListNo(paging.getStartListNo());
+			homeListDomain.setEndListNo(paging.getEndListNo());
+			
+			//숙소 리스트
 			homeList = mainService.selectImgList(homeListDomain);
 			
-			//집 이미지
+			//집 이미지 분리
 			for(Map<String,Object> m : homeList) {
 				String[] tempHomeImg = ((String)m.get("HOME_IMG")).split(","); 
 				m.put("HOME_IMG", tempHomeImg);
 			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("homeList",homeList);
+		
+		model.addAttribute("area",area);
+		model.addAttribute("paging",paging);
 		model.addAttribute("message",message);
+		model.addAttribute("reserv_d",reservD);
+		model.addAttribute("reserv_p",reservP);
+		model.addAttribute("homeList",homeList);
 		
 		return "main/home_main.tiles";
 	}

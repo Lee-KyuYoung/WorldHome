@@ -2,18 +2,31 @@ package com.hk.whome.domain;
 
 public class HomeListDomain {
 
-	private String homeAdd;
+	private String area;
 	private String homeDateIn;
 	private String homeDateOut;
 	private String homeGuest;
-	
-	
-	
-	public String getHomeAdd() {
-		return homeAdd;
+	private int startListNo;
+	private int endListNo;
+
+	public int getStartListNo() {
+		return startListNo;
 	}
-	public void setHomeAdd(String homeAdd) {
-		this.homeAdd = homeAdd;
+	public void setStartListNo(int startListNo) {
+		this.startListNo = startListNo;
+	}
+	public int getEndListNo() {
+		return endListNo;
+	}
+	public void setEndListNo(int endListNo) {
+		this.endListNo = endListNo;
+	}
+
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
 	}
 	/**
 	 * @return the homeDate

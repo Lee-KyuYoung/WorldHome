@@ -7,6 +7,13 @@
 	.navbar{border-bottom:2px solid #f2f2f2}
 	.navbar-nav a{color:#4d4d4d;font-weight:600}
 
+	.paging ul{display:inline-block;padding:0px;margin:0px 10px 0px 10px;}
+	.paging ul li{display:inline-block;list-style:none;margin:4px;}
+	.paging  a{cursor:pointer;display:inline-block;height:32px;width:32px;font-size:17px;font-weight:700;color:#222222;border-radius:50%;line-height:34px;text-align: center;}
+	.paging  a:hover{background-color:#f2f2f2;}
+	.paging-active{cursor:default !important;color:white !important;background-color:black;}
+	.paging-active:hover{background-color:black !important;}
+
 .nav-modal{
 	max-width: 100%;
 	margin: 0px;
