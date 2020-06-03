@@ -1,5 +1,7 @@
 # WorldHome
-WorldHome Spring Project   
+=============   
+타이틀   
+WorldHome
 
 프로젝트 설명
 장기간 자신이 소유한 집을 비워야할 상황일때 다른사람이 기간을 예약하고 돈을 지불하여 집을 사용할 수 있도록 만든 사이트   
