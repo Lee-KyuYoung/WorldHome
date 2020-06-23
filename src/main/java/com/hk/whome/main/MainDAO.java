@@ -11,8 +11,6 @@ public interface MainDAO {
 	public List<Map<String,Object>> selectImgList(HomeListDomain homeListDomain);
 	
 	public Map<String,Object> selectDetailHome(HashMap<String,String> map);
-	
-	public List selectPostscriptList(HashMap postscriptListParam);
-	
+
 	public int getHomeListTotalCount(HomeListDomain homeListDomain);
 }

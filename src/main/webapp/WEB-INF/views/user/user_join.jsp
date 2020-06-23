@@ -16,142 +16,147 @@
 </head>
 <body>
 	<div class="container">
-		<form class ="form-signin" id = "join_form">
-			<h3>회원가입</h3>
-			<table class ="table">
-				<caption><spring:message code="join.info.J102"/></caption><!-- 회원 이용정보 -->
-				<colgroup>
-					<col style="width:100px;">
-					<col style="width:300px;">
-				</colgroup>
-				<tbody>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J104"/></th><!-- 아이디 -->
-						<td>
-							<input type="text" class="form-control form-control-sm" id="user_id" name="user_id">
-							<p class="invalid_data" role="user_id"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J105"/></th><!-- 비밀번호 -->
-						<td>
-						    <p class="data_role"><spring:message code="join.info.J101"/></p>
-							<input type="password" class="form-control form-control-sm" id="user_password" name="user_password">
-							<p class="invalid_data" role="user_password"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J106"/></th><!-- 비밀번호 확인 -->
-						<td>
-							<input type="password" class="form-control form-control-sm" id="user_password_check" name="user_password_check">
-							<p class="invalid_data" role="user_password_check"></p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table">
-				<caption><spring:message code="join.info.J103"/></caption> <!-- 회원 개인정보 -->
-				<colgroup>
-					<col style="width:100px;">
-					<col style="width:300px;">
-				</colgroup>
-				<tbody>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J107"/></th> <!-- 이름 -->
-						<td>
-							<input type="text" class="form-control form-control-sm" id="user_name" name="user_name"  >
-							<p class="invalid_data" role="user_name"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J108"/></th><!-- 생년월일 -->
-						<td>
-							<div class="form-inline join_custom_group">
-								<div class="form-group mb-1">
-									<input type="text" class="form-control form-control-sm" id="user_birth_year" name="user_birth_year" placeholder="년(4자)" maxlength="4">
-								</div>
-								<div class="form-group mx-sm-2 mb-1">
-									<select class="form-control form-control-sm" name="user_birth_month"  id="user_birth_month">
-										<c:forEach var="num" begin="1" end="12" step="1">
-											<c:choose>
-												<c:when test = "${num < 10 }">
-													<option value="0${num}">${num}</option>	
-												</c:when>
-												<c:otherwise>
-													<option value="${num}">${num}</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group mb-1">
-									<input type="text" class="form-control form-control-sm" id="user_birth_day" name="user_birth_day" placeholder="일" maxlength="2">
-								</div>
+		<div class="row justify-content-center">
+			<div class="col-sm-8">
+				<form class ="form-signin" id = "join_form">
+					<h3>회원가입</h3>
+					<table class ="table">
+						<caption><spring:message code="join.info.J102"/></caption><!-- 회원 이용정보 -->
+						<colgroup>
+							<col style="width:100px;">
+							<col style="width:300px;">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J104"/></th><!-- 아이디 -->
+								<td>
+									<input type="text" class="form-control form-control-sm" id="user_id" name="user_id">
+									<p class="invalid_data" role="user_id"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J105"/></th><!-- 비밀번호 -->
+								<td>
+								    <p class="data_role"><spring:message code="join.info.J101"/></p>
+									<input type="password" class="form-control form-control-sm" id="user_password" name="user_password">
+									<p class="invalid_data" role="user_password"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J106"/></th><!-- 비밀번호 확인 -->
+								<td>
+									<input type="password" class="form-control form-control-sm" id="user_password_check" name="user_password_check">
+									<p class="invalid_data" role="user_password_check"></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table">
+						<caption><spring:message code="join.info.J103"/></caption> <!-- 회원 개인정보 -->
+						<colgroup>
+							<col style="width:100px;">
+							<col style="width:300px;">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J107"/></th> <!-- 이름 -->
+								<td>
+									<input type="text" class="form-control form-control-sm" id="user_name" name="user_name"  >
+									<p class="invalid_data" role="user_name"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J108"/></th><!-- 생년월일 -->
+								<td>
+									<div class="form-inline join_custom_group">
+										<div class="form-group mb-1">
+											<input type="text" class="form-control form-control-sm" id="user_birth_year" name="user_birth_year" placeholder="년(4자)" maxlength="4">
+										</div>
+										<div class="form-group mx-sm-2 mb-1">
+											<select class="form-control form-control-sm" name="user_birth_month"  id="user_birth_month">
+												<c:forEach var="num" begin="1" end="12" step="1">
+													<c:choose>
+														<c:when test = "${num < 10 }">
+															<option value="0${num}">${num}</option>	
+														</c:when>
+														<c:otherwise>
+															<option value="${num}">${num}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+											</select>
+										</div>
+										<div class="form-group mb-1">
+											<input type="text" class="form-control form-control-sm" id="user_birth_day" name="user_birth_day" placeholder="일" maxlength="2">
+										</div>
+									</div>
+									<p class="invalid_data" role="user_birth_year"></p><p class="invalid_data" role="user_birth_day"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J109"/></th><!-- 주소 -->
+								<td>
+									<div class="input-group mb-3">
+										<input type="text" class="form-control form-control-sm" id="user_address_1" name="user_address_1" readonly onchange="setMentInit('user_address_1');">
+										<div class="input-group-append">
+											<button class="btn btn-outline-secondary btn-sm" type="button" id="address_search"><spring:message code="join.info.J112"/></button><!-- 주소검색 -->
+										</div>
+									</div>
+									<input type="text" class="form-control form-control-sm" id="user_address_2" name="user_address_2" placeholder="<spring:message code='join.info.J211'/>"> <!-- 나머지주소를 입력해주세요. -->
+									<p class="invalid_data" role="user_address_1"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J110"/></th><!-- 이메일 -->
+								<td>
+									<input type="text" class="form-control form-control-sm" id="user_email" name="user_email">
+									<p class="invalid_data" role="user_email"></p>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle"><spring:message code="join.info.J111"/></th> <!-- 휴대전화 -->
+								<td>
+									<p class="data_role"><spring:message code="join.info.J210"/></p> <!-- "-"을 제외하고 숫자만 적어주세요. -->
+									<input type="text" class="form-control form-control-sm" id="user_phone" name="user_phone" maxlength="11">
+									<p class="invalid_data" role="user_phone"></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table">
+						<caption>기타정보(선택사항)</caption>
+						<colgroup>
+							<col style="width:100px;">
+							<col style="width:300px;">
+						</colgroup>
+						<tbody>
+							<tr>
+								<th class="align-middle">프로필 사진</th> 
+								<td>
+									<label class="img_view" for="user_img" id="test">
+										<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)">
+									</label>
+								</td>
+							</tr>
+							<tr>
+								<th class="align-middle">자기소개</th>
+								<td>
+									<textarea class = "form-control" rows="4" name = "user_introduce"></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="col-sm-12" style="height:38px;">
+						<div class="btn-toolbar float-right">
+							<div class="btn-group mr-2">
+								<input type="button" class="btn btn-outline-secondary" id = "join_btn" value="<spring:message code='common.info.I002'/>">
 							</div>
-							<p class="invalid_data" role="user_birth_year"></p><p class="invalid_data" role="user_birth_day"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J109"/></th><!-- 주소 -->
-						<td>
-							<div class="input-group mb-3">
-								<input type="text" class="form-control form-control-sm" id="user_address_1" name="user_address_1" readonly onchange="setMentInit('user_address_1');">
-								<div class="input-group-append">
-									<button class="btn btn-outline-secondary btn-sm" type="button" id="address_search"><spring:message code="join.info.J112"/></button><!-- 주소검색 -->
-								</div>
-							</div>
-							<input type="text" class="form-control form-control-sm" id="user_address_2" name="user_address_2" placeholder="<spring:message code='join.info.J211'/>"> <!-- 나머지주소를 입력해주세요. -->
-							<p class="invalid_data" role="user_address_1"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J110"/></th><!-- 이메일 -->
-						<td>
-							<input type="text" class="form-control form-control-sm" id="user_email" name="user_email">
-							<p class="invalid_data" role="user_email"></p>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle"><spring:message code="join.info.J111"/></th> <!-- 휴대전화 -->
-						<td>
-							<p class="data_role"><spring:message code="join.info.J210"/></p> <!-- "-"을 제외하고 숫자만 적어주세요. -->
-							<input type="text" class="form-control form-control-sm" id="user_phone" name="user_phone" maxlength="11">
-							<p class="invalid_data" role="user_phone"></p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table">
-				<caption>기타정보(선택사항)</caption>
-				<colgroup>
-					<col style="width:100px;">
-					<col style="width:300px;">
-				</colgroup>
-				<tbody>
-					<tr>
-						<th class="align-middle">프로필 사진</th> 
-						<td>
-							<label class="img_view" for="user_img" id="test">
-								<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)">
-							</label>
-						</td>
-					</tr>
-					<tr>
-						<th class="align-middle">자기소개</th>
-						<td>
-							<textarea class = "form-control" rows="4" name = "user_introduce"></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="btn-toolbar float-right">
-				<div class="btn-group mr-2">
-					<input type="button" class="btn btn-outline-secondary" id = "join_btn" value="<spring:message code='common.info.I002'/>">
-				</div>
-				<input type="button" class="btn btn-outline-secondary" id = "cancel_btn" value="<spring:message code='common.info.I003'/>">			
+							<input type="button" class="btn btn-outline-secondary" id = "cancel_btn" value="<spring:message code='common.info.I003'/>">			
+						</div>
+					</div>
+				</form>
 			</div>
-		</form>
-		<div style="height:1400px;"></div>
+		</div>
 	</div>
 	<script src="<%=contextPath %>/resources/jquery/dev/user_info.js"></script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
@@ -159,18 +164,30 @@
 	
 	$(document).ready(function(){
 		
+		const idregExp = /^[A-Za-z0-9]{4,10}$/;
+		const pwregExp = /^[A-Za-z0-9]{8,16}$/;
+		const pwRegExp_1 = /[0-9]/g;
+		const pwRegExp_2 = /[A-Za-z]/g;
+		
 		//비번 유효성 검사
 		$('#user_password_check, #user_password').on('blur',function(){
 			var password_1 = $('#user_password').val();
 			var password_2 = $('#user_password_check').val();
-			var regExp = /^[A-Za-z0-9]{8,20}$/;
 			
 			//비밀번호 유효성 검사
 			if(password_1 != ''){
-				if(!regExp.test(password_1)){
+				
+				var pwCheck = true;
+				
+				if(!pwregExp.test(password_1)){
+					pwCheck = false;
+				}else if(password_1.search(pwRegExp_1) < 0 || password_1.search(pwRegExp_2) < 0){
+					pwCheck = false;
+				}
+				if(!pwCheck){
 					$('[role="user_password"]').text('');
 					$('[role="user_password"]').text('<spring:message code="join.info.J209"/>');
-				}	
+				}
 			}
 			//비밀번호 일치하는지 체크
 			if($(this).attr('id') == 'user_password_check'){
@@ -206,7 +223,14 @@
 			
 			var user_id = $('#user_id').val();
 			var obj = $('[role="user_id"]');
-
+			
+			//아이디 유효성 검사
+			if(!idregExp.test(user_id)){
+				$('[role="user_id"]').css('color','red').text('');
+				$('[role="user_id"]').text('<spring:message code="join.info.J215"/>');
+				return false;
+			}
+			
 			if(user_id != ''){
 				$.ajax({
 					url : './userIDCheck',
@@ -230,6 +254,10 @@
 			}
 		});	
 		
+		$('#user_birth_year , #user_birth_day').on('keyup',function(){
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+		
 		//회원가입 데이터 유효성 체크
 		$('#join_btn').on('click',function(){
 			
@@ -240,71 +268,81 @@
 			var email_regExp = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z\-]+/;
 			var invalid_check = true;
 			
+
 			if($('#user_id').val() == ''){
 				invalid_data = 'user_id';
-				message_code = '<spring:message code="join.info.J201"/>'; 
+				message_code = '<spring:message code="join.info.J201"/>';  
 				invalid_check = false;
-				
-			}else if($('#user_password').val() == ''){
+			}
+			else if(!idregExp.test($('#user_id').val())){
+				invalid_data = 'user_id';
+				message_code = '<spring:message code="join.info.J215"/>'; //영문자를 이용하여 4~10글자 입력하세요.
+				invalid_check = false;
+			}
+			else if($('#user_password').val() == ''){
 				invalid_data = 'user_password';
 				message_code = '<spring:message code="join.info.J202"/>'; //비밀번호를 입력해주세요
 				invalid_check = false;
-				
-			}else if(!password_regExp.test($('#user_password').val())){
+			}
+			else if(!pwregExp.test($('#user_password').val())){
 				invalid_data = 'user_password';
 				message_code = '<spring:message code="join.info.J209"/>'; //영문자, 숫자를 혼합하여 8~16글자 이상 입력하세요.
 				invalid_check = false;
-				
-			}else if($('#user_password_check').val() == ''){
+			}
+			else if($('#user_password').val().search(pwRegExp_1) < 0 || $('#user_password').val().search(pwRegExp_2) < 0){
+				invalid_data = 'user_password';
+				message_code = '<spring:message code="join.info.J209"/>'; //영문자, 숫자를 혼합하여 8~16글자 이상 입력하세요.
+				invalid_check = false;
+			}
+			else if($('#user_password_check').val() == ''){
 				invalid_data = 'user_password_check';
 				message_code = '<spring:message code="join.info.J202"/>'; //비밀번호를 입력해주세요
 				invalid_check = false;
-				
-			}else if($('#user_password').val() != $('#user_password_check').val()){
+			}
+			else if($('#user_password').val() != $('#user_password_check').val()){
 				invalid_data = 'user_password_check';
 				message_code = '<spring:message code="join.info.J203"/>'; //비밀번호가 일치하지 않습니다.
 				invalid_check = false;
-				
-			}else if($('#user_name').val() == ''){
+			}
+			else if($('#user_name').val() == ''){
 				invalid_data = 'user_name';
 				message_code = '<spring:message code="join.info.J204"/>'; //이름을 입력해주세요
 				invalid_check = false;
-				
-			}else if($('#user_birth_year').val() == ''){
+			}
+			else if($('#user_birth_year').val() == ''){
 				invalid_data = 'user_birth_year';
 				message_code = '<spring:message code="join.info.J205"/>';  //생년월일을 입력해주세요
 				invalid_check = false;
-				
-			}else if($('#user_birth_day').val() == ''){
+			}
+			else if($('#user_birth_day').val() == ''){
 				invalid_data = 'user_birth_day';
 				message_code = '<spring:message code="join.info.J205"/>'; //생년월일을 입력해주세요
 				invalid_check = false;
-				
-			}else if($('#user_address_1').val() == ''){
+			}
+			else if($('#user_address_1').val() == ''){
 				invalid_data = 'user_address_1';
 				message_code = '<spring:message code="join.info.J206"/>'; //주소를 입력해주세요.
 				invalid_check = false;
-				
-			}else if($('#user_email').val() == ''){
+			}
+			else if($('#user_email').val() == ''){
 				invalid_data = 'user_email';
 				message_code = '<spring:message code="join.info.J207"/>'; //이메일을 입력해주세요.
 				invalid_check = false;
-				
-			}else if(!email_regExp.test($('#user_email').val())){
+			}
+			else if(!email_regExp.test($('#user_email').val())){
 				invalid_data = 'user_email';
 				message_code = '<spring:message code="join.info.J212"/>'; //이메일 형식이 옳바르지 않습니다.
 				invalid_check = false;
-				
-			}else if($('#user_phone').val() == ''){
+			}
+			else if($('#user_phone').val() == ''){
 				invalid_data = 'user_phone';
 				message_code = '<spring:message code="join.info.J208"/>'; //휴대번호를 입력해주세요.
 				invalid_check = false;
-				
-			}else if(!phone_regExp.test($('#user_phone').val())){
+			}
+			else if(!phone_regExp.test($('#user_phone').val())){
 				invalid_data = 'user_phone';
 				message_code = '<spring:message code="join.info.J213"/>'; //휴대전화번호 형식이 옳바르지 않습니다.
 				invalid_check = false;
-				
 			}
 			
 			if(invalid_data != ''){

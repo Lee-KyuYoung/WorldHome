@@ -9,7 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,11 +190,13 @@ public class ManagementController{
 			}
 			else if(path.equals("step04")) { //숙소에서 제공하는 옵션 가져오기
 				getCodeDefineParam.put("codeType", "main");
-				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("11,12,13")));
+//				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("11,12,13")));
+				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("15,16,17")));
 			}
 			else if(path.equals("step07")){
 				getCodeDefineParam.put("codeType", "main");
-				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("21,22")));
+//				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("21,22")));
+				getCodeDefineParam.put("codeNo", new ArrayList<>(Arrays.asList("18,19")));
 			}
 
 			List<CodeDomain> homeCodeList = adminService.getCodeDefine(getCodeDefineParam);
@@ -457,7 +461,7 @@ public class ManagementController{
 
 		String resCode = "E001";
 		String homeID = paramMap.get("homeid");
-		String uploadPath = req.getSession().getServletContext().getRealPath("/resources/imgFile/home_detail/");
+		String uploadPath = FileUtils.getFilePath(req);
 		
 		if(EmptyUtils.isEmpty(homeID)) {
 			resCode = "E002";
@@ -697,6 +701,44 @@ public class ManagementController{
 		resMap.put("resCode", resCode);
 		
 		return resMap;
+	}
+	
+	/**
+	 * 임시저장 또는 정식 등록된 집 삭제
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/removeHomeInfo", method = RequestMethod.POST)
+	public Map<String,String> removeHomeInfo(@RequestParam Map<String,String> paramMap){
+		
+		String homeID = paramMap.get("home_id");
+		String status = paramMap.get("status"); 
+		String resCode = "";
+	
+		if(EmptyUtils.isEmpty(homeID)) {
+			resCode = "E002";
+		}
+		if(resCode.equals("")) {
+
+			try {
+				HomeInfoDomain homeInfo = new HomeInfoDomain();
+				homeInfo.setHomeID(homeID);
+				homeInfo.setDelYN("Y");
+				
+				if(status.equals("temp")) {
+					managementService.updateHomeInfoTemp(homeInfo);
+				}else {
+					managementService.updateHomeInfo(homeInfo);
+				}
+
+			}catch(Exception e) {
+				e.printStackTrace();
+				resCode = "E003";
+			}
+		}
+		Map<String,String> resData = new HashMap<>();
+		resData.put("resCode", resCode);
+
+		return resData;
 	}
 }
 

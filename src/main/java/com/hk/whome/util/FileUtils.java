@@ -21,14 +21,14 @@ public class FileUtils {
 	@Autowired
 	private WhomeUtilDAO whomeUtileDAO;
 
-	public static String getFilePath() {
+	public static String getFilePath(HttpServletRequest req) {
 		String os = System.getProperty("os.name");
 		String path = "";
 		
 		if(os.equals("Linux")) {
-			path = "/usr/share/upfile";
+			path = "/usr/share/upfile/";
 		}else {
-			path = System.getProperty("catalina.home");
+			path = req.getSession().getServletContext().getRealPath("/resources/imgFile/home_detail/");
 		}
 		return path;
 	}
@@ -93,7 +93,7 @@ public class FileUtils {
 		if(userImg !=null && !userImg.getOriginalFilename().equals("")) {
 
 			String originName = userImg.getOriginalFilename();
-			String path = req.getSession().getServletContext().getRealPath("/resources/imgFile/user/");
+			String path = FileUtils.getFilePath(req);
 			String extension = originName.substring(originName.lastIndexOf("."), originName.length());
 			imgName = UUID.randomUUID().toString() + "_" + userID + extension;
 			

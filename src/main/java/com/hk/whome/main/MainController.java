@@ -1,9 +1,11 @@
 package com.hk.whome.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.hk.whome.admin.AdminService;
 import com.hk.whome.domain.CodeDomain;
 import com.hk.whome.domain.HomeListDomain;
 import com.hk.whome.domain.PagingDomain;
 import com.hk.whome.domain.UserInfoDomain;
+import com.hk.whome.reservation.ReservationService;
 import com.hk.whome.user.UserService;
+import com.hk.whome.util.DateUtils;
 import com.hk.whome.util.EmptyUtils;
 
 
@@ -36,6 +41,9 @@ public class MainController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ReservationService reservationService;
 	
 	@Autowired
 	MessageSource message;
@@ -146,6 +154,7 @@ public class MainController {
 				String homeFacility = (String)homeDetailInfo.get("HOME_FACILITY");
 				String homeGuestRule = (String)homeDetailInfo.get("HOME_GUEST_RULE");
 				String homePrecautions = (String)homeDetailInfo.get("HOME_PRECAUTIONS");
+				String homeImg = (String)homeDetailInfo.get("HOME_IMG");
 				
 				if(!EmptyUtils.isEmpty(homeType)) {
 					model.addAttribute("homeType",homeType.split(","));
@@ -159,7 +168,10 @@ public class MainController {
 				if(!EmptyUtils.isEmpty(homePrecautions)) {
 					model.addAttribute("homePrecautions",homePrecautions.split(","));
 				}
-				
+				if(!EmptyUtils.isEmpty(homeImg)) {
+					model.addAttribute("homeImg",homeImg.split(","));
+				}
+
 				if(EmptyUtils.isEmpty(homeDetailInfo)) {
 					errorCode = "E102";
 				}
@@ -179,4 +191,50 @@ public class MainController {
 	}
 	
 
+	/**
+	 * 예약 불가능한 날짜 가져오기
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getDisableDates", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public Map<String,Object> getDisableDates(@RequestParam Map<String,String> paramMap) {
+		
+		String resCode = "E001";
+		String homeID = paramMap.get("homeID");
+		
+		if(!EmptyUtils.isEmpty(homeID)) {
+			resCode = "E002";
+		}
+
+		List<String> disableDates = new ArrayList<>(); 
+		
+		try {
+			//현재 예약된 정보를 가져와서 예약 이미 예약된 날짜를 만들어 달력에 표시한다.
+			List<Map<String,String>> reservDate = reservationService.getReservDate(homeID);
+			
+			if(!EmptyUtils.isEmpty(reservDate)) {
+				
+				for(Map<String,String> date : reservDate) {
+					String start = date.get("STR_DT");
+					String end = date.get("END_DT");
+					
+					disableDates = DateUtils.getBetweenDay(disableDates, start, end);
+				}
+				for(String s : disableDates) {
+					logger.info(" =============== > "+s);
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			resCode = "E003";
+		}
+		
+		Map<String,Object> resMap = new HashMap<>();
+		resMap.put("resCode", resCode);
+		resMap.put("disableDates", disableDates);
+		
+		return resMap;
+	}
+	
 }

@@ -57,6 +57,7 @@
 			      <div class="dropdown-menu">
 			        <a class="dropdown-item" href="<c:url value='/user/modify'/>">회원 정보수정</a>
 			        <a class="dropdown-item" href="<c:url value='/management/homeReg'/>">숙소 등록</a>
+			        <a class="dropdown-item" href="<c:url value='/reservation/list'/>">나의 예약</a>
 			        <a class="dropdown-item" href="<c:url value ='/logout'/>">로그아웃</a>
 			      </div>
 			    </li>
@@ -76,11 +77,12 @@
 	       </div>
 	       <!-- Modal body -->
 	       <div class="modal-body">
-	       		<form action="./" method="get" id="home_search_form">
+	       		<form action="<c:url value='/'/>" method="get" id="home_search_form">
+	       			<input type = "hidden" id = "page_no" name = "page_no">
 		       		<div class="col-md-12 home_search" style="border:1px solid #dee2e6;border-radius:10px;">
 		       			<div class = "row" style="margin-top:0px;">
 		       				<div class="col-md-4" style="padding:15px 0px 15px 0px; border-radius:10px;">
-		       					<div class="col-md-12" style="font-size:12px;text-align:left">위치</div>
+		       					<div class="col-md-12" style="font-size:12px;text-align:left">지역</div>
 		       					<div class="col-md-12"><input type ="text" class="form-control" id="area" name="area" placeholder="시 ,구를 입력해주세요."></div>
 		       				</div>
 		       				<div class="col-md-4" style="padding:15px 0px 15px 0px; border-radius:10px;">
@@ -94,7 +96,6 @@
 		       					<div class="col-md-12"><input type ="text" class="form-control" id="reserv_p" name="reserv_p" placeholder="인원을 입력해주세요."></div>
 		       				</div>
 		       				<div class="col-xl-1" style="padding:20px 0px 15px 0px; border-radius:10px;">
-	<!-- 							<input type ="button" value = "검색" class="btn btn-danger" > -->
 								<button class="btn btn-danger" id="home_serach_btn">
 								<i class="fas fa-search" style="color:white;font-size:12px;"></i> 검색
 								</button>
@@ -128,6 +129,7 @@
 		
 		//date range pircker
 		$('input[name="reserv_d"]').daterangepicker({
+			autoUpdateInput: false,
 		    "locale": {
 		        "format": "YYYY/MM/DD",
 		        "separator": "~",
@@ -139,6 +141,10 @@
 		    },
 		    "minDate" : year+"/"+month+"/"+day
 		});
+		
+		$('input[name="reserv_d"]').on('apply.daterangepicker', function(ev, picker) {
+		     $(this).val(picker.startDate.format('YYYY/MM/DD') + '~' + picker.endDate.format('YYYY/MM/DD'));
+		 });
 		
 		//모달 초기화
 	    $("#searchModal").on('show.bs.modal', function () {

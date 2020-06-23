@@ -32,7 +32,7 @@
 						<div class = "col-sm-10">
 							<p>일반 제공</p>
 							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
-								<c:if test = "${list.codeGroupKey eq '1015' }">
+								<c:if test = "${list.codeGroupKey eq '1005' }">
 									<div class="custom-control custom-checkbox margin-bottom20">
 										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
 									    <label class="custom-control-label" for="home_range${status.index}">
@@ -48,7 +48,7 @@
 							</c:forEach>
 							<p>안전시설</p>
 							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
-								<c:if test = "${list.codeGroupKey eq '1016' }">
+								<c:if test = "${list.codeGroupKey eq '1006' }">
 									<div class="custom-control custom-checkbox margin-bottom20">
 										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
 									    <label class="custom-control-label" for="home_range${status.index}">
@@ -64,7 +64,7 @@
 							</c:forEach>
 							<p>기타 게스트가 사용할 수 있는 공간</p>
 							<c:forEach var = "list" items = "${codeList}" varStatus ="status">
-								<c:if test = "${list.codeGroupKey eq '1017' }">
+								<c:if test = "${list.codeGroupKey eq '1031' }">
 									<div class="custom-control custom-checkbox margin-bottom20">
 										<input type="checkbox" class="custom-control-input" id="home_range${status.index}" name="home_facility" value="${list.codeKey}">
 									    <label class="custom-control-label" for="home_range${status.index}">

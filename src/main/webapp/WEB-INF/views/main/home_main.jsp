@@ -7,7 +7,7 @@
 <%@ page session="true" %>
 
 <html>
-	<title>WorldHome</title>
+	<title>World Home</title>
 	<style type="text/css">
 		.container-fluid{width:100%}
 		.home_list{height:320px;margin:0px 10px 10px 10px;padding:0px;}
@@ -50,7 +50,7 @@
 				<c:if test = "${!empty reserv_d and reserv_d ne ''}">
 					<p>${reserv_d} 
 						<c:if test ="${!empty reserv_p and reserv_p !='' }">
-							/ ${reserv_p}명 
+							인원 ${reserv_p}명 
 						</c:if>
 					</p>
 				</c:if>
@@ -149,12 +149,17 @@
 	</div>
 	<script>
 	$(document).ready(function(){
-			$('.carousel').carousel({
-					interval: false
-				});
-		});
+		$('.carousel').each(function(){
+			console.log($(this).attr('id'));
+	        $(this).carousel({
+	            interval: false
+// 	            pause : false
+	        });
+	    });
+	});
 	function goMainPage(page){
-		location.href = "./?page_no="+page;
+		$('#page_no').val(page);
+		$('#home_search_form').submit();
 	}
 	</script>
 </body>

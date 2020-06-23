@@ -33,7 +33,7 @@
 					<h4>게스트가 지켜야 할 숙소 이용규칙을 선택하세요</h4>
 					<div class="row margin-top20">
 						<c:forEach var = "list" items = "${codeList}" varStatus = "status">
-							<c:if test = "${list.codeNum eq '21' }">
+							<c:if test = "${list.codeNum eq '18' }">
 								<div class="form-inline form-group col-sm-12" >
 									<div class="col-sm-5 no_padding">
 										<p>${list.codeComment}</p>
@@ -58,7 +58,7 @@
 					<div class="row margin-top20">
 						<div class = "col-sm-10">
 							<c:forEach var = "list" items = "${codeList}" varStatus = "status">
-								<c:if test = "${list.codeNum eq '22' }">
+								<c:if test = "${list.codeNum eq '19' }">
 									<div class="custom-control custom-checkbox margin-bottom20">
 										<input type="checkbox" class="custom-control-input" id="home_precaution_${status.index }" name="home_precaution" value = "${list.codeKey }">
 									    <label class="custom-control-label" for="home_precaution_${status.index }">

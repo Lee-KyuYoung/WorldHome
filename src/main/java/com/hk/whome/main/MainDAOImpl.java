@@ -22,17 +22,9 @@ public class MainDAOImpl implements MainDAO{
 		return sqlsession.selectList("com.hk.whome.main.sql.selectImgList", homeListDomain);
 	}
 
-
 	@Override
 	public Map<String,Object> selectDetailHome(HashMap<String,String> postscriptListParam) {
 		return sqlsession.selectOne("com.hk.whome.main.sql.selectDetailHome", postscriptListParam);
-	}
-
-	@Override
-	public List selectPostscriptList(HashMap postscriptListParam) {
-		// TODO Auto-generated method stub
-		System.out.println("::여기에 뭐가 들었나요:::"+postscriptListParam);
-		return sqlsession.selectList("com.hk.whome.main.sql.selectPostscriptList", postscriptListParam);
 	}
 
 	@Override

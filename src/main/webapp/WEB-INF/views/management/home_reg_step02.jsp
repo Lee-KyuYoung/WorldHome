@@ -49,7 +49,7 @@
 						<div class = "col-sm-10">
 							<p>게스트가 묵게 될 숙소의 유형을 골라주세요</p>
 							<div class="custom-control custom-radio">
-								<input type="radio" class="custom-control-input" id="home_range1" name="home_range" value="1">
+								<input type="radio" class="custom-control-input" id="home_range1" name="home_range" value="1" checked>
 							    <label class="custom-control-label" for="home_range1">
 								    <strong>집 전체</strong><br>
 								       게스트가 숙소 전체를 다른 사람과 공유하지 않고 단독으로 이용합니다.<br>일반적으로 침실, 욕실, 부엌이 포함됩니다
@@ -75,7 +75,7 @@
 						<div class = "col-sm-10">
 							<p>게스트만 사용하도록 만들어진 숙소인가요?</p>
 							<div class="custom-control custom-radio">
-								<input type="radio" class="custom-control-input" id="is_only_guest1" name="is_only_guest" value="1">
+								<input type="radio" class="custom-control-input" id="is_only_guest1" name="is_only_guest" value="1" checked>
 							    <label class="custom-control-label" for="is_only_guest1">
 								    <strong>예. 게스트전용으로 마련된 숙소입니다.</strong>
 							    </label>
@@ -106,16 +106,28 @@
 	</div>
 	<script>
 
-		//스탭 2 등록
 		$(document).ready(function(){
 			
 			initStep2Form();
 			var homeid = $('#homeid').val();
-
+			
+			//스탭2 등록
 			$('#home_reg_step2_btn').on('click',function(){
 				
-				var reg_step2 = $('#registration_step2_form').serialize();
+				var home_type1 = $('#home_type1').val();
+				var home_type2 = $('#home_type2').val();
 				
+				if(home_type1 == ''){
+					alert('종류1을 선택해 주세요');
+					$('#home_type1').focus();
+					return false;
+				}else if(home_type2 == ''){
+					$('#home_type2').focus();
+					return false;
+				}
+				
+				var reg_step2 = $('#registration_step2_form').serialize();
+								
 				$.ajax({
 					url : '<c:url value="/management/homeRegProcStep2"/>',
 					type : 'POST',
@@ -139,6 +151,7 @@
 			$('#prev_step_2_btn').on('click',function(){
 				location.href = './step01?homeid='+homeid;
 			});
+
 		});
 		
 		//이미 등록된 데이터가 있으면

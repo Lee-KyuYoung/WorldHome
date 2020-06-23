@@ -91,5 +91,109 @@
             HAVING HOME_ID = #{homeID}
         ) A1
  	</select>
+ 	
+ 	<!-- 예약 등록 -->
+ 	<insert id = "insertHomeReservation" parameterType = "com.hk.whome.domain.HomeReservationDomain" >
+ 	
+ 		INSERT INTO TBL_RSV_INF (
+ 			RSV_ID,
+ 			USR_ID,
+ 			USR_CNT,
+ 			STR_DT,
+ 			END_DT,
+ 			HOME_ID,
+ 			RSV_PAY,
+ 			RSV_INT_DT
+ 		) VALUES (
+ 			#{reservID},
+ 			#{userID},
+ 			#{guestCnt},
+ 			#{startDate},
+ 			#{endDate},
+ 			#{homeID},
+ 			#{reservPay},
+ 			CURRENT_TIMESTAMP
+ 		)
+
+ 	</insert>
+ 	
+ 	<!-- 예약 리스트 총 개수 -->
+ 	<select id = "getHomeReservationCnt" parameterType = "java.util.Map" resultType = "Integer">
+	    SELECT
+ 				COUNT(*)
+ 		FROM
+ 				TBL_RSV_INF 
+ 		WHERE
+ 				<if test ="homeID != null and homeID != ''">
+ 					HOME_ID = #{homeID} AND
+ 				</if>
+ 				<if test ="reservID != null and reservID != ''">
+ 					RSV_ID = #{reservID} AND
+ 				</if>
+ 				<if test ="userID != null and userID != ''">
+ 					USR_ID = #{userID} AND
+ 				</if>
+ 				DEL_YN = 'N'
+ 	</select>
+ 	
+ 	<!-- 예약 리스트 가져오기 -->
+ 	<select id = "getHomeReservationList" parameterType = "java.util.Map" resultType = "com.hk.whome.domain.HomeReservationDomain">
+ 		
+ 		SELECT 
+ 				* 
+ 		FROM
+ 				(
+			 		SELECT
+			 				ROW_NUMBER() OVER (ORDER BY RSV_INT_DT DESC) NUM, 
+			 				T1.RSV_ID as reservID, T1.USR_ID as userID, T1.USR_CNT as guestCnt, T1.STR_DT as startDate, T1.END_DT as endDate, T1.HOME_ID as homeID, 
+			 				T1.RSV_PAY as reservPay, T1.RSV_INT_DT as regDate , T1.RSV_MOD_DT as modDate , T1.RSV_STAUTS as reservStatus ,  CONCAT(T2.HOME_ADD_1 , T2.HOME_ADD_2) as reservAddr,
+			 				(
+			 					SELECT
+			 							USR_NM
+			 					FROM
+			 							TBL_USR_INF T3
+			 					WHERE
+			 							T2.USR_ID = T3.USR_ID
+			 				) as hostName,
+			 				(
+			 					SELECT
+			 							USR_PH_NO
+			 					FROM
+			 							TBL_USR_INF T3
+			 					WHERE
+			 							T2.USR_ID = T3.USR_ID
+			 				) as hostPhoneNum
+
+			 		FROM
+			 				TBL_RSV_INF T1, TBL_HOME_INF T2  
+			 		WHERE
+			 				T1.HOME_ID = T2.HOME_ID
+			 				<if test ="homeID != null and homeID != ''">
+			 					AND T1.HOME_ID = #{homeID} 
+			 				</if>
+			 				<if test ="reservID != null and reservID != ''">
+			 					AND T1.RSV_ID = #{reservID} 
+			 				</if>
+			 				<if test ="userID != null and userID != ''">
+			 					AND T1.USR_ID = #{userID} 
+			 				</if>
+			 				AND T1.DEL_YN = 'N'
+ 				)
+
+			WHERE
+ 		
+ 				NUM BETWEEN #{startListNo} AND #{endListNo} 		
+
+ 	</select>
+ 	
+ 	<!-- 예약된 날짜 가져오기 -->
+ 	<select id = "getReservDate" parameterType = "String" resultType = "java.util.Map">
+ 		SELECT
+ 				STR_DT, END_DT
+ 		FROM
+ 				TBL_RSV_INF
+ 		WHERE
+ 				HOME_ID = #{homeID} AND DEL_YN = 'N'
+ 	</select>
    
 </mapper>

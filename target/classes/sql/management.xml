@@ -266,6 +266,7 @@
 				</when>
 			</choose>
 			AND REG_STP = '01'
+			AND DEL_YN = 'N'
 	</select>
 
 	<!-- 정식 등록된 집 정보 가져오기 -->
@@ -352,6 +353,6 @@
 		WHERE
 				IMG_KEY = #{homeImgKey} 
 	</update>
-		
+	
 
 </mapper>

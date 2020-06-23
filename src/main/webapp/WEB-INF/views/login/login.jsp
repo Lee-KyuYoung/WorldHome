@@ -7,8 +7,9 @@
 <head>
 	<title>Login</title>
 	<style>
-		.form-signin{position:absolute;right:50%;bottom:50%;transform:translate(50%,50%);width:330px; margin: 0 auto; box-sizing: border-box; padding:50px;border-radius:30px;box-shadow: 5px 5px 5px 5px gray;}
+		.form-signin{margin-top: 100px; box-sizing: border-box; padding:50px;border-radius:30px;box-shadow: 5px 5px 5px 5px gray;}
 		.form-signin div{padding:7px;}
+		.form-signin input{font-size:14px;padding:10px;} 
 		.container{height:100%;}
 		.user_join{display:block;margin-top:15px; border-top:1px solid #6c757d; height:60px;font-size:0.75em;line-height:30px;}
 		.user_join a{text-align:center; color:#6c757d;}
@@ -22,37 +23,45 @@
 	</style>
 </head>
 <body> 
-	<div class="container">
-		<form class ="form-signin" id = "login_form" action="<c:url value='/loginProcess'/>" method = "POST">
-			<h3>Login.</h3>
-			<div class="row">
-				<label for="user_id" class="sr-only"><spring:message code="login.info.L103"/></label><!-- 유저 아이디 -->
-				<input type="text" class="form-control" id="user_id" name="user_id"  placeholder ="ID" value="${loginId}">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-xl-11">
+				<div class="row justify-content-center">
+					<div class="col-xl-3 col-lg-5 col-sm-6">
+						<form class ="form-signin" id = "login_form" action="<c:url value='/loginProcess'/>" method = "POST">
+							<h3>Login.</h3>
+							<div class="row">
+								<label for="user_id" class="sr-only"><spring:message code="login.info.L103"/></label><!-- 유저 아이디 -->
+								<input type="text" class="form-control" id="user_id" name="user_id"  placeholder ="ID" value="${loginId}">
+							</div>
+							<div class="row">
+								<label for="user_password" class="sr-only"><spring:message code="login.info.L104"/></label><!-- 비밀번호 -->
+								<input type="password" class="form-control" id="user_password" name="user_password" placeholder="PASSWORD" onkeydown="if(event.keyCode==13) loginProcess();">
+							</div>
+							<div class="row">
+								<input type="button" class="btn btn-secondary btn-block submit" value ="Login">
+							</div>
+							<div class="row">
+								<font class = "login_invalid">
+									<c:if test = "${!empty ERRORMSG}">
+										${ERRORMSG}
+									</c:if>	
+								</font>
+							</div>
+							<div class="row user_join">
+								 <div class="div-inline-block">
+									<a href="javascript:;" id="find_id"><spring:message code = "join.info.J104"/> / <spring:message code = "join.info.J113"/></a>
+								 </div>
+							     <div class="div-inline-block float-right">
+							     	<a href="<c:url value='/user/join'/>"><spring:message code="login.info.L102"/></a><!-- 회원가입 -->
+							     </div> 
+							</div>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="row">
-				<label for="user_password" class="sr-only"><spring:message code="login.info.L104"/></label><!-- 비밀번호 -->
-				<input type="password" class="form-control" id="user_password" name="user_password" placeholder="PASSWORD" onkeydown="if(event.keyCode==13) loginProcess();">
-			</div>
-			<div class="row">
-				<input type="button" class="btn btn-secondary btn-block submit" value ="Login">
-			</div>
-			<div class="row">
-				<font class = "login_invalid">
-					<c:if test = "${!empty ERRORMSG}">
-						${ERRORMSG}
-					</c:if>	
-				</font>
-			</div>
-			<div class="row user_join">
-				 <div class="div-inline-block">
-					<a href="javascript:;" id="find_id"><spring:message code = "join.info.J104"/> / <spring:message code = "join.info.J113"/></a>
-				 </div>
-			     <div class="div-inline-block float-right">
-			     	<a href="<c:url value='/user/join'/>"><spring:message code="login.info.L102"/></a><!-- 회원가입 -->
-			     </div> 
-			</div>
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id = "csrf_token"/>
-		</form>
+		</div>
 		<div class="modal fade" id="id_find_modal" style="z-index:9999">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -124,7 +133,7 @@
 	   		    </div>
 		    </div>
 		</div>
-		<div style="height:900px;"></div>
+		<div style="height:300px;"></div>
 	</div>
 	<script>
 		$(document).ready(function(){

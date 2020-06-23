@@ -118,29 +118,22 @@ FROM TBL_HOME_INF E
 							 WHERE
 							 		A.HOME_ID = B.HOME_ID
 				       ) AS HOME_IMG
-				       ,(
-							 SELECT
-								        ROUND( ( C.rate_cl + C.rate_a + C.rate_c + C.rate_l + C.rate_ci + C.rate_s ) / 6 , 1 ) as total_rate
-								FROM
-					        (
-					            SELECT
-					                    ROUND( SUM(RVI_S_CL) / COUNT(*), 1 ) as rate_cl,
-					                    ROUND( SUM(RVI_S_A) / COUNT(*), 1 ) as rate_a, 
-					                    ROUND( SUM(RVI_S_C) / COUNT(*), 1 ) as rate_c, 
-					                    ROUND( SUM(RVI_S_L) / COUNT(*), 1 ) as rate_l, 
-					                    ROUND( SUM(RVI_S_Ci) / COUNT(*), 1 ) as rate_ci,
-					                    ROUND( SUM(RVI_S_S) / COUNT(*), 1 ) as rate_s
-					            FROM
-					                    TBL_RVI_COMM 
-					            GROUP BY
-					                    HOME_ID
-					            HAVING 
-					            		HOME_ID = A.HOME_ID
-					        ) C	
-				       ) AS TOTAL_RATE
+                      ,(
+                         SELECT
+                                ROUND( ( ROUND( SUM(RVI_S_CL) / COUNT(*), 1 ) + ROUND( SUM(RVI_S_A) / COUNT(*), 1 ) 
+                                + ROUND( SUM(RVI_S_C) / COUNT(*), 1 ) + ROUND( SUM(RVI_S_L) / COUNT(*), 1 ) 
+                                + ROUND( SUM(RVI_S_Ci) / COUNT(*), 1 ) + ROUND( SUM(RVI_S_S) / COUNT(*), 1 ) ) / 6 , 1 ) as total_rate　
+                         FROM  
+                               TBL_RVI_COMM B
+                               　　				 GROUP BY
+                               HOME_ID
+                         HAVING
+                              B.HOME_ID = A.HOME_ID 
+                       ) AS TOTAL_RATE
 				 FROM 
 				 		TBL_HOME_INF A   /*집 정보 테이블*/
 				 WHERE
+				 		A.HOME_REV_END > TO_CHAR(SYSDATE, 'YYYY/MM/DD') AND
 				 		A.DEL_YN = 'N' 
 	               <if test = "area != null and area != ''">
 						AND HOME_ADD_1 like '%'||#{area}||'%'
@@ -159,7 +152,7 @@ FROM TBL_HOME_INF E
 		                                    )
 	               </if>
 	               <if test = "homeGuest != null and homeGuest != ''">
-	               		AND MAX_GUEST >= #{homeGuest}
+	               		AND TO_NUMBER(MAX_GUEST) >= TO_NUMBER(#{homeGuest})
 	               </if>
 	               ORDER BY
 	               		A.HOME_ID DESC
@@ -176,13 +169,14 @@ FROM TBL_HOME_INF E
 			 FROM 
 			 		TBL_HOME_INF A   /*집 정보 테이블*/
 			 WHERE
+			 		A.HOME_REV_END > TO_CHAR(SYSDATE, 'YYYY/MM/DD') AND
 			 		A.DEL_YN = 'N' 
                <if test = "area != null and area != ''">
 					AND HOME_ADD_1 like '%'||#{area}||'%'
                </if>
                <if test = "homeDateIn != null and homeDateIn != ''  and homeDateOut != null  and homeDateOut != ''"> 
-	               	   AND HOME_REV_START <![CDATA[ <= ]]> #{homeDateIn}
-               	       AND HOME_REV_END <![CDATA[ >= ]]> #{homeDateOut}
+               	   AND HOME_REV_START <![CDATA[ <= ]]> #{homeDateIn}
+            	   AND HOME_REV_END <![CDATA[ >= ]]> #{homeDateOut}
 	               AND HOME_ID NOT IN(  
 	               						 SELECT 
 	               						 		C.HOME_ID
@@ -194,7 +188,7 @@ FROM TBL_HOME_INF E
 	                                    )
                </if>
                <if test = "homeGuest != null and homeGuest != ''">
-               		AND MAX_GUEST >= #{homeGuest}
+               		AND TO_NUMBER(MAX_GUEST) >= TO_NUMBER(#{homeGuest})
                </if>
 </select>
  	

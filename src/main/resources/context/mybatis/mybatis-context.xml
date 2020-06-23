@@ -17,9 +17,12 @@
 
    	<bean id="dataSourceSpied" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${ojdbc.driverClassName}" />
-        <property name="url" value="${ojdbc.url}" />
-        <property name="username" value="${ojdbc.username}" />
-        <property name="password" value="${ojdbc.password}" />
+        <property name="url" value="${ojdbc.url.local}" />
+        <property name="username" value="${ojdbc.username.local}" />
+        <property name="password" value="${ojdbc.password.local}" />
+<!--         <property name="url" value="${ojdbc.url.server}" /> -->
+<!--         <property name="username" value="${ojdbc.username.server}" /> -->
+<!--         <property name="password" value="${ojdbc.password.server}" /> -->
 		<property name="validationQuery" value="select 1 from dual"/>
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
     </bean>

@@ -33,20 +33,6 @@ public class MainServiceImpl implements MainService{
 	}
 
 	@Override
-	public List selectPostscriptList(HashMap postscriptListParam) {
-		// TODO Auto-generated method stub
-		int page = Integer.parseInt(postscriptListParam.get("page")+"");
-		if (page==1){
-			postscriptListParam.put("startPag", page);
-			postscriptListParam.put("endPag", 10);  //데이터를 20개씩 가져오겠다.
-        }else{
-        	postscriptListParam.put("startPag",page+(9*(page-1)));
-        	postscriptListParam.put("endPag", page*10);  //데이터를 20개씩 가져오겠다.
-        }
-		return mainDAO.selectPostscriptList(postscriptListParam);
-	}
-
-	@Override
 	public int getHomeListTotalCount(HomeListDomain homeListDomain) {
 		return mainDAO.getHomeListTotalCount(homeListDomain);
 	}

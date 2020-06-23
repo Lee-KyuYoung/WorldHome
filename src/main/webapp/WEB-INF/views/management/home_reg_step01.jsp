@@ -84,10 +84,17 @@
 
 			initStep1Form();
 			
+			//1단계 등록
 			$('#home_reg_step1_btn').on('click',function(){
 				
+				var user_address_1 = $('#user_address_1').val();
 				var reg_step1 = $('#registration_step1_form').serialize();
 				var homeid = $('#homeid').val();
+				
+				if(user_address_1 == ''){
+					alert('주소를 검색해 주세요.');
+					return false;
+				}
 				
 				$.ajax({  
 					url : '<c:url value="/management/homeRegProcStep1"/>', 
@@ -183,6 +190,9 @@
 				};
 			var map = new kakao.maps.Map(load_map, options);
 			var marker = new daum.maps.Marker({ position: new daum.maps.LatLng(33.450701, 126.570667), map: map });
+			
+			var zoomControl = new kakao.maps.ZoomControl();
+			map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 			return map;
 		}
@@ -203,12 +213,12 @@
 						map : map,
 						position : coords
 					});
+					map.setZoomable(false); 
 					map.setCenter(coords);
             	}
             });
 		}
-		
-	</script>
+</script>
 </body>
 </html>
 

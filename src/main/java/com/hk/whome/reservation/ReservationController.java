@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
@@ -15,9 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.hk.whome.domain.HomeInfoDomain;
+import com.hk.whome.domain.HomeReservationDomain;
 import com.hk.whome.domain.HomeReviewDomain;
 import com.hk.whome.domain.PagingDomain;
+import com.hk.whome.management.ManagementService;
+import com.hk.whome.security.CustomUserDetails;
 import com.hk.whome.util.EmptyUtils;
+import com.hk.whome.util.SelectKeySeqUtil;
 
 @Controller
 @RequestMapping(value = "/reservation")
@@ -26,8 +33,111 @@ public class ReservationController {
 	@Autowired
 	private ReservationService reservationService;
 	
+	@Autowired
+	private ManagementService managementService;
+	
+	@Autowired
+	private SelectKeySeqUtil selectKeySeq;
+	
 	private final int PAGE_SIZE = 5;
 	private final int LIST_SIZE = 6;
+	
+	/**
+	 * 예약 리스트
+	 * @param paramMap
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value = "/list" , method = RequestMethod.GET)
+	public String reservationList(Model model , @RequestParam Map<String,String> paramMap, HttpServletRequest req) {
+		
+		CustomUserDetails userInfo = (CustomUserDetails)req.getSession().getAttribute("user_info");
+		
+		int pageNo = !EmptyUtils.isEmpty(paramMap.get("page_no")) ? Integer.parseInt(paramMap.get("page_no")): 1;
+		String userID = userInfo.getUser_id();
+		
+		Model reservListModel = new ExtendedModelMap();
+		reservListModel.addAttribute("userID",userID);	
+		int totalCount = reservationService.getHomeReservationCnt(reservListModel);
+		
+		//페이징
+		PagingDomain paging = new PagingDomain(pageNo, PAGE_SIZE, LIST_SIZE,totalCount);
+		reservListModel.addAttribute("startListNo" , paging.getStartListNo());
+		reservListModel.addAttribute("endListNo" , paging.getEndListNo());
+		
+		//예약 리스트
+		List<HomeReservationDomain> reservList = reservationService.getHomeReservationList(reservListModel);
+		
+		model.addAttribute("reservList",reservList);
+		model.addAttribute("paging",paging);
+		
+		return "reservation/reserv_list.tiles";
+	}
+	
+	/**
+	 * 숙소 예약 저장
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/homeReservation", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public Map<String,String> homeReservation(@RequestParam Map<String,String> paramMap){
+		
+		String resCode =  "";
+		String homeID = paramMap.get("home_id");
+		String reservDate = paramMap.get("reserv_date");
+		String guestNum = paramMap.get("guest_num");
+		String userID = paramMap.get("user_id");
+		
+		if(EmptyUtils.isEmpty(homeID)) {
+			resCode = "E002";
+		}
+		else if(EmptyUtils.isEmpty(reservDate)) {
+			resCode = "E003";
+		}
+		else if(EmptyUtils.isEmpty(guestNum)) {
+			resCode = "E004";
+		}
+		else if(EmptyUtils.isEmpty(userID)) {
+			resCode = "E005";	
+		}
+		
+		if(resCode.equals("")) {
+			
+			//homeID로 숙소가 존재하는지 확인하고 금액을 가져온다.
+			HomeInfoDomain homeInfoDomain = managementService.getHomeInfo(homeID);
+
+			if(EmptyUtils.isEmpty(homeInfoDomain)) {
+				resCode = "E006";
+			}
+			if(resCode.equals("")) {
+				
+				try {
+					String generatedKey = selectKeySeq.selectSeqKey("20");
+					
+					HomeReservationDomain homeReservationDomain = new HomeReservationDomain();
+					homeReservationDomain.setReservID(generatedKey);
+					homeReservationDomain.setStartDate(reservDate.split("~")[0]);
+					homeReservationDomain.setEndDate(reservDate.split("~")[1]);
+					homeReservationDomain.setHomeID(homeID);
+					homeReservationDomain.setReservPay(homeInfoDomain.getRowPay());
+					homeReservationDomain.setUserID(userID);
+					homeReservationDomain.setGuestCnt(guestNum);
+
+					reservationService.insertHomeReservation(homeReservationDomain);
+				
+				}catch (Exception e) {
+					e.printStackTrace();
+					resCode ="E006";
+				}
+			}
+		}
+		Map<String,String> resMap = new HashMap<>();
+		resMap.put("resCode",resCode);
+		
+		return resMap;
+	}
+	
 	
 	/**
 	 * 숙소 리뷰 등록
@@ -120,8 +230,6 @@ public class ReservationController {
 		
 		//페이징 처리
 		PagingDomain paging = new PagingDomain(pageNo, PAGE_SIZE, LIST_SIZE,totalCount);
-		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>  "+paging.toString());
 		
 		Model getReviewParamModel = new ExtendedModelMap();
 		getReviewParamModel.addAttribute("homeID",homeID);
