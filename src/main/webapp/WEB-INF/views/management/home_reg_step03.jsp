@@ -33,7 +33,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">최대 인원 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="max_guest" min=1 value="${homeInfo.homemaxGuest}">
+						    	<input type="number" class="form-control" id="max_guest" name="max_guest" min="1" value="${homeInfo.homemaxGuest}">
 						    </div>
 					    </div>
 					</div>
@@ -42,7 +42,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">침대 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="bed_count" min=0 value="${homeInfo.homeBedCnt}">
+						    	<input type="number" class="form-control" name="bed_count" min="0" value="${homeInfo.homeBedCnt}">
 						    </div>
 					    </div>
 					</div>
@@ -51,7 +51,7 @@
 						<div class="form-inline form-group col-sm-6" >
 						    <label for="max_people" class="control-label">욕실 개수 : </label>
 						    <div class="col-sm-2">
-						    	<input type="number" class="form-control" name="bathroom_count" min=0 value="${homeInfo.homeBathroomCnt}">
+						    	<input type="number" class="form-control" name="bathroom_count" min="0" value="${homeInfo.homeBathroomCnt}">
 						    </div>
 					    </div>
 					</div>
@@ -78,6 +78,13 @@
 			var homeid = $('#homeid').val();
 			
 			$('#home_reg_step3_btn').on('click',function(){
+				
+				var max_guest = $("#max_guest").val();
+				if(max_guest < 1){
+					alert("최대인원은 1명 이상이여야 합니다.");
+					$("#max_guest").focus();
+					return false;
+				}
 				
 				var reg_step3 = $('#registration_step3_form').serialize();
 				

@@ -156,6 +156,9 @@ public class MainController {
 				String homePrecautions = (String)homeDetailInfo.get("HOME_PRECAUTIONS");
 				String homeImg = (String)homeDetailInfo.get("HOME_IMG");
 				
+				String replaceBRTage = ((String)homeDetailInfo.get("HOME_COMM")).replaceAll("\r\n", "<br>");
+				homeDetailInfo.put("HOME_COMM", replaceBRTage);
+				
 				if(!EmptyUtils.isEmpty(homeType)) {
 					model.addAttribute("homeType",homeType.split(","));
 				}

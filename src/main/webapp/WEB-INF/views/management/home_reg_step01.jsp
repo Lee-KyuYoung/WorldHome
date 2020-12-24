@@ -73,6 +73,8 @@
 					<input type="hidden" name="sigungu" id = "sigungu">
 					<input type="hidden" name="homeid" id = "homeid" value="${homeid}">
 					<input type="hidden" name="flag" id = "flag" value="${flag}">
+					<input type="hidden" name="latitude" id="latitude">
+					<input type="hidden" name="longitude" id="longitude">
 				</form>
 			</div>
 		</div>
@@ -101,13 +103,17 @@
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						if(homeid == 'undefined'|| homeid == ''){
-							homeid = result.homeID;
-						}
-						if('${flag}' == 'reg'){
-							location.href = '<c:url value="/management/homeReg/step02?homeid='+homeid+'"/>'	
+						if(result.resCode =='E001'){
+							if(homeid == 'undefined'|| homeid == ''){
+								homeid = result.homeID;
+							}
+							if('${flag}' == 'reg'){
+								location.href = '<c:url value="/management/homeReg/step02?homeid='+homeid+'"/>'	
+							}else{
+								location.href = '<c:url value="/management/homeMod/step02?homeid='+homeid+'"/>'
+							}
 						}else{
-							location.href = '<c:url value="/management/homeMod/step02?homeid='+homeid+'"/>'
+							alert("잠시 후 다시 시도해주세요.");
 						}
 					}, 
 					error : function(xhr , status , error){
@@ -140,9 +146,10 @@
 		
 		//주소검색
 		function getAddress(addr_field_1, addr_field_2, postcode_field){
-			 new daum.Postcode({
+			
+			new daum.Postcode({
 		            oncomplete: function(data) {
-		
+
 		                var fullAddr = ''; 
 		                var extraAddr = ''; 
 		
@@ -215,6 +222,9 @@
 					});
 					map.setZoomable(false); 
 					map.setCenter(coords);
+					
+					$('#latitude').val(result[0].y);
+					$('#longitude').val(result[0].x);
             	}
             });
 		}

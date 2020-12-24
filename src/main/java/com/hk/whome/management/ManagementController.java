@@ -225,6 +225,8 @@ public class ManagementController{
 		String address1 = paramMap.get("user_address_1");
 		String address2 = paramMap.get("user_address_2");
 		String postCode = paramMap.get("user_postcode");
+		String latitude = paramMap.get("latitude");
+		String longitude = paramMap.get("longitude");
 		String sigungu = paramMap.get("sigungu");
 		
 		CustomUserDetails userDetail = ((CustomUserDetails)req.getSession().getAttribute("user_info"));
@@ -246,6 +248,8 @@ public class ManagementController{
 			homeInfo.setHomeAddr2(address2.trim());
 			homeInfo.setHomePostCode(postCode.trim());	
 			homeInfo.setSigungu(sigungu);
+			homeInfo.setLatitude(latitude);
+			homeInfo.setLongitude(longitude);
 
 			if(!EmptyUtils.isEmpty(homeID)){ //homeID가 있을경우 업데이트 없으면 신규 INSERT
 
@@ -295,7 +299,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep2", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep2(@RequestParam Map<String,String> paramMap){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String homeType1 = paramMap.get("home_type1");
@@ -318,7 +322,7 @@ public class ManagementController{
 		else if(EmptyUtils.isEmpty(isOnlyGuest)) {
 			resCode = "E006";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
@@ -354,7 +358,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep3", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep3(@RequestParam Map<String,String> paramMap){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String maxGeople = paramMap.get("max_guest");
@@ -373,7 +377,7 @@ public class ManagementController{
 		else if(EmptyUtils.isEmpty(bathroomCount)) {
 			resCode = "E005";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
@@ -409,7 +413,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep4", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep4(@RequestParam Map<String,String> paramMap, @RequestParam(value = "home_facility", required = false) String[] homeFacility){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String seperatedHomeFacility = "";
@@ -425,7 +429,7 @@ public class ManagementController{
 		if(EmptyUtils.isEmpty(homeID)) {
 			resCode = "E002";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
@@ -459,14 +463,14 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep5", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep5(@RequestParam Map<String,String> paramMap, @RequestParam("home_detail_img") MultipartFile[] files, HttpServletRequest req){
 
-		String resCode = "E001";
+		String resCode = "";
 		String homeID = paramMap.get("homeid");
 		String uploadPath = FileUtils.getFilePath(req);
 		
 		if(EmptyUtils.isEmpty(homeID)) {
 			resCode = "E002";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			try {
 				fileUtils.uploadHomeImg(files, uploadPath, homeID);
@@ -491,7 +495,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep6", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep6(@RequestParam Map<String,String> paramMap){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String homeName = paramMap.get("home_name");
@@ -509,7 +513,7 @@ public class ManagementController{
 		else if(EmptyUtils.isEmpty(homeIntroduceMain)) {
 			resCode = "E004";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
@@ -546,7 +550,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep7", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep7(@RequestParam Map<String,String> paramMap, HttpServletRequest req, @RequestParam(value = "home_precaution" , required = false) String[] homePrecaution){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String guestRule = "";
@@ -578,7 +582,7 @@ public class ManagementController{
 		if(EmptyUtils.isEmpty(homeID)) {
 			resCode = "E002";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);
@@ -614,7 +618,7 @@ public class ManagementController{
 	@RequestMapping(value = "/homeRegProcStep8", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Map<String,String> registrationStep8(@RequestParam Map<String,String> paramMap){
 		
-		String resCode = "E001";
+		String resCode = "";
 		String flag = paramMap.get("flag");
 		String homeID = paramMap.get("homeid");
 		String reservAvailableDay = paramMap.get("reserv_date");
@@ -637,7 +641,7 @@ public class ManagementController{
 		else if(EmptyUtils.isEmpty(strOffPeakSeasonPay)) {
 			resCode = "E005";
 		}
-		if(resCode.equals("E001")) {
+		if(resCode.equals("")) {
 			
 			HomeInfoDomain homeInfo = new HomeInfoDomain();
 			homeInfo.setHomeID(homeID);

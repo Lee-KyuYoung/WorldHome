@@ -140,6 +140,4 @@ public class AdminController {
 		List<CodeDomain> codeList = adminService.getCodeDefine(param);
 		return new Gson().toJson(codeList);
 	}
-	
-	
 }

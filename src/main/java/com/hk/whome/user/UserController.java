@@ -1,13 +1,10 @@
 package com.hk.whome.user;
 
-import java.io.File;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hk.whome.domain.UserInfoDomain;
@@ -195,6 +191,8 @@ public class UserController {
 		userInfoModel.addAttribute("userId",userID);
 		
 		UserInfoDomain userInfo = userService.getUserInfo(userInfoModel);
+		userInfo.setUserIntroduce(userInfo.getUserIntroduce().replaceAll("\n", "<br>"));
+		logger.info(userInfo.getUserIntroduce());
 		model.addAttribute("user_info" , userInfo);
 		
 		return "user/user_modify.tiles";
@@ -211,13 +209,14 @@ public class UserController {
 		
 		String resCode = "E001";
 		String messageCode = "";
-		String userID = paramMap.get("userID");
 		String userPw = paramMap.get("userPw");
 		String userAddress1 = paramMap.get("userAddress1");
 		String userAddress2 = paramMap.get("userAddress2");
 		String userEmail = paramMap.get("userEmail");
 		String userPhone = paramMap.get("userPhone");
 		String userIntro = paramMap.get("userIntroduce");
+		
+		String userID = ((CustomUserDetails)req.getSession().getAttribute("user_info")).getUser_id();
 		
 		UserInfoDomain userInfo = new UserInfoDomain();
 		userInfo.setUserId(userID);

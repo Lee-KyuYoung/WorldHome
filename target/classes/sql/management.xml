@@ -14,7 +14,9 @@
 				HOME_ADD_2,
 				HOME_POSTCODE,
 				REG_STP,
-				HOME_INT_DT
+				HOME_INT_DT,
+				LATITUDE,
+				LONGITUDE
 				
 			) VALUES (
 				#{homeID}, 
@@ -23,7 +25,9 @@
 				#{homeAddr2},
 				#{homePostCode},
 				#{homeRegStep},
-				CURRENT_TIMESTAMP
+				CURRENT_TIMESTAMP,
+				#{latitude},
+				#{longitude}
 			)
 		
 	</insert>
@@ -99,6 +103,12 @@
 			</if>
 			<if test = "homeAvailableReservEndDay != null and homeAvailableReservEndDay !=''">
 				HOME_REV_END = #{homeAvailableReservEndDay},
+			</if>
+			<if test = "latitude != null and latitude !=''">
+				LATITUDE = #{latitude},
+			</if>
+			<if test = "longitude != null and longitude !=''">
+				LONGITUDE = #{longitude},
 			</if>
 			<if test = "DelYN != null and DelYN !=''">
 				DEL_YN = #{DelYN},
@@ -178,6 +188,12 @@
 			<if test = "homeAvailableReservEndDay != null and homeAvailableReservEndDay !=''">
 				HOME_REV_END = #{homeAvailableReservEndDay},
 			</if>
+			<if test = "latitude != null and latitude !=''">
+				LATITUDE = #{latitude},
+			</if>
+			<if test = "longitude != null and longitude !=''">
+				LONGITUDE = #{longitude},
+			</if>
 			<if test = "DelYN != null and DelYN !=''">
 				DEL_YN = #{DelYN},
 			</if>
@@ -214,12 +230,14 @@
 			HOME_REV_START,
 			HOME_REV_END,
 			DEL_YN,
-			HOME_INT_DT
+			HOME_INT_DT,
+			LATITUDE,
+			LONGITUDE
 		) 	SELECT
 						HOME_ID, USR_ID, HOME_TYPE,	HOME_RANGE,	IS_ONLY_GUEST, BATHROOM_CNT, BED_CNT,
 						HOME_ADD_1,	HOME_ADD_2,	HOME_FACILITY, HOME_POSTCODE, HOME_TITLE, HOME_COMM,
 						HOME_ETC_COMM, MAX_GUEST, HOME_TRP,	HOME_SURR, HOME_GUEST_RULE,	HOME_PRECAUTIONS, HIGH_AMT,
-						ROW_AMT, HOME_REV_START, HOME_REV_END, DEL_YN, CURRENT_TIMESTAMP
+						ROW_AMT, HOME_REV_START, HOME_REV_END, DEL_YN, CURRENT_TIMESTAMP, LATITUDE, LONGITUDE
 				FROM
 						TBL_HOME_INF_TEMP
 				WHERE
@@ -233,7 +251,7 @@
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
 				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
-				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep, LATITUDE, LONGITUDE
 		FROM
 				TBL_HOME_INF_TEMP
 		WHERE
@@ -253,7 +271,7 @@
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
 				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
-				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , REG_STP as homeRegStep , LATITUDE, LONGITUDE
 		FROM
 				TBL_HOME_INF_TEMP
 		WHERE
@@ -275,7 +293,7 @@
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
 				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
-				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , LATITUDE, LONGITUDE
 		FROM
 				TBL_HOME_INF
 		WHERE
@@ -288,7 +306,7 @@
 				HOME_ID as homeID, USR_ID as userID, HOME_TYPE as homeType,	HOME_RANGE as homeRange, IS_ONLY_GUEST as homeIsOnlyGuest, BATHROOM_CNT as homeBathroomCnt, BED_CNT as homeBedCnt,
 				HOME_ADD_1 as homeAddr1, HOME_ADD_2 as homeAddr2, HOME_FACILITY as homeFacility, HOME_POSTCODE as homePostCode, HOME_TITLE as homeTitle, HOME_COMM as homeComment,
 				HOME_ETC_COMM as homeETCComment, MAX_GUEST as homemaxGuest, HOME_TRP as homeTraffic, HOME_SURR as homeSurround, HOME_GUEST_RULE as homeGuestRule, HOME_PRECAUTIONS as homePrecaution, HIGH_AMT as highPay,
-				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData 
+				ROW_AMT as rowPay, HOME_REV_START as homeAvailableReservStartDay, HOME_REV_END as homeAvailableReservEndDay, HOME_INT_DT as homeRegData , LATITUDE, LONGITUDE
 		FROM
 				TBL_HOME_INF
 		WHERE

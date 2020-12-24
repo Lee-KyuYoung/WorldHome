@@ -133,10 +133,14 @@
 					type : 'POST',
 					data : reg_step2,
 					success : function(result){
-						if('${flag}' == 'reg'){
-							location.href = '<c:url value="/management/homeReg/step03?homeid='+homeid+'"/>'
+						if(result.resCode == ""){
+							if('${flag}' == 'reg'){
+								location.href = '<c:url value="/management/homeReg/step03?homeid='+homeid+'"/>'
+							}else{
+								location.href = '<c:url value="/management/homeMod/step03?homeid='+homeid+'"/>'
+							}
 						}else{
-							location.href = '<c:url value="/management/homeMod/step03?homeid='+homeid+'"/>'
+							alert(result.resCode);
 						}
 					},
 					error : function(xhr , status , error){
@@ -197,11 +201,10 @@
 				data : { 'group_key' : value , 'code_type' : 'sub' , '_csrf' : '${_csrf.token}'},
 				async : false,
 				success : function(result){
-
 					$('#home_type').empty();
 					$.each(result, function(index,object){
 						$('#home_type').append($('<option>').text(object.codeComment).attr("value",object.codeKey));
-					});
+					});	
 				},
 				error : function(xhr, status ,error){
 					alert(xhr+" "+status+" "+error);

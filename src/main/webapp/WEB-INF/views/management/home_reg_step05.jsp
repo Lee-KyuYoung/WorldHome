@@ -35,7 +35,7 @@
 					<div class="row" id="img_group">
 						<c:forEach var = "list" items = "${homeImgInfoList}" varStatus="status">
 							<div class = "col-md-6 margin-top20">
-								<label class="img_view" for="img_file_${status.index+1}" id="test" style = "background-image:url('/img/${list.homeImgPath}');background-size:cover;border:0px;">
+								<label class="img_view" for="img_file_${status.index+1}" id="test" style = "background-image:url('${list.homeImgPath}');background-size:cover;border:0px;">
 									<input type = "button" class = "btn btn-danger" value = "삭제" onclick="deleteHomeDetailImg(this,${list.homeImgKey})">
 									<input type="file" id="img_file_${status.index+1}" name="home_detail_img" accept="image/*" onchange="imgView(this)">
 								</label>

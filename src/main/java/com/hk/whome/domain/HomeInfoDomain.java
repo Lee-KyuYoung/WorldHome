@@ -34,8 +34,22 @@ public class HomeInfoDomain {
 	private String homeIsOnlyGuest;
 	private String homeRange;
 	private String sigungu;
+	private String latitude;
+	private String longitude;
 
 	
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
 	public String getSigungu() {
 		return sigungu;
 	}

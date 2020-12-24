@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix = "spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page session="true" %>
 <%String contextPath = request.getContextPath(); %>
 
@@ -98,15 +99,18 @@
 							<tr>
 								<th class="align-middle">프로필 사진</th>
 								<td>
-									<label class="img_view" for="user_img" <c:if test ="${!empty user_info.userImg}">style='background-image:url(/user_img/${user_info.userImg});background-size:cover;border:0px;'</c:if>>
-										<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)">
+									<label class="img_view" for="user_img" <c:if test ="${!empty user_info.userImg}">style='background-image:url(${user_info.userImg});background-size:cover;border:0px;'</c:if>>
+										<input type="file" id="user_img" name="user_img" accept="image/*" onchange="imgView(this)"/>
 									</label>
 								</td>
 							</tr>
 							<tr>
 								<th class="align-middle">자기소개</th>
+								<% pageContext.setAttribute("br", "<br>");
+								   pageContext.setAttribute("cn","\n");
+								%>
 								<td>
-									<textarea class = "form-control" rows="4" id = "user_introduce" name = "user_introduce">${user_info.userIntroduce}</textarea>
+									<textarea class = "form-control" rows="4" id = "user_introduce" name = "user_introduce">${fn:replace(user_info.userIntroduce,br,cn)}</textarea>
 								</td>
 							</tr>
 						</tbody>
@@ -129,7 +133,7 @@
 	<script>
 	
 	$(document).ready(function(){
-		
+
 		//비번 유효성 검사
 		$('#user_password_check, #user_password').on('blur',function(){
 			var password_1 = $('#user_password').val();
@@ -232,8 +236,8 @@
 				var ori_address2 = "${user_info.userAddress2}";
 				var ori_email = "${user_info.userEmail}";
 				var ori_phone = "${user_info.userPhone}";
-				var ori_introduce = "${user_info.userIntroduce}";
-				
+				var ori_introduce = "${user_info.userIntroduce}".replace(/<br>/gi,"\n");
+						
 				var modi_pw = $("#user_password").val();
 				var modi_address1 = $("#user_address_1").val();
 				var modi_address2 = $("#user_address_2").val();

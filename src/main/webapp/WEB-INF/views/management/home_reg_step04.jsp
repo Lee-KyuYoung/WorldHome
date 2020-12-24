@@ -112,10 +112,14 @@
 					type : 'POST',
 					data : reg_step4,
 					success : function(result){
-						if('${flag}' == 'reg'){
-							location.href = '<c:url value="/management/homeReg/step05?homeid='+homeid+'"/>'
+						if(result.resCode == ""){
+							if('${flag}' == 'reg'){
+								location.href = '<c:url value="/management/homeReg/step05?homeid='+homeid+'"/>'
+							}else{
+								location.href = '<c:url value="/management/homeMod/step05?homeid='+homeid+'"/>'
+							}
 						}else{
-							location.href = '<c:url value="/management/homeMod/step05?homeid='+homeid+'"/>'
+							alert(result.resCode);
 						}
 					},
 					error : function(xhr , status , error){

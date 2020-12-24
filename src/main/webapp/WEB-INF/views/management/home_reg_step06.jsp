@@ -33,12 +33,12 @@
 					<h4>숙소에 대한 설명을 적어주세요</h4>
 					<div class="row margin-bottom20">
 						<div class = "col-md-12">
-							<p>숙소의 특징과 장점을 살려 숙소의 이름을 지어주세요.</p>
-							 <input type = "text" class = "form-control" name = "home_name" value="${homeInfo.homeTitle}">
+							<p>숙소의 특징과 장점을 살려 숙소의 이름을 지어주세요.(필수)</p>
+							 <input type = "text" class = "form-control" id="home_name" name = "home_name" value="${homeInfo.homeTitle}">
 						</div>
 						<div class = "col-md-12 margin-top20">
 							<p>숙소에 대해 간략히 설명해 주세요.<br>숙소와 주변 지역에 대한 정보와 게스트와 어떻게 소통하고 싶은지 등의 내용을 적어주세요.</p>
-							 <textarea class="form-control" rows="5" name = "home_introduce_main" onkeyup ="wordLimitCheck(this,'500')">${homeInfo.homeComment}</textarea>
+							 <textarea class="form-control" rows="5"  id="home_introduce_main" name = "home_introduce_main" onkeyup ="wordLimitCheck(this,'500')">${homeInfo.homeComment}</textarea>
 							 <p class = "word_limit">( 0 / 500자 )</p>
 						</div>
 					</div>
@@ -84,6 +84,20 @@
 			
 			$('#home_reg_step_6_btn').on('click',function(){
 				
+				var home_name = $("#home_name").val();
+				var home_introduce_main = $("#home_introduce_main").val();
+				
+				if(home_name == ""){
+					alert("숙소의 이름을 적어주세요.");
+					$("#home_name").focus();
+					return false;
+				}
+				if(home_introduce_main == ""){
+					alert("숙소에 대해 간략히 설명을 적어주세요.");
+					$("#home_introduce_main").focus();
+					return false;
+				}
+				
 				var reg_step1 = $('#registration_step6_form').serialize();
 				
 				$.ajax({
@@ -91,10 +105,14 @@
 					type : 'POST',
 					data : reg_step1,
 					success : function(result){
-						if('${flag}' == 'reg'){
-							location.href = '<c:url value="/management/homeReg/step07?homeid='+homeid+'"/>'
+						if(result.resCode == ""){
+							if('${flag}' == 'reg'){
+								location.href = '<c:url value="/management/homeReg/step07?homeid='+homeid+'"/>'
+							}else{
+								location.href = '<c:url value="/management/homeMod/step07?homeid='+homeid+'"/>'
+							}	
 						}else{
-							location.href = '<c:url value="/management/homeMod/step07?homeid='+homeid+'"/>'
+							alert(result.resCode);
 						}
 					},
 					error : function(xhr , status , error){

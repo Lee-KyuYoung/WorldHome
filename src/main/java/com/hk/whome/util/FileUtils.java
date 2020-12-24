@@ -20,6 +20,9 @@ public class FileUtils {
 	
 	@Autowired
 	private WhomeUtilDAO whomeUtileDAO;
+	
+	@Autowired
+	private AwsS3Upload awsS3Upload;
 
 	public static String getFilePath(HttpServletRequest req) {
 		String os = System.getProperty("os.name");
@@ -42,7 +45,7 @@ public class FileUtils {
 	 * @throws Exception
 	 */
 	public void uploadHomeImg(MultipartFile[] files, String path, String homeID) throws Exception{
-
+		
 		for(int i = 0; i < files.length; i ++) {
 			
 			MultipartFile img = files[i];
@@ -56,14 +59,16 @@ public class FileUtils {
 				String imgKey = selectKeySeq.selectSeqKey("20");
 				fileName = imgKey+"_"+homeID+"_"+(i+1)+extension;
 		
-				File file = new File(path+fileName);
-				img.transferTo(file);
+//				File file = new File(path+fileName);
+//				img.transferTo(file);
+				
+				String uplodedUrl = awsS3Upload.upload(img, fileName, AwsS3Upload.HOME_IMG_PATH);
 				
 				HomeImgInfoDomain homeImgInfoDomain = new HomeImgInfoDomain();
 				homeImgInfoDomain.setHomeImgKey(imgKey);
 				homeImgInfoDomain.setHomeID(homeID);
 //				homeImgInfoDomain.setHomeImgPath(path+fileName);
-				homeImgInfoDomain.setHomeImgPath(fileName);
+				homeImgInfoDomain.setHomeImgPath(uplodedUrl);
 				homeImgInfoDomain.setHomeImgOrder(i + 1);
 				
 				if(i == 0) {
@@ -88,18 +93,21 @@ public class FileUtils {
 	public String uploadUserImg(MultipartHttpServletRequest mreq , String userID , HttpServletRequest req) throws Exception {
 		
 		String imgName = "";
+		String uplodedUrl = "";
 		
 		MultipartFile userImg = mreq.getFile("user_img");
 		if(userImg !=null && !userImg.getOriginalFilename().equals("")) {
 
 			String originName = userImg.getOriginalFilename();
-			String path = FileUtils.getFilePath(req);
+//			String path = FileUtils.getFilePath(req);
 			String extension = originName.substring(originName.lastIndexOf("."), originName.length());
 			imgName = UUID.randomUUID().toString() + "_" + userID + extension;
 			
-			File file = new File(path+imgName);
-			userImg.transferTo(file);
+//			File file = new File(path+imgName);
+//			userImg.transferTo(file);
+			
+			uplodedUrl = awsS3Upload.upload(userImg, imgName, AwsS3Upload.USER_IMG_PATH);
 		}
-		return imgName;
+		return uplodedUrl;
 	}
 }

@@ -73,7 +73,7 @@
 								<div class="carousel-inner">
 									<c:forEach var = "img_list" items="${list.HOME_IMG}" varStatus = "status_2">
 										<div class = "carousel-item <c:if test = '${status_2.index eq 0}'>active</c:if>">
-											<a href="<c:url value='/homeDetail?homeId=${list.HOME_ID}'/>" target="_blank"><img src="/img/${img_list}" class="home_img"></a>
+											<a href="<c:url value='/homeDetail?homeId=${list.HOME_ID}'/>" target="_blank"><img class="home_img" src="${img_list}"></a>
 										</div>
 									</c:forEach> 
 								</div>

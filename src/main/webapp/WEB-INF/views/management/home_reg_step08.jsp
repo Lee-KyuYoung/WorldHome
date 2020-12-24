@@ -126,6 +126,20 @@
 			
 			$('#home_reg_step8_btn').on('click',function(){
 				
+				var peak_season_pay = $("#peak_season_pay").val();
+				var offpeak_season_pay = $("#offpeak_season_pay").val();
+				
+				if(peak_season_pay == ""){
+					alert("성수기 요금을 입력해주세요.");
+					$("#peak_season_pay").focus();
+					return false;
+				}
+				if(offpeak_season_pay == ""){
+					alert("비성수기 요금을 입력해주세요.");
+					$("#offpeak_season_pay").focus();
+					return false;
+				}
+				
 				var reg_step1 = $('#registration_step8_form').serialize();
 				$.ajax({
 					url : '<c:url value="/management/homeRegProcStep8"/>', 

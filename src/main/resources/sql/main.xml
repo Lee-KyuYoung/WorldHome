@@ -4,9 +4,10 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hk.whome.main.sql">
 	
-	<select id="selectDetailHome" parameterType="hashmap" resultType="hashmap"> 
+	<select id="selectDetailHome" parameterType="java.util.Map" resultType="java.util.Map"> 
   <![CDATA[ 
-	SELECT D.HOME_ID --집 ID
+	SELECT 
+		D.HOME_ID --집 ID
        ,D.HOME_IMG_PATH1 -- 집 이미지 경로1
        ,D.HOME_IMG_PATH2 -- 집 이미지 경로2
        ,D.HOME_IMG_PATH3 -- 집 이미지 경로3
@@ -38,7 +39,7 @@
 		  FROM
 				TBL_HOME_IMG A1
 	 	  WHERE
-		 		E.HOME_ID = A1.HOME_ID
+		 		E.HOME_ID = A1.HOME_ID AND A1.DEL_YN='N'
         ) AS HOME_IMG
 FROM TBL_HOME_INF E
      ,(SELECT MAX(C.HOME_IMG_PATH1)AS HOME_IMG_PATH1 
@@ -55,41 +56,25 @@ FROM TBL_HOME_INF E
                   ,CASE B.RNUM WHEN 5 THEN B.HOME_IMG_PATH END AS HOME_IMG_PATH5
                   ,B.HOME_ID
             FROM(
-                SELECT ROW_NUMBER()OVER (PARTITION BY A.HOME_ID ORDER BY A.HOME_IMG_PATH) RNUM
-                    ,A.HOME_IMG_PATH
-                    ,A.HOME_ID
-                  FROM TBL_HOME_IMG A
-                 WHERE A.HOME_ID = #{homeId}
-                   AND A.DEL_YN = 'N'
-              ORDER BY A.HOME_IMG_IDX ASC) B )C
+                	SELECT 
+                			ROW_NUMBER()OVER (PARTITION BY A.HOME_ID ORDER BY A.HOME_IMG_PATH) RNUM
+		                    ,A.HOME_IMG_PATH
+		                    ,A.HOME_ID
+                  	FROM 
+                  			TBL_HOME_IMG A
+                 	WHERE 
+                 			A.HOME_ID = #{homeId} AND A.DEL_YN = 'N'
+             		ORDER BY
+             				A.HOME_IMG_IDX ASC
+             		) B
+              )C
         GROUP BY C.HOME_ID) D
     WHERE D.HOME_ID =E.HOME_ID
    ]]> 
 </select>
- 	
-<select id="selectPostscriptList" parameterType="hashmap" resultType="hashmap"> 
-  <![CDATA[ 
-	SELECT B.RNUM 
-      ,B.HOME_ID
-      ,B.USR_ID
-      ,B.RVI_COMM_ID
-      ,B.RVI_COMM
-	FROM ( 
-	SELECT ROWNUM AS RNUM
-	      ,A.HOME_ID
-	      ,A.USR_ID
-	      ,A.RVI_COMM_ID
-	      ,A.RVI_COMM
-	FROM TBL_RVI_COMM A
-	WHERE A.HOME_ID = #{homeId}
-	ORDER BY A.RVL_COMM_INT_DT ASC
-	) B
-	WHERE B.RNUM BETWEEN #{startPag} AND #{endPag}
-   ]]> 
-</select> 	
 
 <!-- 숙소 리스트  -->
-<select id="selectImgList" parameterType = "com.hk.whome.domain.HomeListDomain" resultType="hashmap"> 
+<select id="selectImgList" parameterType = "com.hk.whome.domain.HomeListDomain" resultType="java.util.Map"> 
  		SELECT
  				*
  		FROM
@@ -116,7 +101,7 @@ FROM TBL_HOME_INF E
 							 FROM
 									TBL_HOME_IMG B
 							 WHERE
-							 		A.HOME_ID = B.HOME_ID
+							 		A.HOME_ID = B.HOME_ID AND b.del_yn ='N'
 				       ) AS HOME_IMG
                       ,(
                          SELECT
@@ -125,7 +110,7 @@ FROM TBL_HOME_INF E
                                 + ROUND( SUM(RVI_S_Ci) / COUNT(*), 1 ) + ROUND( SUM(RVI_S_S) / COUNT(*), 1 ) ) / 6 , 1 ) as total_rate　
                          FROM  
                                TBL_RVI_COMM B
-                               　　				 GROUP BY
+                         GROUP BY
                                HOME_ID
                          HAVING
                               B.HOME_ID = A.HOME_ID 

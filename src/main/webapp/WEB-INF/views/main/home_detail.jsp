@@ -60,22 +60,22 @@
 	<div class="container-fluid">
 		<div class = "row home_img">
 			<div class = "col-xl-6 col-md-8 home_img_group1">
-				<img src = "/img/${homeDetailInfo.HOME_IMG_PATH1}" id="home_img_1" onClick = "imgModal(0)">
+				<img src = "${homeDetailInfo.HOME_IMG_PATH1}" id="home_img_1" onClick = "imgModal(0)">
 			</div>
 			<div class = "col-xl-3 col-md-4 home_img_group2">
 				<div class = "col-xl-12" style="height:50%;">
-					<img src = "/img/${homeDetailInfo.HOME_IMG_PATH2}" id ="home_img_2" onClick = "imgModal(1)">
+					<img src = "${homeDetailInfo.HOME_IMG_PATH2}" id ="home_img_2" onClick = "imgModal(1)">
 				</div>
 				<div class = "col-xl-12" style="height:50%;">
-					<img src = "/img/${homeDetailInfo.HOME_IMG_PATH3}" id="home_img_3" onClick = "imgModal(2)">
+					<img src = "${homeDetailInfo.HOME_IMG_PATH3}" id="home_img_3" onClick = "imgModal(2)">
 				</div>
 			</div>
 			<div class = "col-xl-3 home_img_group3">
 				<div class = "col-xl-12" style="height:50%;">
-					<img src = "/img/${homeDetailInfo.HOME_IMG_PATH4}" id="home_img_4" onClick = "imgModal(3)">
+					<img src = "${homeDetailInfo.HOME_IMG_PATH4}" id="home_img_4" onClick = "imgModal(3)">
 				</div>
 				<div class = "col-xl-12" style="height:50%;">
-					<img src = "/img/${homeDetailInfo.HOME_IMG_PATH5}" id="home_img_5" onClick = "imgModal(4)">
+					<img src = "${homeDetailInfo.HOME_IMG_PATH5}" id="home_img_5" onClick = "imgModal(4)">
 				</div>
 			</div>
 		</div>
@@ -97,7 +97,7 @@
 								<a href ="javascript:moveUserProfile();">
 									<c:choose>
 										<c:when test="${!empty userInfo.userImg}">
-											<img src = "/user_img/${userInfo.userImg}">		
+											<img src = "${userInfo.userImg}">		
 										</c:when>
 										<c:otherwise>
 											<img src = "\whome\resources\img\profile_default.jpg">										
@@ -188,7 +188,7 @@
 								<a href ="javascript:;">
 									<c:choose>
 										<c:when test="${!empty userInfo.userImg}">
-											<img src = "/user_img/${userInfo.userImg}">		
+											<img src = "${userInfo.userImg}">		
 										</c:when>
 										<c:otherwise>
 											<img src = "\whome\resources\img\profile_default.jpg">										
@@ -572,7 +572,7 @@
 								<div class="col-md-1 user_profile">
 									<c:choose>
 										<c:when test="${!empty sessionScope.user_info.userImg and sessionScope.user_info.userImg ne ''}">
-											<img src = "/user_img/${sessionScope.user_info.userImg}">		
+											<img src = "${sessionScope.user_info.userImg}">		
 										</c:when>
 										<c:otherwise>
 											<img src = "\whome\resources\img\profile_default.jpg">										
@@ -622,12 +622,12 @@
 										<c:choose>
 											<c:when test ="${status.index eq 0 }">
 												<div class="carousel-item active">
-													<img src="/img/${list}" style="width:100%;height:100%;object-fit:contain;">
+													<img src="${list}" style="width:100%;height:100%;object-fit:contain;">
 												</div>
 											</c:when>
 											<c:otherwise>
 												<div class="carousel-item">
-													<img src="/img/${list}" style="width:100%;height:100%;object-fit:contain;">
+													<img src="${list}" style="width:100%;height:100%;object-fit:contain;">
 												</div>
 											</c:otherwise>
 										</c:choose>
@@ -940,7 +940,7 @@
 			$('.home_pay_info').text('₩'+pay+' x '+total_day+'박');
 			$('.home_pay').text('₩'+home_pay);
 			$('.fees').text('₩'+fees);
-			$('.total_pay').text('₩'+total_pay);
+			$('.total_pay').last().text('₩'+total_pay);
 		}
 		
 		//숫자 콤마
@@ -952,7 +952,7 @@
 		function setReviewList(page){
 			
 			var home_id = "${homeDetailInfo.HOME_ID}";
-			
+
 			$.ajax({
 				url : '<c:url value="/reservation/getReviewList"/>', 
 				data : {'home_id' : home_id , 'page_no' : page},
@@ -981,7 +981,7 @@
 												'<div class = "row">';
 
 							if(o.userImg != ''){
-								html +=             '<img src = "/user_img/'+o.userImg+'">';
+								html +=             '<img src = "'+o.userImg+'">';
 							}
 							else{
 								html +=             '<img src = "/whome/resources/img/profile_default.jpg">';

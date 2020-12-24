@@ -24,6 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Autowired
 	private PasswordEncoder passwordEncoder; 
 	
+	@SuppressWarnings("unused")
 	private Logger logger = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
 	
 	@SuppressWarnings("unchecked")
@@ -37,18 +38,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(userID);
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) user.getAuthorities();
 		
-		logger.info("입력한 비번     ::::    "+passwordEncoder.encode(userPw));
-		logger.info("저장된 비번     ::::    "+user.getUser_pw());
-		
         if(!passwordEncoder.matches(userPw, user.getUser_pw())) {
-        	logger.info("비밀번호가 틀립니다.");
             throw new BadCredentialsException(userID);
         }
- 
-//        if(!user.isEnabled() ||  !user.isCredentialsNonExpired()) {
-//        	logger.info("불가능한 사용자입니다.");
-//            throw new BadCredentialsException(userID);
-//        }
 
         UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userID, userPw, authorities);
         result.setDetails(user);

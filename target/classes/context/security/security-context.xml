@@ -16,10 +16,12 @@
           	             아래에서 권한 사용시에는 ROLE_을 생략해도 됨
                   -->
       <security:http use-expressions="true" auto-config='true'>
-      		<security:intercept-url pattern="/board/**" access="permitAll"/>
+      		<security:intercept-url pattern="/admin/codeManagement" access="hasAnyRole('ROLE_ADMIN')"/>
+      		<security:intercept-url pattern="/admin/insertCode/**" access="hasAnyRole('ROLE_ADMIN')"/>
+      		<security:intercept-url pattern="/user/modifyProcess" access="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')"/>
+      		<security:intercept-url pattern="/reservation/getReviewList" access="permitAll"/>
+      		<security:intercept-url pattern="/reservation/**" access="hasAnyRole('ROLE_ADMIM','ROLE_MEMBER')"/>
       		<security:intercept-url pattern="/management/**" access="hasAnyRole('ROLE_ADMIM','ROLE_MEMBER')"/> 
-            <security:intercept-url pattern="/login" access="permitAll"/>
-            <security:intercept-url pattern="/loginProcess" access="denyAll"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
             <security:access-denied-handler error-page="/accessDeniedPage"/>
             <security:form-login login-page="/login"
@@ -64,4 +66,5 @@
 	</bean>
 	<bean id="logoutSuccessHandler" class="com.hk.whome.security.handler.LogoutHandler"></bean>
 </beans>
+
 
