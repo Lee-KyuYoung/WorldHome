@@ -1,6 +1,5 @@
 package com.hk.whome.util;
 
-import java.io.File;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,16 +57,13 @@ public class FileUtils {
 				String extension = originalFileName.substring(originalFileName.lastIndexOf("."), originalFileName.length());
 				String imgKey = selectKeySeq.selectSeqKey("20");
 				fileName = imgKey+"_"+homeID+"_"+(i+1)+extension;
-		
-//				File file = new File(path+fileName);
-//				img.transferTo(file);
 				
-				String uplodedUrl = awsS3Upload.upload(img, fileName, AwsS3Upload.HOME_IMG_PATH);
+				String uplodedUrl = awsS3Upload.loadS3()
+						                       .upload(img, fileName, awsS3Upload.homeImgPath);
 				
 				HomeImgInfoDomain homeImgInfoDomain = new HomeImgInfoDomain();
 				homeImgInfoDomain.setHomeImgKey(imgKey);
 				homeImgInfoDomain.setHomeID(homeID);
-//				homeImgInfoDomain.setHomeImgPath(path+fileName);
 				homeImgInfoDomain.setHomeImgPath(uplodedUrl);
 				homeImgInfoDomain.setHomeImgOrder(i + 1);
 				
@@ -99,14 +95,12 @@ public class FileUtils {
 		if(userImg !=null && !userImg.getOriginalFilename().equals("")) {
 
 			String originName = userImg.getOriginalFilename();
-//			String path = FileUtils.getFilePath(req);
 			String extension = originName.substring(originName.lastIndexOf("."), originName.length());
+			
 			imgName = UUID.randomUUID().toString() + "_" + userID + extension;
-			
-//			File file = new File(path+imgName);
-//			userImg.transferTo(file);
-			
-			uplodedUrl = awsS3Upload.upload(userImg, imgName, AwsS3Upload.USER_IMG_PATH);
+
+			uplodedUrl = awsS3Upload.loadS3()
+					                .upload(userImg, imgName, awsS3Upload.userImgPath);
 		}
 		return uplodedUrl;
 	}

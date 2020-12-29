@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
@@ -66,7 +67,7 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, Locale locale, HomeListDomain homeData, @RequestParam Map<String,String> paramMap) {
-		
+
 		int pageNo = EmptyUtils.isEmpty(paramMap.get("page_no")) ? 1 : Integer.parseInt(paramMap.get("page_no"));
 		String message = paramMap.get("message");
 		String area = paramMap.get("area");
@@ -156,8 +157,11 @@ public class MainController {
 				String homePrecautions = (String)homeDetailInfo.get("HOME_PRECAUTIONS");
 				String homeImg = (String)homeDetailInfo.get("HOME_IMG");
 				
-				String replaceBRTage = ((String)homeDetailInfo.get("HOME_COMM")).replaceAll("\r\n", "<br>");
-				homeDetailInfo.put("HOME_COMM", replaceBRTage);
+				String HomeComm = ((String)homeDetailInfo.get("HOME_COMM")).replaceAll("\r\n", "<br>");
+				homeDetailInfo.put("HOME_COMM", HomeComm);
+				
+				String userIntro = userInfo.getUserIntroduce().replaceAll("\r\n", "<br>");
+				userInfo.setUserIntroduce(userIntro);
 				
 				if(!EmptyUtils.isEmpty(homeType)) {
 					model.addAttribute("homeType",homeType.split(","));

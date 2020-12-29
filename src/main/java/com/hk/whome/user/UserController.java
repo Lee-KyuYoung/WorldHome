@@ -191,7 +191,7 @@ public class UserController {
 		userInfoModel.addAttribute("userId",userID);
 		
 		UserInfoDomain userInfo = userService.getUserInfo(userInfoModel);
-		userInfo.setUserIntroduce(userInfo.getUserIntroduce().replaceAll("\n", "<br>"));
+		userInfo.setUserIntroduce(userInfo.getUserIntroduce().replaceAll("\r\n", "<br>").replaceAll("\n", "<br>"));
 		logger.info(userInfo.getUserIntroduce());
 		model.addAttribute("user_info" , userInfo);
 		

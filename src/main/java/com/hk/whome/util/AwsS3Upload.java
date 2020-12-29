@@ -17,56 +17,45 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 @Component
 public class AwsS3Upload{
-	
-//	@Value("#{awsProperty['aws.key']}")
-//	private String accessKey;
-//	
-//	@Value("#{awsProperty['aws.secretkey']}")
-//	private String secretKey;
-//	
-//	@Value("#{awsProperty['aws.bucket']}")
-//	private String bucketName;
-	
-//	@Value("${aws.key}")
-	private String accessKey = "AKIAIOYKF3KZZ7ZJSU4A";
 
-//	@Value("${aws.secretkey}")
-	private String secretKey = "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";
+	@Value("#{awsProperty['aws.key']}")
+	public String accessKey;
+
+	@Value("#{awsProperty['aws.secretkey']}")
+	public String secretKey;
 	
-//	@Value("${aws.bucket}")
-	private String bucketName = "lky-project";
+	@Value("#{awsProperty['aws.bucket']}")
+	private String bucketName;
 	
-	private final String cloudFrontUrl = "http://dqyia9b9ucmgd.cloudfront.net/";
+	@Value("#{awsProperty['aws.cloudfront-url']}")
+	private String cloudFrontUrl;
 	
-	public static final String HOME_IMG_PATH = "img-upload/home-img/";
+	@Value("#{awsProperty['aws.home-img-path']}")
+	public String homeImgPath;
 	
-	public static final String USER_IMG_PATH ="img-upload/user-img/";
-	
-	
-	
+	@Value("#{awsProperty['aws.user-img-path']}")
+	public String userImgPath;
+		
 	private AWSCredentials awsCredential;
 	private AmazonS3 s3Client;
 	
-	public AwsS3Upload() {
-		
-		System.out.println("AWS ------------------------ accesskey : "+accessKey+"           secretKey : "+secretKey);
-		
+	public AwsS3Upload loadS3() {
+
 		awsCredential = new BasicAWSCredentials(accessKey,secretKey);
 		s3Client = AmazonS3ClientBuilder
 				.standard()
 				.withCredentials(new AWSStaticCredentialsProvider(awsCredential))
 				.withRegion(Regions.AP_NORTHEAST_2)
 				.build();
+		return this;
 	}
 	
 	public String upload(MultipartFile file, String fileName, String path) throws IOException {
-		System.out.println("File Name ---------------- "+path+fileName);
+		
 		s3Client.putObject(new PutObjectRequest(bucketName, path+fileName, file.getInputStream(),null)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
-		
-//		return s3Client.getUrl(bucketName, path+fileName).toString();
+
 		return cloudFrontUrl+path+fileName;
-		
 	}
 
 		
