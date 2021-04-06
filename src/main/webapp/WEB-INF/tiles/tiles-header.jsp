@@ -11,7 +11,7 @@
 <script src="<c:url value='/resources/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resources/jquery/dev/common.js'/>"></script>
 <%-- <script src="<c:url value='/resources/jquery/dev/nav.js'/>"></script> --%>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<script src="<c:url value='/resources/js/a076d05399.js'/>"></script>
 <script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/moment.min.js'/>"></script>
 <script src="<c:url value='/resources/jquery-plug-in/datarangepicker/js/daterangepicker.js'/>"></script>
 
