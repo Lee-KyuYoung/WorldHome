@@ -11,7 +11,7 @@
 * Locale을 이용한 메시지 처리      
 
 ### 개발환경    
-* Window10 ( 배포서버는 AWS Centos7 )     
+* Window10 ( 배포서버는 AWS ubuntu )     
 * Oracle19C ( 배포서버는 Oracle11g )    
 * OpenJDK13    
 * Tomcat9    
